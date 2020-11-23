@@ -23,7 +23,6 @@ passport.use(
             proxy: true
         },
         async (acessToken, refreshToken, profile, done)=>{
-            console.log(profile);
             const existingUser = await User.findOne({googleId: profile.id})
             if(existingUser){
                 //The user already exits;
