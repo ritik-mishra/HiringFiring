@@ -1,37 +1,44 @@
-import { STATES } from 'mongoose';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-
-class Header extends Component{
-    renderContent() {
-        switch (this.props.auth){
+class Header extends Component {
+    renderContent(){
+        switch(this.props.auth){
             case null:
-                return 'Still deciding';
+                return;
             case false:
-                return <li> <a href = "auth/google"> Login with Google </a></li>;
+                return (
+                    <li><a href="/auth/google">Login With Google</a></li>
+                );
             default:
-                return <li> <a href = "api/logout"> Logout </a></li>;
+                return(
+                    <li><a href="/api/logout">Logout</a></li>
+                );
         }
     }
+
     render(){
-        console.log(this.props);
-        return(
+        return (
             <nav>
                 <div className = "nav-wrapper">
-                    <a className = "left brand-logo">
-                        HiringFiring
-                    </a>
-                    <ul className = "right">
-                        { this.renderContent() }
+                    <Link
+                        to={this.props.auth ? '/dashboard' : '/'}
+                        className = "left brand-logo"
+                    >
+                        Hiring-Firing
+                    </Link>
+                    <ul className="right">
+                        {this.renderContent()}
                     </ul>
                 </div>
             </nav>
         );
     }
 }
-function mapStateToProps( state ){
-    return { auth: state.auth};
+
+function mapStateToProps({ auth }) {
+    return { auth };
 }
 
 export default connect(mapStateToProps)(Header);
