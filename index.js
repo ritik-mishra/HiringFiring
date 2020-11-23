@@ -6,6 +6,7 @@ const keys = require('./config/keys');
 require('./models/User');
 require('./models/Jobs');
 require('./services/passport');
+require('./services/addJob');
 
 
 mongoose.connect(keys.mongoURI);
