@@ -13,8 +13,8 @@ passport.deserializeUser((id,done) => {
     User.findById(id)
     .then(user => {
         done(null, user);
-    })
-})
+    });
+});
 passport.use(
     new GoogleStartegy({
             clientID: keys.googleClientID,
@@ -30,7 +30,7 @@ passport.use(
             }
 
             //Create new user
-            const user = new User({ googleId: profile.id }).save();
+            const user = await new User({ googleId: profile.id }).save();
             done(null, user);
         }
     )
