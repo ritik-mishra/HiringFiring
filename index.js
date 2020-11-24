@@ -6,7 +6,6 @@ const keys = require('./config/keys');
 require('./models/User');
 require('./models/Jobs');
 require('./services/passport');
-require('./services/addJob');
 
 
 mongoose.connect(keys.mongoURI);
@@ -25,7 +24,7 @@ require('./routes/authRoutes')(app);
 
 app.use(express.json());
 
-require('./routes/dbRoutes')(app);
+require('./routes/jobRoutes')(app);
 
 const Port = process.env || 5000;
 
