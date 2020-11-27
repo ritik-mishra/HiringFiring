@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const Job = mongoose.model('jobs');
-//const { v4: uuidv4 } = require('uuid'); currently not in use
+const { v4: uuidv4 } = require('uuid'); 
 
 
 
@@ -15,9 +15,9 @@ module.exports = (app)=>{
 
     });
     app.post('/api/add_job', async (req, res) => {
-       // const newId = uuidv4(); Not needed for now
+        const newId = uuidv4(); 
         const newJob= await new Job({ 
-            jobId: req.body.jobId,
+            jobId: newId,
             companyName: req.body.companyName,
             jobTitle: req.body.jobTitle,
             jobLink: req.body.jobLink,
