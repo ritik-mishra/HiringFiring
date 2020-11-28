@@ -6,6 +6,7 @@ import * as actions from '../actions';
 
 import Header from './Header';
 import Landing from './Landing';
+import AddJobForm from './AddJobForm';
 const Dashboard = () => <h2>Dashboard</h2>
 
 class App extends Component {
@@ -25,6 +26,7 @@ class App extends Component {
                         <Header />
                         <Route exact path = "/" component = {Landing} />
                         <Route exact path = "/dashboard" component = {Dashboard} />
+                        <Route exact path = "/addJobForm" component = {AddJobForm} />
                     </div>
                 </BrowserRouter>
             </div>
