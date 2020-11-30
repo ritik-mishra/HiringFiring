@@ -18,10 +18,12 @@ class Header extends Component {
                         <li><a href="/api/logout">Logout</a></li>
                     </div>
                 );
+
         }
     }
 
     render(){
+        //console.log(this.props);
         return (
             <nav>
                 <div className = "nav-wrapper">

@@ -3,13 +3,14 @@ const mongoose = require('mongoose');
 const Job = mongoose.model('jobs');
 const { v4: uuidv4 } = require('uuid'); 
 
+const requireLogin = require('../middlewares/requireLogin');
 
 
 module.exports = (app)=>{
     
     
 //  Get Job
-    app.get('/api/all_jobs', (req, res) =>{
+    app.get('/api/all_jobs', requireLogin, (req, res) =>{
         
         Job.find({}).exec(function (err, all_jobs) {
             if (err) throw err;
@@ -20,7 +21,7 @@ module.exports = (app)=>{
     
     
 //  Delete Job
-    app.get('/api/delete_job', (req, res) => {
+    app.get('/api/delete_job', requireLogin, (req, res) => {
         const jobId = req.query.jobId;
         Job.deleteOne({ jobId: jobId }, (err) => {
             if (err)
@@ -32,7 +33,7 @@ module.exports = (app)=>{
     
     
 //  Add Job
-    app.post('/api/add_job', async (req, res) => {
+    app.post('/api/add_job', requireLogin, async (req, res) => {
         const newId = uuidv4(); 
         const newJob= await new Job({ 
             jobId: newId,
@@ -40,11 +41,9 @@ module.exports = (app)=>{
             jobTitle: req.body.jobTitle,
             jobLink: req.body.jobLink,
             batch: req.body.batch,
-            postedBy: req.body.postedBy
-        }).save((err) => {
-            if(err)
-                throw err;
-        });
+            postedBy: req.user.name
+        }).save();
+
         res.send(newJob);
     })
 }

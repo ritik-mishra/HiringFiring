@@ -14,9 +14,16 @@ class AddJobForm extends Component {
           postedBy: '',
           redirect: false
         };
+    //In JavaScript, class methods are not bound by default. 
+    //If you forget to bind this.myChangeHandler and pass it to onChange, this will be undefined when the function is actually called.
+    //But it works as the syntax we are using namely "Public Class Field Syntax" allows class fields to correctly bind callbacks.
+
       }
+    // This syntax ensures `this` is bound within myChangeHandler and submitHandler.
+    // We are using the experimental public class fields syntax, We can use class fields to correctly bind callbacks
     myChangeHandler = (event) => {
         let nam = event.target.name;
+    
         let val = event.target.value;
         this.setState({[nam]: val});
     }
@@ -26,8 +33,7 @@ class AddJobForm extends Component {
             companyName: this.state.companyName,
             jobTitle: this.state.jobTitle,
             jobLink: this.state.jobLink,
-            batch: this.state.batch,
-            postedBy: this.state.postedBy
+            batch: this.state.batch
         }
         
         axios.post('/api/add_job',job).then(
@@ -41,7 +47,7 @@ class AddJobForm extends Component {
     }
     render(){
         let allowSubmit = '';
-        if (this.state.companyName && this.state.jobTitle && this.state.jobLink && this.state.batch && this.state.postedBy) {
+        if (this.state.companyName && this.state.jobTitle && this.state.jobLink && this.state.batch) {
             allowSubmit = <input
                           type='submit'
                           />;
@@ -77,12 +83,6 @@ class AddJobForm extends Component {
             <input
                 type='text'
                 name='batch'
-                onChange = {this.myChangeHandler}
-            />
-            <p>Posted By</p>
-            <input
-                type='text'
-                name='postedBy'
                 onChange = {this.myChangeHandler}
             />
             <div>
