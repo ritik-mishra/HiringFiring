@@ -24,6 +24,7 @@ module.exports = (app) => {
             if (err)
                 throw err;
         });
+        return res.redirect('/');
     });
 
 

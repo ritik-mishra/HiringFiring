@@ -10,7 +10,7 @@ const jobSchema = new Schema({
     postedOn: { type: Date, default: Date.now },
     postedBy: String,
     isReferral: String,
-    jobExpiry: { type: Date },
+    jobExpiry: Date,
     jobDesciption: String
 
 });

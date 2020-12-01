@@ -1,36 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import Jobcard from './Jobcard';
 class Dashboard extends Component {
 
     renderContent() {
         const jobs = this.props.jobss;
-        console.log(this.props.jobss);
         if (jobs) {
             return (
-
-
                 <div>
                     <div>
                         {jobs.map(job => (
-                            <div>
-                                <div className="card">
-                                    <div className="card-tabs">
-                                        <ul className="tabs tabs-fixed-width">
-                                            <li className="tab"><div> {job.companyName}</div></li>
-                                            <li className="tab"><div> {job.postedBy}</div></li>
-                                            <li className="tab"><div> {job.jobId}</div></li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                            </div>
+                            <Jobcard job={job} />
                         ))}
                     </div>
                 </div>
-
-
-
             );
         }
         return "Wait";
@@ -44,7 +27,6 @@ class Dashboard extends Component {
     }
 
     render() {
-        console.log("In Dashboard");
         return (
 
             <div>

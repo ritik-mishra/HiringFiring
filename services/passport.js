@@ -28,7 +28,6 @@ passport.use(
                 //The user already exits;
                 return done(null, existingUser);
             }
-            console.log(profile);
             //Create new user
             const user = await new User({
                 googleId: profile.id, name: profile.displayName,
