@@ -20,8 +20,8 @@ module.exports = (app) => {
 
 
     //  Delete Job
-    app.get('/api/delete_job', requireLogin, (req, res) => {
-        const jobId = req.query.jobId;
+    app.get('/api/delete_job/:jobId', (req, res) => {
+        const jobId = req.params['jobId'];
         Job.deleteOne({ jobId: jobId }, (err) => {
             if (err)
                 throw err;
