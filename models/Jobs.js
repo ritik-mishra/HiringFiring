@@ -7,8 +7,11 @@ const jobSchema = new Schema({
     jobTitle: String,
     jobLink: String,
     batch: String,
+    isReferral: String,
+    jobExpiry:{type: Date},
     postedOn: { type: Date, default: Date.now },
-    postedBy: String
+    postedBy: String,
+    postedById: String
 });
 
 mongoose.model('jobs', jobSchema);

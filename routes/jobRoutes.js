@@ -4,6 +4,7 @@ const Job = mongoose.model('jobs');
 const { v4: uuidv4 } = require('uuid'); 
 
 const requireLogin = require('../middlewares/requireLogin');
+const requireAuthor = require('../middlewares/requireAuthor');
 
 
 module.exports = (app)=>{
@@ -41,9 +42,42 @@ module.exports = (app)=>{
             jobTitle: req.body.jobTitle,
             jobLink: req.body.jobLink,
             batch: req.body.batch,
-            postedBy: req.user.name
+            isReferral: req.body.isReferral,
+            jobExpiry: req.body.jobExpiry,
+            postedBy: req.user.name,
+            postedById: req.user.id
         }).save();
-
+        
         res.send(newJob);
     })
+
+    app.get('/api/edit/:jobId', [requireLogin, requireAuthor], async (req, res) => {
+        try {
+          const job = await Job.findOne({
+            _id: req.params.jobId,
+          }).lean();
+  
+            res.send(job);
+        } catch (err) {
+          console.error(err);
+          return ;
+        }
+      });
+  
+      // @desc    Update job
+      //    PUT/job/:id
+      app.put('/api/:id', [requireLogin, requireAuthor], async (req, res) => { 
+        try {
+             let job = await Job.findOneAndUpdate({ _id: req.params.id }, req.body, {
+              new: true,
+              runValidators: true,
+            });
+            res.status(200).send(job);
+            return ;
+        } catch (err) {
+          console.error(err);
+  
+          return ;
+        }
+      });
 }

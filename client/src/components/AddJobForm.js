@@ -11,7 +11,8 @@ class AddJobForm extends Component {
           jobTitle: '',
           jobLink: '',
           batch: '',
-          postedBy: '',
+          isReferral: '',
+          jobExpiry: '',
           redirect: false
         };
     //In JavaScript, class methods are not bound by default. 
@@ -33,7 +34,10 @@ class AddJobForm extends Component {
             companyName: this.state.companyName,
             jobTitle: this.state.jobTitle,
             jobLink: this.state.jobLink,
-            batch: this.state.batch
+            batch: this.state.batch,
+            isReferral: this.state.isReferral,
+            jobExpiry: this.state.jobExpiry
+            
         }
         
         axios.post('/api/add_job',job).then(
@@ -53,7 +57,7 @@ class AddJobForm extends Component {
                           />;
             } 
         else {
-            allowSubmit = 'Fill all the fields';
+            allowSubmit = 'Fill all the mandatory fields';
         }
         const { redirect } = this.state;
         if (redirect) {
@@ -61,28 +65,40 @@ class AddJobForm extends Component {
         }
         return (
             <form onSubmit = {this.submitHandler}>
-            <p>Company Name:</p>
+            <p>Company Name* :</p>
              <input
                 type='text'
                 name='companyName'
                 onChange = {this.myChangeHandler}
             />
-            <p>Job Title</p>
+            <p>Job Title* :</p>
             <input
                 type='text'
                 name='jobTitle'
                 onChange = {this.myChangeHandler}
             />
-            <p>Job Link</p>
+            <p>Job Link* :</p>
             <input
                 type='text'
                 name='jobLink'
                 onChange = {this.myChangeHandler}
             />
-            <p>Batch</p>
+            <p>Batch* :</p>
             <input
                 type='text'
                 name='batch'
+                onChange = {this.myChangeHandler}
+            />
+            <p>Is Referral required :</p>
+            <input
+                type='text'
+                name='isReferral'
+                onChange = {this.myChangeHandler}
+            />
+            <p>Job Expiry Date(if known) :</p>
+            <input
+                type='text'
+                name='jobExpiry'
                 onChange = {this.myChangeHandler}
             />
             <div>
