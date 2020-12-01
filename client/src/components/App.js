@@ -1,30 +1,33 @@
+
 import React, { Component } from 'react';
-import {BrowserRouter, Route} from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 
 import Header from './Header';
 import Landing from './Landing';
-const Dashboard = () => <h2>Dashboard</h2>
+import Dashboard from './Dashboard';
+// const Dashboard = () => <h2>Dashboard</h2>
 
 class App extends Component {
     //Lifecycle hook
     //we are wiring up action creator with app as many components may need it.
-    componentDidMount(){
+    componentDidMount() {
 
         //Acessing the action creator through props
         this.props.fetchUser();
+        this.props.fetchJobs();
     }
-    render(){
+    render() {
 
-        return(
+        return (
             <div>
                 <BrowserRouter>
-                    <div className = "container" >
+                    <div className="container" >
                         <Header />
-                        <Route exact path = "/" component = {Landing} />
-                        <Route exact path = "/dashboard" component = {Dashboard} />
+                        <Route exact path="/" component={Landing} />
+                        <Route exact path="/dashboard" component={Dashboard} />
                     </div>
                 </BrowserRouter>
             </div>
