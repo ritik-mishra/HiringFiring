@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ExternalLink } from 'react-external-link';
 
 class Jobcard extends Component {
     render() {
@@ -23,7 +22,7 @@ class Jobcard extends Component {
                                 <p>Posted by: {job.postedBy}</p>
                             </div>
                             <div className="card-action">
-                                <a target="_blank" href={url}>Apply here</a>
+                                <a target="_blank" rel="noreferrer" href={url}>Apply here</a>
                                 <a href={del_link}>Delete Job</a>
                                 <a href="#">Edit Job</a>
                             </div>
