@@ -11,10 +11,10 @@ class Jobcard extends Component {
         return (
             <div className="jobcard" key={job.jobID}>
                 <div >
-                    <div class="col s12 m6">
-                        <div class="card blue-grey darken-1">
-                            <div class="card-content white-text">
-                                <span class="card-title"><b>{job.companyName}</b></span>
+                    <div className="col s12 m6">
+                        <div className="card blue-grey darken-1">
+                            <div className="card-content white-text">
+                                <span className="card-title"><b>{job.companyName}</b></span>
                                 <hr></hr>
                                 <p>Role: {job.jobTitle}</p>
                                 <p>Batch applicable: {job.batch}</p>
@@ -22,7 +22,7 @@ class Jobcard extends Component {
                                 <p>Referral Applicable: {job.isReferral}</p>
                                 <p>Posted by: {job.postedBy}</p>
                             </div>
-                            <div class="card-action">
+                            <div className="card-action">
                                 <a target="_blank" href={url}>Apply here</a>
                                 <a href={del_link}>Delete Job</a>
                                 <a href="#">Edit Job</a>

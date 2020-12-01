@@ -17,28 +17,18 @@ class Dashboard extends Component {
         const jobs = this.props.jobss;
         if (jobs) {
             return (
-                <div>
-                    <div>
-                        {jobs.map(job => (
-                            <Jobcard job={job} />
-                        ))}
-                    </div>
+                <div className="Jobs">
+                    {jobs.map(job => (
+                        <Jobcard job={job} />
+                    ))}
                 </div>
             );
         }
         return "Wait";
     }
 
-    async componentDidMount() {
-        const response = await fetch('/api/all_jobs');
-        const data = await response.json();
-        // console.log(data);
-        this.setState({ jobs: data, loading: false });
-        // console.log(data[0]);
-    }
 
     render() {
-        console.log(this.state.jobs);
         return (
 
             <div>
