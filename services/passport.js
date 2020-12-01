@@ -9,28 +9,31 @@ const User = mongoose.model('users');
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
-passport.deserializeUser((id,done) => {
+passport.deserializeUser((id, done) => {
     User.findById(id)
-    .then(user => {
-        done(null, user);
-    });
+        .then(user => {
+            done(null, user);
+        });
 });
 passport.use(
     new GoogleStartegy({
-            clientID: keys.googleClientID,
-            clientSecret: keys.googleClientSecret,
-            callbackURL: '/auth/google/callback',
-            proxy: true
-        },
-        async (acessToken, refreshToken, profile, done)=>{
-            const existingUser = await User.findOne({googleId: profile.id})
-            if(existingUser){
+        clientID: keys.googleClientID,
+        clientSecret: keys.googleClientSecret,
+        callbackURL: '/auth/google/callback',
+        proxy: true
+    },
+        async (acessToken, refreshToken, profile, done) => {
+            const existingUser = await User.findOne({ googleId: profile.id })
+            if (existingUser) {
                 //The user already exits;
                 return done(null, existingUser);
             }
-
+            console.log(profile);
             //Create new user
-            const user = await new User({ googleId: profile.id }).save();
+            const user = await new User({
+                googleId: profile.id, name: profile.displayName,
+                email: profile.emails[0].value, picURL: profile.photos[0].value
+            }).save();
             done(null, user);
         }
     )
