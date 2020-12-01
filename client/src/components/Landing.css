@@ -1,0 +1,13 @@
+body {
+    background-image: url('../media/land-back.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
+  h1 {
+    color: white;
+  }
+  div{
+      color:white;
+  }

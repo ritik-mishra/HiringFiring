@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Jobcard from './Jobcard';
+import './Dashboard.css'
+
+
+
 class Dashboard extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            jobs: ""
+        };
+    }
 
     renderContent() {
         const jobs = this.props.jobss;
@@ -22,11 +32,13 @@ class Dashboard extends Component {
     async componentDidMount() {
         const response = await fetch('/api/all_jobs');
         const data = await response.json();
+        // console.log(data);
         this.setState({ jobs: data, loading: false });
         // console.log(data[0]);
     }
 
     render() {
+        console.log(this.state.jobs);
         return (
 
             <div>

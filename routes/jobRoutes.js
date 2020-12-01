@@ -18,7 +18,6 @@ module.exports = (app) => {
 
     //  Delete Job
     app.get('/api/delete_job/:jobId', (req, res) => {
-        console.log('in delete job');
         const jobId = req.params['jobId'];
         Job.deleteOne({ jobId: jobId }, (err) => {
             if (err)
