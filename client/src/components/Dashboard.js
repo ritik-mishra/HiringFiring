@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+
 import Jobcard from './Jobcard';
 import './Dashboard.css'
 
@@ -31,7 +33,7 @@ class Dashboard extends Component {
     render() {
         return (
 
-            <div>
+            <div className="container">
                 <ul>
                     {this.renderContent()}
                 </ul>

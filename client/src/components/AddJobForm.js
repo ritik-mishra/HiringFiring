@@ -2,31 +2,32 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 
+import './AddJobForm.css'
+
 
 class AddJobForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          companyName: '',
-          jobTitle: '',
-          jobLink: '',
-          batch: '',
-          isReferral: '',
-          jobExpiry: '',
-          redirect: false
+            companyName: '',
+            jobTitle: '',
+            jobLink: '',
+            batch: '',
+            isReferral: '',
+            jobExpiry: '',
+            redirect: false
         };
-    //In JavaScript, class methods are not bound by default. 
-    //If you forget to bind this.myChangeHandler and pass it to onChange, this will be undefined when the function is actually called.
-    //But it works as the syntax we are using namely "Public Class Field Syntax" allows class fields to correctly bind callbacks.
+        //In JavaScript, class methods are not bound by default. 
+        //If you forget to bind this.myChangeHandler and pass it to onChange, this will be undefined when the function is actually called.
+        //But it works as the syntax we are using namely "Public Class Field Syntax" allows class fields to correctly bind callbacks.
 
-      }
+    }
     // This syntax ensures `this` is bound within myChangeHandler and submitHandler.
     // We are using the experimental public class fields syntax, We can use class fields to correctly bind callbacks
     myChangeHandler = (event) => {
         let nam = event.target.name;
-    
         let val = event.target.value;
-        this.setState({[nam]: val});
+        this.setState({ [nam]: val });
     }
     submitHandler = (event) => {
         event.preventDefault();
@@ -37,73 +38,72 @@ class AddJobForm extends Component {
             batch: this.state.batch,
             isReferral: this.state.isReferral,
             jobExpiry: this.state.jobExpiry
-            
+
         }
-        
-        axios.post('/api/add_job',job).then(
+
+        axios.post('/api/add_job', job).then(
             (res, err) => {
-                if(err)
+                if (err)
                     throw err;
-                console.log(res);
                 this.setState({ redirect: true })
             }
         )
     }
-    render(){
+    render() {
         let allowSubmit = '';
         if (this.state.companyName && this.state.jobTitle && this.state.jobLink && this.state.batch) {
-            allowSubmit = <input
-                          type='submit'
-                          />;
-            } 
+            allowSubmit = <input style={{ color: "red" }}
+                type='submit'
+            />;
+        }
         else {
             allowSubmit = 'Fill all the mandatory fields';
         }
         const { redirect } = this.state;
         if (redirect) {
-          return <Redirect to="/dashboard" />;
+            return <Redirect to="/dashboard" />;
         }
         return (
-            <form onSubmit = {this.submitHandler}>
-            <p>Company Name* :</p>
-             <input
-                type='text'
-                name='companyName'
-                onChange = {this.myChangeHandler}
-            />
-            <p>Job Title* :</p>
-            <input
-                type='text'
-                name='jobTitle'
-                onChange = {this.myChangeHandler}
-            />
-            <p>Job Link* :</p>
-            <input
-                type='text'
-                name='jobLink'
-                onChange = {this.myChangeHandler}
-            />
-            <p>Batch* :</p>
-            <input
-                type='text'
-                name='batch'
-                onChange = {this.myChangeHandler}
-            />
-            <p>Is Referral required :</p>
-            <input
-                type='text'
-                name='isReferral'
-                onChange = {this.myChangeHandler}
-            />
-            <p>Job Expiry Date(if known) :</p>
-            <input
-                type='text'
-                name='jobExpiry'
-                onChange = {this.myChangeHandler}
-            />
-            <div>
-                {allowSubmit}
-            </div> 
+            <form onSubmit={this.submitHandler}>
+                <p>Company Name* :</p>
+                <input
+                    type='text'
+                    name='companyName'
+                    onChange={this.myChangeHandler}
+                />
+                <p>Job Title* :</p>
+                <input
+                    type='text'
+                    name='jobTitle'
+                    onChange={this.myChangeHandler}
+                />
+                <p>Job Link* :</p>
+                <input
+                    type='text'
+                    name='jobLink'
+                    onChange={this.myChangeHandler}
+                />
+                <p>Batch* :</p>
+                <input
+                    type='text'
+                    name='batch'
+                    onChange={this.myChangeHandler}
+                />
+                <p>Is Referral required :</p>
+                <input
+                    type='text'
+                    name='isReferral'
+                    onChange={this.myChangeHandler}
+                />
+                <p>Job Expiry Date(if known) :</p>
+                <input
+                    type='text'
+                    name='jobExpiry'
+                    onChange={this.myChangeHandler}
+                />
+                <div>
+                    {allowSubmit}
+                </div>
             </form>
         );
     }

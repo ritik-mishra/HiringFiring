@@ -25,8 +25,9 @@ module.exports = (app) => {
         Job.deleteOne({ jobId: jobId }, (err) => {
             if (err)
                 throw err;
-            console.log("job deleted");
+            // console.log("job deleted");
         });
+        res.redirect('/dashboard');
     })
 
 
@@ -45,7 +46,6 @@ module.exports = (app) => {
             postedBy: req.user.name,
             postedById: req.user.id
         }).save();
-
         res.send(newJob);
     });
 }
