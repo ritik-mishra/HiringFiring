@@ -25,6 +25,7 @@ class AddJobForm extends Component {
     // This syntax ensures `this` is bound within myChangeHandler and submitHandler.
     // We are using the experimental public class fields syntax, We can use class fields to correctly bind callbacks
     myChangeHandler = (event) => {
+        console.log(event);
         let nam = event.target.name;
         let val = event.target.value;
         this.setState({ [nam]: val });

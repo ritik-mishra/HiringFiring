@@ -20,9 +20,11 @@ class Dashboard extends Component {
         if (jobs) {
             return (
                 <div className="Jobs">
-                    {jobs.map(job => (
-                        <Jobcard job={job} />
-                    ))}
+                    {
+                        jobs.map(job => (
+                            <Jobcard job={job} />
+                        )
+                        )}
                 </div>
             );
         }

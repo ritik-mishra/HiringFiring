@@ -9,6 +9,7 @@ import Header from './Header';
 import Landing from './Landing';
 import AddJobForm from './AddJobForm';
 import Dashboard from './Dashboard';
+import Jobboard from './Jobboard';
 
 class App extends Component {
     //Lifecycle hook
@@ -27,7 +28,7 @@ class App extends Component {
                     <div  >
                         <Header />
                         <Route exact path="/" component={Landing} />
-                        <Route exact path="/dashboard" component={Dashboard} />
+                        <Route exact path="/dashboard" component={Jobboard} />
                         <Route exact path="/addJobForm" component={AddJobForm} />
                     </div>
                 </BrowserRouter>
