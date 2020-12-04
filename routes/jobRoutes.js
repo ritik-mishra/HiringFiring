@@ -27,6 +27,7 @@ module.exports = (app) => {
                 throw err;
             console.log("job deleted");
         });
+        return res.redirect("/dashboard");
     })
 
 
