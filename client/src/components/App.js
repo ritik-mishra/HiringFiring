@@ -25,9 +25,9 @@ class App extends Component {
                 <BrowserRouter basename={'/node_backend'}>
                     <div className="container" >
                         <Header />
-                        <Route exact path={ "/"} component={Landing} />
-                        <Route exact path = {"/dashboard"} component={Dashboard} />
-                        <Route exact path= {"/addJobForm"} component={AddJobForm} />
+                        <Route exact path="/" component={Landing} />
+                        <Route exact path ="/dashboard" component={Dashboard} />
+                        <Route exact path= "/addJobForm" component={AddJobForm} />
                     </div>
                 </BrowserRouter>
             </div >
