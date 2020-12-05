@@ -16,7 +16,7 @@ class Header extends Component {
             default:
                 return(
                     <div>
-                        <li><a href = {`${process.env.PUBLIC_URL}/addJobForm"`}> Add New Job</a></li>
+                        <li><a href = {`${process.env.PUBLIC_URL}/addJobForm`}> Add New Job</a></li>
                         <li><a href= {`${process.env.PUBLIC_URL}/api/logout`}>Logout</a></li>
                     </div>
                 );
