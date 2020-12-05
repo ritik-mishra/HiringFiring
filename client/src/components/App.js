@@ -22,12 +22,12 @@ class App extends Component {
     render() {
         return (
             <div>
-                <BrowserRouter>
+                <BrowserRouter basename={'/node_backend'}>
                     <div className="container" >
                         <Header />
-                        <Route exact path={url.baseURL + "/"} component={Landing} />
-                        <Route exact path = {url.baseURL + "/dashboard"} component={Dashboard} />
-                        <Route exact path= {url.baseURL + "/addJobForm"} component={AddJobForm} />
+                        <Route exact path={ "/"} component={Landing} />
+                        <Route exact path = {"/dashboard"} component={Dashboard} />
+                        <Route exact path= {"/addJobForm"} component={AddJobForm} />
                     </div>
                 </BrowserRouter>
             </div >
