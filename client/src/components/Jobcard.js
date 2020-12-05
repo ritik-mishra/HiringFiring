@@ -6,7 +6,7 @@ class Jobcard extends Component {
     render() {
         const job = this.props.job;
         const date = new Date(job.jobExpiry);
-        var del_link = url.baseURL + '/api/delete_job/' + job.jobId;
+        var del_link = `${process.env.PUBLIC_URL}/api/delete_job/` + job.jobId;
         // console.log(del_link);
         const jobUrl = job.jobLink;
         return (
