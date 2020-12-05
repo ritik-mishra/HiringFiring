@@ -1,3 +1,3 @@
 module.exports = {
-    baseURL: ''
+    baseURL: '/node_backend'
 };

@@ -15,12 +15,12 @@ module.exports = (app)=>{
     }
     );
 
-    app.get(url.baseURL + '/api/logout', (req, res) =>{
+    app.get('/api/logout', (req, res) =>{
         req.logout();
         res.redirect(url.baseURL + '/');
     })
 
-    app.get(url.baseURL + '/api/current_user', (req, res) => {
+    app.get('/api/current_user', (req, res) => {
         res.send(req.user);
     })
 }

@@ -11,7 +11,7 @@ const url = require('../config/url');
 module.exports = (app) => {
 
     //Get Job
-    app.get(url.baseURL + '/api/all_jobs', requireLogin, (req, res) => {
+    app.get('/api/all_jobs', requireLogin, (req, res) => {
         Job.find({}).exec(function (err, all_jobs) {
             if (err) throw err;
             res.send(all_jobs);
@@ -21,7 +21,7 @@ module.exports = (app) => {
 
 
     //  Delete Job
-    app.get(url.baseURL + '/api/delete_job/:jobId', requireLogin, requireAuthor, (req, res) => {
+    app.get('/api/delete_job/:jobId', requireLogin, requireAuthor, (req, res) => {
         const jobId = req.params['jobId'];
         Job.deleteOne({ jobId: jobId }, (err) => {
             if (err)
@@ -34,7 +34,7 @@ module.exports = (app) => {
 
 
     //  Add Job
-    app.post(url.baseURL + '/api/add_job', requireLogin, async (req, res) => {
+    app.post('/api/add_job', requireLogin, async (req, res) => {
         const newId = uuidv4();
         const newJob = await new Job({
             jobId: newId,
