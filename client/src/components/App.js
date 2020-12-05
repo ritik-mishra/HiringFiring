@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
-
+import url from '../configClient/url';
 
 import Header from './Header';
 import Landing from './Landing';
@@ -20,15 +20,14 @@ class App extends Component {
         this.props.fetchJobs();
     }
     render() {
-
         return (
             <div>
                 <BrowserRouter>
                     <div className="container" >
                         <Header />
-                        <Route exact path="/" component={Landing} />
-                        <Route exact path="/dashboard" component={Dashboard} />
-                        <Route exact path="/addJobForm" component={AddJobForm} />
+                        <Route exact path={url.baseURL + "/"} component={Landing} />
+                        <Route exact path = {url.baseURL + "/dashboard"} component={Dashboard} />
+                        <Route exact path= {url.baseURL + "/addJobForm"} component={AddJobForm} />
                     </div>
                 </BrowserRouter>
             </div >

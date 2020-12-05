@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+import url from '../configClient/url';
+
 
 class Jobcard extends Component {
     render() {
         const job = this.props.job;
         const date = new Date(job.jobExpiry);
-        var del_link = '/api/delete_job/' + job.jobId;
+        var del_link = url.baseURL + '/api/delete_job/' + job.jobId;
         // console.log(del_link);
-        const url = job.jobLink;
+        const jobUrl = job.jobLink;
         return (
             <div className="jobcard" key={job.jobID}>
                 <div >
@@ -22,7 +24,7 @@ class Jobcard extends Component {
                                 <p>Posted by: {job.postedBy}</p>
                             </div>
                             <div className="card-action">
-                                <a target="_blank" rel="noreferrer" href={url}>Apply here</a>
+                                <a target="_blank" rel="noreferrer" href={jobUrl}>Apply here</a>
                                 <a href={del_link}>Delete Job</a>
                                 <a href="#">Edit Job</a>
                             </div>

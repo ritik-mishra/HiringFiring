@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import url from '../configClient/url';
+
 
 class Header extends Component {
     renderContent(){
@@ -9,13 +11,13 @@ class Header extends Component {
                 return;
             case false:
                 return (
-                    <li><a href="/auth/google">Login With Google</a></li>
+                    <li><a href={ url.baseURL + "/auth/google"}>Login With Google</a></li>
                 );
             default:
                 return(
                     <div>
-                        <li><a href = "/addJobForm"> Add New Job</a></li>
-                        <li><a href="/api/logout">Logout</a></li>
+                        <li><a href = {url.baseURL + "/addJobForm"}> Add New Job</a></li>
+                        <li><a href= {url.baseURL + "/api/logout"}>Logout</a></li>
                     </div>
                 );
 
@@ -28,7 +30,7 @@ class Header extends Component {
             <nav>
                 <div className = "nav-wrapper">
                     <Link
-                        to={this.props.auth ? '/dashboard' : '/'}
+                        to={this.props.auth ? url.baseURL + '/dashboard' : '/'}
                         className = "left brand-logo"
                     >
                         Hiring-Firing
