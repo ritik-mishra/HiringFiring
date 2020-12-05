@@ -2,7 +2,7 @@ const passport = require('passport');
 const url = require('../config/url');
 
 module.exports = (app)=>{
-    app.get(url.baseURL +'/auth/google',
+    app.get('/auth/google',
         passport.authenticate('google',{
             scope: ['profile','email']
         })
