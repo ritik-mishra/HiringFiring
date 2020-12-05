@@ -60,7 +60,7 @@ class AddJobForm extends Component {
         }
         const { redirect } = this.state;
         if (redirect) {
-          return <Redirect to={`${process.env.PUBLIC_URL}/dashboard`} />;
+          return <Redirect to= '/dashboard' />;
         }
         return (
             <form onSubmit = {this.submitHandler}>
