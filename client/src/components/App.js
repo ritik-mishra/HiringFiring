@@ -22,7 +22,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                <BrowserRouter basename={'/node_backend'}>
+                <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
                     <div className="container" >
                         <Header />
                         <Route exact path="/" component={Landing} />
