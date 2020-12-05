@@ -21,7 +21,7 @@ module.exports = (app) => {
 
 
     //  Delete Job
-    app.get(url.baseURL + '/api/delete_job/:jobId', requireLogin, (req, res) => {
+    app.get(url.baseURL + '/api/delete_job/:jobId', requireLogin, requireAuthor, (req, res) => {
         const jobId = req.params['jobId'];
         Job.deleteOne({ jobId: jobId }, (err) => {
             if (err)
