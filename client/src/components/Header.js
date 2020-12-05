@@ -11,13 +11,13 @@ class Header extends Component {
                 return;
             case false:
                 return (
-                    <li><a href={ url.baseURL + "/auth/google"}>Login With Google</a></li>
+                    <li><a href={ `${process.env.PUBLIC_URL}/auth/google`}>Login With Google</a></li>
                 );
             default:
                 return(
                     <div>
-                        <li><a href = {url.baseURL + "/addJobForm"}> Add New Job</a></li>
-                        <li><a href= {url.baseURL + "/api/logout"}>Logout</a></li>
+                        <li><a href = {`${process.env.PUBLIC_URL}/addJobForm"`}> Add New Job</a></li>
+                        <li><a href= {`${process.env.PUBLIC_URL}/api/logout`}>Logout</a></li>
                     </div>
                 );
 
@@ -30,7 +30,7 @@ class Header extends Component {
             <nav>
                 <div className = "nav-wrapper">
                     <Link
-                        to={this.props.auth ? url.baseURL + '/dashboard' : '/'}
+                        to={this.props.auth ? '/dashboard' : '/'}
                         className = "left brand-logo"
                     >
                         Hiring-Firing
