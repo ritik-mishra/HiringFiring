@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { FETCH_USER, FETCH_JOBS } from './types';
-import url from '../configClient/url';
+
 
 // Beacuse we are using redux-thunk we are returning a dispatch function
 export const fetchUser = () => async (dispatch) => {

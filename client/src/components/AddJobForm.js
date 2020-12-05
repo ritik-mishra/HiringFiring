@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
-import url from '../configClient/url';
 
 class AddJobForm extends Component {
     constructor(props) {
@@ -40,7 +39,7 @@ class AddJobForm extends Component {
             
         }
         
-        axios.post(url.baseURL + '/api/add_job',job).then(
+        axios.post(`${process.env.PUBLIC_URL}/api/add_job`,job).then(
             (res, err) => {
                 if(err)
                     throw err;
@@ -61,7 +60,7 @@ class AddJobForm extends Component {
         }
         const { redirect } = this.state;
         if (redirect) {
-          return <Redirect to={url.baseURL + "/dashboard"} />;
+          return <Redirect to={`${process.env.PUBLIC_URL}/dashboard`} />;
         }
         return (
             <form onSubmit = {this.submitHandler}>
