@@ -8,7 +8,7 @@ module.exports = (app)=>{
         })
     );
 
-    app.get(url.baseURL + '/auth/google/callback', 
+    app.get('/auth/google/callback', 
     passport.authenticate('google'),
     (req, res) => {
         res.redirect(url.baseURL + '/dashboard');
