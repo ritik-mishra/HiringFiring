@@ -9,7 +9,13 @@ import reduxThunk from 'redux-thunk';
 import App from './components/App';
 import reducers from './reducers';
 
+import { createBrowserHistory } from 'history';
+
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
+
+export const history = createBrowserHistory({
+    basename: process.env.PUBLIC_URL
+});
 
 ReactDOM.render(
     <Provider store={store}><App /></Provider>,
