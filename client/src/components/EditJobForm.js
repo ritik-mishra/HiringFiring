@@ -1,7 +1,5 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Redirect } from 'react-router';
-import { withRouter } from "react-router-dom";
 import './AddJobForm.css';
 
 class EditJobForm extends Component {
@@ -18,8 +16,7 @@ class EditJobForm extends Component {
             jobLink: this.props.location.state.editJob.jobLink,
             batch: this.props.location.state.editJob.batch,
             isReferral: this.props.location.state.editJob.isReferral,
-            jobExpiry: this.props.location.state.editJob.jobExpiry,
-            redirect: false
+            jobExpiry: this.props.location.state.editJob.jobExpiry
         };
         //In JavaScript, class methods are not bound by default. 
         //If you forget to bind this.myChangeHandler and pass it to onChange, this will be undefined when the function is actually called.
@@ -57,7 +54,6 @@ class EditJobForm extends Component {
             }
         )
         this.props.history.push("/jobboard");
-        // redirect('/jobboard');
     }
     render() {
         let allowSubmit = '';
@@ -69,10 +65,6 @@ class EditJobForm extends Component {
         }
         else {
             allowSubmit = 'Fill all the mandatory fields';
-        }
-        const { redirect } = this.state;
-        if (redirect) {
-            return <Redirect to="/dashboard" />;
         }
         return (
             <div className="container">

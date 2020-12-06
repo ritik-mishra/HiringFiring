@@ -54,7 +54,7 @@ class Jobboard extends Component {
             if (num === this.state.page)
                 col = "rgb(248, 114, 3)";
             items.push(
-                <button style={{ backgroundColor: col }
+                <button onClick={() => this.clickHandler(num)} key={num} style={{ backgroundColor: col }
                 } className="button button5" > {num}</button>
             );
         }
