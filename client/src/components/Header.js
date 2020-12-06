@@ -15,8 +15,8 @@ class Header extends Component {
             default:
                 return (
                     <div>
-                        <li><a href="/dashboard">Job Board</a></li>
-                        <li><a href="/addJobForm"> Add New Job</a></li>
+                        <li><a href="/jobboard">Job Board</a></li>
+                        <li><a href="/addnewjob"> Add New Job</a></li>
                         <li><a href="/api/logout">Logout</a></li>
                     </div>
                 );
@@ -25,7 +25,6 @@ class Header extends Component {
     }
 
     render() {
-        //console.log(this.props);
         return (
             <nav>
                 <div className="nav-wrapper" style={{ backgroundColor: "#204060" }}>

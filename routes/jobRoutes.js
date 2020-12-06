@@ -26,7 +26,6 @@ module.exports = (app) => {
         var page_jobs = await Job.find({})
             .skip(skip)
             .limit(PAGE_SIZE);
-        // console.log(page_jobs);
         res.send(page_jobs);
     })
 
@@ -43,10 +42,7 @@ module.exports = (app) => {
         const del = await Job.deleteOne({ jobId: jobId }, (err) => {
             if (err)
                 throw err;
-            // console.log("job deleted");
         });
-        console.log(del);
-        res.redirect('/dashboard');
     })
 
     //  Add Job
@@ -64,5 +60,18 @@ module.exports = (app) => {
             postedById: req.user.id
         }).save();
         res.send(newJob);
+    });
+    //update jobs
+    app.put('/api/update/:jobId', async (req, res) => {
+        try {
+            console.log("Entering Update API");
+            let job = await Job.findOneAndUpdate({ jobId: req.params.jobId }, req.body, {
+                new: true,
+                runValidators: true,
+            });
+            res.status(200).send(job);
+        } catch (err) {
+            console.error(err);
+        }
     });
 }
