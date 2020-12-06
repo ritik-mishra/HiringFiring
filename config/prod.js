@@ -3,5 +3,5 @@ module.exports = {
     googleClientSecret: '7TYUGIZP9QrO9fqf7wIVgjA-',
     mongoURI: 'mongodb+srv://Nimmi:zKhSVmsOYVTDT83X@hiringfiring.setfg.mongodb.net/test?retryWrites=true&w=majority',
     cookieKey: 'iahjkgthkloiuyhbvfredswdcftgdesrvbh',
-    baseURL: '/node_backend'
+    baseURL: '/hiring-firing'
 };
