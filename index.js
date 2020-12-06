@@ -27,14 +27,16 @@ app.use(express.json());
 
 require('./routes/jobRoutes')(app);
 
-//Serve Production assets, main.js and main.css
-app.use(express.static('client/build'));
+if(process.env.NODE_ENV === 'production'){
+    //Serve Production assets, main.js and main.css
+    app.use(express.static('client/build'));
 
-//serve index.html file
-const path = require('path');
-app.get('*',(req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-})
+    //serve index.html file
+    const path = require('path');
+    app.get('*',(req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    })
+}
 const Port = process.env || 5000;
 
 app.listen(5000);
