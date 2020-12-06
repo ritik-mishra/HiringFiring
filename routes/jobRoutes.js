@@ -12,7 +12,6 @@ module.exports = (app) => {
 
     //Get Job
     app.get('/api/all_jobs', requireLogin, (req, res) => {
-        console.log(process.env);
         Job.find({}).exec(function (err, all_jobs) {
             if (err) throw err;
             res.send(all_jobs);
@@ -23,13 +22,13 @@ module.exports = (app) => {
 
     //  Delete Job
     app.get('/api/delete_job/:jobId', requireLogin, requireAuthor, (req, res) => {
+        console.log(process.env);
         const jobId = req.params['jobId'];
-        console.log("I am in delete API");
-        // Job.deleteOne({ jobId: jobId }, (err) => {
-        //     if (err)
-        //         throw err;
-        //     console.log("job deleted");
-        // });
+        Job.deleteOne({ jobId: jobId }, (err) => {
+            if (err)
+                throw err;
+            console.log("job deleted");
+        });
         return res.redirect(url.baseURL + "/dashboard");
     })
 
