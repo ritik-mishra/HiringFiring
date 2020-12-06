@@ -22,7 +22,7 @@ module.exports = (app) => {
 
     //  Delete Job
     app.get('/api/delete_job/:jobId', requireLogin, requireAuthor, (req, res) => {
-        console.log(process.env);
+        console.log(process.env.NODE_ENV);
         const jobId = req.params['jobId'];
         Job.deleteOne({ jobId: jobId }, (err) => {
             if (err)
