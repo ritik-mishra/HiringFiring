@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 const requireLogin = require('../middlewares/requireLogin');
 const requireAuthor = require('../middlewares/requireAuthor');
 
-const url = require('../config/url');
+const keys = require('../config/keys');
 
 module.exports = (app) => {
 
@@ -29,7 +29,7 @@ module.exports = (app) => {
                 throw err;
             console.log("job deleted");
         });
-        return res.redirect(url.baseURL + "/dashboard");
+        return res.redirect(keys.baseURL + "/dashboard");
     })
 
 

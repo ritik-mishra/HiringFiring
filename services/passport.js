@@ -2,7 +2,7 @@ const passport = require('passport');
 const GoogleStartegy = require('passport-google-oauth20').Strategy; //this is a Class ?
 const keys = require('../config/keys');
 const mongoose = require('mongoose');
-const url = require('../config/url');
+const keys = require('../config/keys');
 
 const User = mongoose.model('users');
 
@@ -19,7 +19,7 @@ passport.use(
     new GoogleStartegy({
         clientID: keys.googleClientID,
         clientSecret: keys.googleClientSecret,
-        callbackURL: url.baseURL + '/auth/google/callback',
+        callbackURL: keys.baseURL + '/auth/google/callback',
         proxy: true
     },
         async (acessToken, refreshToken, profile, done) => {
