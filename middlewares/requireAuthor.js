@@ -5,7 +5,7 @@ const Job = mongoose.model('jobs');
 
 module.exports =  async (req, res, next) => {
     const job = await Job.findOne({
-        _id: req.params.jobId,
+        jobId: req.params.jobId,
     }).lean();
 
     if(job.postedById != req.user.id){
