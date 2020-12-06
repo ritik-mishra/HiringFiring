@@ -2,7 +2,6 @@ const passport = require('passport');
 const GoogleStartegy = require('passport-google-oauth20').Strategy; //this is a Class ?
 const keys = require('../config/keys');
 const mongoose = require('mongoose');
-const keys = require('../config/keys');
 
 const User = mongoose.model('users');
 
