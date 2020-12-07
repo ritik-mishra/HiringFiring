@@ -8,7 +8,8 @@ import * as actions from '../actions';
 import Header from './Header';
 import Landing from './Landing';
 import AddJobForm from './AddJobForm';
-import Dashboard from './Dashboard';
+import Jobboard from './Jobboard';
+import EditJobForm from './EditJobForm';
 
 class App extends Component {
     //Lifecycle hook
@@ -17,18 +18,18 @@ class App extends Component {
 
         //Acessing the action creator through props
         this.props.fetchUser();
-        this.props.fetchJobs();
     }
     render() {
 
         return (
             <div>
                 <BrowserRouter>
-                    <div className="container" >
+                    <div  >
                         <Header />
                         <Route exact path="/" component={Landing} />
-                        <Route exact path="/dashboard" component={Dashboard} />
-                        <Route exact path="/addJobForm" component={AddJobForm} />
+                        <Route exact path="/jobboard" component={Jobboard} />
+                        <Route exact path="/addnewjob" component={AddJobForm} />
+                        <Route exact path="/editjob" render={(props) => <EditJobForm{...props} />} />
                     </div>
                 </BrowserRouter>
             </div >

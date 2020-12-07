@@ -1,21 +1,22 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Redirect } from 'react-router';
+import './AddJobForm.css';
 
-import './AddJobForm.css'
-
-
-class AddJobForm extends Component {
+class EditJobForm extends Component {
+    componentDidMount() {
+        console.log(this.props.location.state.editJob);
+    }
     constructor(props) {
         super(props);
+        // console.log(this.props);
+        this.editjob = this.props.location.state.editJob;
         this.state = {
-            companyName: '',
-            jobTitle: '',
-            jobLink: '',
-            batch: '',
-            isReferral: '',
-            jobExpiry: '',
-            redirect: false
+            companyName: this.props.location.state.editJob.companyName,
+            jobTitle: this.props.location.state.editJob.jobTitle,
+            jobLink: this.props.location.state.editJob.jobLink,
+            batch: this.props.location.state.editJob.batch,
+            isReferral: this.props.location.state.editJob.isReferral,
+            jobExpiry: this.props.location.state.editJob.jobExpiry
         };
         //In JavaScript, class methods are not bound by default. 
         //If you forget to bind this.myChangeHandler and pass it to onChange, this will be undefined when the function is actually called.
@@ -25,14 +26,14 @@ class AddJobForm extends Component {
     // This syntax ensures `this` is bound within myChangeHandler and submitHandler.
     // We are using the experimental public class fields syntax, We can use class fields to correctly bind callbacks
     myChangeHandler = (event) => {
-        console.log(event);
         let nam = event.target.name;
+
         let val = event.target.value;
         this.setState({ [nam]: val });
     }
     submitHandler = (event) => {
         event.preventDefault();
-        const job = {
+        const newJob = {
             companyName: this.state.companyName,
             jobTitle: this.state.jobTitle,
             jobLink: this.state.jobLink,
@@ -41,31 +42,34 @@ class AddJobForm extends Component {
             jobExpiry: this.state.jobExpiry
 
         }
+        console.log(this.editjob);
+        var updateLink = '/api/update/' + this.editjob.jobId;
 
-        axios.post('/api/add_job', job).then(
+        axios.put(updateLink, newJob).then(
             (res, err) => {
                 if (err)
                     throw err;
+                console.log(res);
                 this.setState({ redirect: true })
             }
         )
+        this.props.history.push("/jobboard");
     }
     render() {
-        //button logic
-        var x = this.state.companyName && this.state.jobTitle && this.state.jobLink && this.state.batch;
-        let pp = x ? <input style={{ color: "red" }} type='submit' /> : "fill the mandatory(*) fields";
-
-
-        const { redirect } = this.state;
-        if (redirect) {
-            return <Redirect to="/jobboard" />;
+        let allowSubmit = '';
+        if (this.state.companyName && this.state.jobTitle && this.state.jobLink && this.state.batch) {
+            allowSubmit = <input
+                style={{ color: "red" }}
+                type='submit'
+            />;
         }
-
-
+        else {
+            allowSubmit = 'Fill all the mandatory fields';
+        }
         return (
             <div className="container">
                 <div style={{ color: "white" }}>
-                    <h3>Add new Job</h3>
+                    <h3>Edit Job</h3>
                 </div>
                 <div className="form">
                     <form onSubmit={this.submitHandler}>
@@ -74,39 +78,45 @@ class AddJobForm extends Component {
                             type='text'
                             name='companyName'
                             onChange={this.myChangeHandler}
+                            value={this.state.companyName}
                         />
                         <p>Job Title* :</p>
                         <input
                             type='text'
                             name='jobTitle'
                             onChange={this.myChangeHandler}
+                            value={this.state.jobTitle}
                         />
                         <p>Job Link* :</p>
                         <input
                             type='text'
                             name='jobLink'
                             onChange={this.myChangeHandler}
+                            value={this.state.jobLink}
                         />
                         <p>Batch* :</p>
                         <input
                             type='text'
                             name='batch'
                             onChange={this.myChangeHandler}
+                            value={this.state.batch}
                         />
                         <p>Is Referral required :</p>
                         <input
                             type='text'
                             name='isReferral'
                             onChange={this.myChangeHandler}
+                            value={this.state.isReferral}
                         />
                         <p>Job Expiry Date(if known) :</p>
                         <input
                             type='text'
                             name='jobExpiry'
                             onChange={this.myChangeHandler}
+                            value={this.state.jobExpiry}
                         />
                         <div>
-                            {pp}
+                            {allowSubmit}
                         </div>
                     </form>
                 </div>
@@ -115,4 +125,4 @@ class AddJobForm extends Component {
     }
 }
 
-export default AddJobForm;
+export default EditJobForm;
