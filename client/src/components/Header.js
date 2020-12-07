@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import logo from '../media/logo.png';
 
 
 
 class Header extends Component {
-    renderContent(){
-        switch(this.props.auth){
+    renderContent() {
+        switch (this.props.auth) {
             case null:
                 return;
             case false:
@@ -14,32 +15,34 @@ class Header extends Component {
                     <li><a href={ `${process.env.PUBLIC_URL}/auth/google`}>Login With Google</a></li>
                 );
             default:
-                return(
+                return (
                     <div>
-                        <li><a href = {`${process.env.PUBLIC_URL}/addJobForm`}> Add New Job</a></li>
-                        <li><a href= {`${process.env.PUBLIC_URL}/api/logout`}>Logout</a></li>
+                        <li><a href={`${process.env.PUBLIC_URL}/jobboard`}>Job Board</a></li>
+                        <li><a href={`${process.env.PUBLIC_URL}/addnewjob`}> Add New Job</a></li>
+                        <li><a href={`${process.env.PUBLIC_URL}/api/logout`}>Logout</a></li>
                     </div>
                 );
 
         }
     }
 
-    render(){
-        //console.log(this.props);
+    render() {
         return (
             <nav>
-                <div className = "nav-wrapper">
+                <div className="nav-wrapper" style={{ backgroundColor: "#204060" }}>
                     <Link
-                        to={this.props.auth ? '/dashboard' : '/'}
-                        className = "left brand-logo"
+                        // to={this.props.auth ? '/dashboard' : '/'}
+                        to='/'
+                        className="left brand-logo"
                     >
-                        Hiring-Firing
+                        {/* Hiring-Firing */}
+                        <img src={logo} alt="Logo" style={{ width: "90px", height: "55px", marginLeft: "10px", marginTop: "5px" }} />
                     </Link>
                     <ul className="right">
                         {this.renderContent()}
                     </ul>
                 </div>
-            </nav>
+            </nav >
         );
     }
 }
