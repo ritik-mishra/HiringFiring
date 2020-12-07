@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Pagination from 'react-bootstrap/Pagination';
 import axios from 'axios';
 
 import Jobcard from './Jobcard';
