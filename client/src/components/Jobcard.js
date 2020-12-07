@@ -26,7 +26,7 @@ class Jobcard extends Component {
         await this.setState({
             showCard: false
         });
-        var del_link = '/api/delete_job/' + this.props.job.jobId;
+        var del_link = `${process.env.PUBLIC_URL}/api/delete_job/` + this.props.job.jobId;
         const res = await axios.get(del_link);
     }
 

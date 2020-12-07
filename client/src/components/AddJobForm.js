@@ -41,8 +41,8 @@ class AddJobForm extends Component {
             jobExpiry: this.state.jobExpiry
 
         }
-
-        axios.post('/api/add_job', job).then(
+        
+        axios.post(`${process.env.PUBLIC_URL}/api/add_job`,job).then(
             (res, err) => {
                 if (err)
                     throw err;
@@ -53,7 +53,7 @@ class AddJobForm extends Component {
     render() {
         //button logic
         var x = this.state.companyName && this.state.jobTitle && this.state.jobLink && this.state.batch;
-        let pp = x ? <input style={{ color: "red" }} type='submit' /> : "fill the mandatory(*) fields";
+        let pp = x ? <input style={{ color: "red" }} type='submit' /> : "fill the mandatory(*) fields first";
 
 
         const { redirect } = this.state;
@@ -101,7 +101,7 @@ class AddJobForm extends Component {
                         />
                         <p>Job Expiry Date(if known) :</p>
                         <input
-                            type='text'
+                            type='date'
                             name='jobExpiry'
                             onChange={this.myChangeHandler}
                         />

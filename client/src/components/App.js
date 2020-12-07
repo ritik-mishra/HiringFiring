@@ -4,7 +4,6 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-
 import Header from './Header';
 import Landing from './Landing';
 import AddJobForm from './AddJobForm';
@@ -20,11 +19,10 @@ class App extends Component {
         this.props.fetchUser();
     }
     render() {
-
         return (
             <div>
-                <BrowserRouter>
-                    <div  >
+                <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
+                    <div>
                         <Header />
                         <Route exact path="/" component={Landing} />
                         <Route exact path="/jobboard" component={Jobboard} />

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Pagination from 'react-bootstrap/Pagination';
 import axios from 'axios';
 
 import Jobcard from './Jobcard';
@@ -21,8 +20,8 @@ class Jobboard extends Component {
         window.scrollTo(0, 0);
     }
     async fetchJobs() {
-        const page_jobs = await axios.get(`/api/page_job?page=${this.state.page}`);
-        const jc = await axios.get(`/api/count_job`);
+        const page_jobs = await axios.get(`${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`);
+        const jc = await axios.get(`${process.env.PUBLIC_URL}/api/count_job`);
         const jobcount = parseInt(jc.data);
         this.setState({
             jobs: page_jobs,

@@ -43,7 +43,7 @@ class EditJobForm extends Component {
 
         }
         console.log(this.editjob);
-        var updateLink = '/api/update/' + this.editjob.jobId;
+        var updateLink = `${process.env.PUBLIC_URL}/api/update/` + this.editjob.jobId;
 
         axios.put(updateLink, newJob).then(
             (res, err) => {
@@ -110,10 +110,10 @@ class EditJobForm extends Component {
                         />
                         <p>Job Expiry Date(if known) :</p>
                         <input
-                            type='text'
+                            type='date'
                             name='jobExpiry'
                             onChange={this.myChangeHandler}
-                            value={this.state.jobExpiry}
+                            value={this.state.jobExpiry.toISOString().substr(0,10)}
                         />
                         <div>
                             {allowSubmit}
