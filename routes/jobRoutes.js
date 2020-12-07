@@ -46,6 +46,7 @@ module.exports = (app) => {
             if (err)
                 throw err;
         });
+        res.send(del);
     })
 
     //  Add Job
