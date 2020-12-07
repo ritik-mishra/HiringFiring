@@ -20,7 +20,7 @@ module.exports = (app) => {
     });
 
     //Get job by page number
-    app.get('/api/page_job', async (req, res) => {
+    app.get('/api/page_job', requireLogin, async (req, res) => {
         const page = parseInt(req.query.page);
         const PAGE_SIZE = 5;//change this accordingly
         const skip = (page - 1) * PAGE_SIZE;
@@ -32,7 +32,7 @@ module.exports = (app) => {
     })
 
     //count jobs
-    app.get('/api/count_job', async (req, res) => {
+    app.get('/api/count_job', requireLogin, async (req, res) => {
         const jobcount = await Job.countDocuments();
         var jobc = '' + jobcount
         res.send(jobc);
@@ -66,7 +66,7 @@ module.exports = (app) => {
     });
 
     //update jobs
-    app.put('/api/update/:jobId', async (req, res) => {
+    app.put('/api/update/:jobId', requireLogin, requireAuthor, async (req, res) => {
         try {
             console.log("Entering Update API");
             let job = await Job.findOneAndUpdate({ jobId: req.params.jobId }, req.body, {
