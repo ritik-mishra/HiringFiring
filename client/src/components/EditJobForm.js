@@ -113,7 +113,6 @@ class EditJobForm extends Component {
                             type='date'
                             name='jobExpiry'
                             onChange={this.myChangeHandler}
-                            value={this.state.jobExpiry.toISOString().substr(0,10)}
                         />
                         <div>
                             {allowSubmit}
