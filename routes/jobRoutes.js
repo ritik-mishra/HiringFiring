@@ -24,6 +24,7 @@ module.exports = (app) => {
         const PAGE_SIZE = 5;//change this accordingly
         const skip = (page - 1) * PAGE_SIZE;
         var page_jobs = await Job.find({})
+            .sort({ postedOn: -1 })
             .skip(skip)
             .limit(PAGE_SIZE);
         res.send(page_jobs);
