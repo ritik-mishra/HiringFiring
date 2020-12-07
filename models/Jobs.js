@@ -12,7 +12,6 @@ const jobSchema = new Schema({
     postedOn: { type: Date, default: Date.now },
     postedBy: String,
     postedById: String,
-    jobExpiry: Date,
     jobDesciption: String
 
 });
