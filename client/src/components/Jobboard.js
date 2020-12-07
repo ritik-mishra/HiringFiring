@@ -73,7 +73,7 @@ class Jobboard extends Component {
                         }
                     </div>
                     <div className="center">
-                        <Pagination>{items}</Pagination>
+                        {items}
                     </div>
 
                 </div>
