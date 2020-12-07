@@ -7,7 +7,7 @@ const keys = require('./config/keys');
 require('./models/User');
 require('./models/Jobs');
 require('./services/passport');
-
+require('dotenv').config();
 
 mongoose.connect(keys.mongoURI);
 const app = express();
@@ -26,7 +26,7 @@ require('./routes/authRoutes')(app);
 app.use(express.json());
 
 require('./routes/jobRoutes')(app);
-
+console.log(process.env);
 if(process.env.NODE_ENV === 'production'){
     //Serve Production assets, main.js and main.css
     app.use(express.static('client/build'));
