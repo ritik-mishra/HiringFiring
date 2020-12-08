@@ -99,7 +99,7 @@ class AddJobForm extends Component {
                             name='isReferral'
                             onChange={this.myChangeHandler}
                         />
-                        <p>Job Expiry Date(if known) :</p>
+                        <p>Job Expiry Date (if known):</p>
                         <input
                             type='date'
                             name='jobExpiry'
