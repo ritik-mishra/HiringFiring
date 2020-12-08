@@ -39,7 +39,7 @@ module.exports = (app) => {
     })
 
     //  Delete Job
-    app.get('/api/delete_job/:jobId', requireLogin, requireAuthor, async (req, res) => {
+    app.delete('/api/delete_job/:jobId', requireLogin, requireAuthor, async (req, res) => {
     
         const jobId = req.params['jobId'];
         const del = await Job.deleteOne({ jobId: jobId }, (err) => {
