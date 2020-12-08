@@ -66,7 +66,7 @@ class Jobboard extends Component {
                     <div>
                         {
                             JOBS.map(job => (
-                                <Jobcard job={job} />
+                                <Jobcard key={job.jobId} job={job} />
                             )
                             )
                         }
