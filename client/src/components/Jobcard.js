@@ -27,7 +27,7 @@ class Jobcard extends Component {
             showCard: false
         });
         var del_link = `${process.env.PUBLIC_URL}/api/delete_job/` + this.props.job.jobId;
-        const res = await axios.get(del_link);
+        const res = await axios.delete(del_link);
     }
 
     editHandler = async (event) => {
@@ -62,6 +62,10 @@ class Jobcard extends Component {
 
         const url = job.jobLink;
         const date = new Date(job.jobExpiry);
+        const default_date = new Date('1970,01,01');
+        default_date.setHours(0, 0, 0, 0)
+        const jobExpiry_date = new Date(job.jobExpiry);
+        jobExpiry_date.setHours(0, 0, 0, 0)
         if (this.state.redirect) {
             return <Redirect to={{
                 pathname: "/editjob",
@@ -81,7 +85,8 @@ class Jobcard extends Component {
                                         <hr></hr>
                                         <p>Role: {job.jobTitle}</p>
                                         <p>Batch applicable: {job.batch}</p>
-                                        <p>Apply Before: {date.toLocaleDateString()}</p>
+                                        {default_date.getTime()!=jobExpiry_date.getTime() &&
+                                        <p>Apply Before: {date.toLocaleDateString()}</p>}
                                         <p>Referral Applicable: {job.isReferral}</p>
                                         <p>Posted by: {job.postedBy}</p>
                                     </div>
