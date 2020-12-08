@@ -131,10 +131,7 @@ class EditJobForm extends Component {
                             type='date'
                             name='jobExpiry'
                             onChange={this.myChangeHandler}
-<<<<<<< HEAD
                             value={this.state.jobExpiry}
-=======
->>>>>>> eefec9504408b6439acf777986c5109ce646ddf1
                         />
                         <div>
                             {allowSubmit}
