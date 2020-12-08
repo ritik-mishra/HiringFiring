@@ -1,22 +1,42 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import './AddJobForm.css';
+import ls from 'local-storage';
 
 class EditJobForm extends Component {
     componentDidMount() {
-        console.log(this.props.location.state.editJob);
+        //console.log(this.props.location.state.editJob);
+        var editJob;
+        if(this.props.location.state){
+            
+            editJob = this.props.location.state.editJob;
+            ls.set('editJob',JSON.stringify(editJob));
+        }
+        else{
+            const editJobString = ls.get('editJob');
+            editJob = JSON.parse(editJobString);
+        }
+        this.setState({
+            jobId: editJob.jobId,
+            companyName: editJob.companyName,
+            jobTitle: editJob.jobTitle,
+            jobLink: editJob.jobLink,
+            batch: editJob.batch,
+            isReferral: editJob.isReferral,
+            jobExpiry: editJob.jobExpiry
+        })
     }
     constructor(props) {
         super(props);
         // console.log(this.props);
-        this.editjob = this.props.location.state.editJob;
         this.state = {
-            companyName: this.props.location.state.editJob.companyName,
-            jobTitle: this.props.location.state.editJob.jobTitle,
-            jobLink: this.props.location.state.editJob.jobLink,
-            batch: this.props.location.state.editJob.batch,
-            isReferral: this.props.location.state.editJob.isReferral,
-            jobExpiry: this.props.location.state.editJob.jobExpiry
+            jobId: '',
+            companyName: '',
+            jobTitle: '',
+            jobLink: '',
+            batch: '',
+            isReferral: '',
+            jobExpiry: '',
         };
         //In JavaScript, class methods are not bound by default. 
         //If you forget to bind this.myChangeHandler and pass it to onChange, this will be undefined when the function is actually called.
@@ -40,17 +60,15 @@ class EditJobForm extends Component {
             batch: this.state.batch,
             isReferral: this.state.isReferral,
             jobExpiry: this.state.jobExpiry
-
         }
-        console.log(this.editjob);
-        var updateLink = `${process.env.PUBLIC_URL}/api/update/` + this.editjob.jobId;
+        
+        var updateLink = `${process.env.PUBLIC_URL}/api/update/` + this.state.jobId;
 
         axios.put(updateLink, newJob).then(
             (res, err) => {
                 if (err)
                     throw err;
                 console.log(res);
-                this.setState({ redirect: true })
             }
         )
         this.props.history.push("/jobboard");
@@ -113,6 +131,7 @@ class EditJobForm extends Component {
                             type='date'
                             name='jobExpiry'
                             onChange={this.myChangeHandler}
+                            value={this.state.jobExpiry}
                         />
                         <div>
                             {allowSubmit}
