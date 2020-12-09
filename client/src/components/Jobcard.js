@@ -94,7 +94,7 @@ class Jobcard extends Component {
                                         <hr></hr>
                                         <p>Role: {job.jobTitle}</p>
                                         <p>Batch applicable: {job.batch}</p>
-                                        {default_date.getTime() != jobExpiry_date.getTime() &&
+                                        {default_date.getTime() !== jobExpiry_date.getTime() &&
                                             <p>Apply Before: {date.toLocaleDateString()}</p>}
                                         <p>Referral Applicable: {job.isReferral}</p>
                                         <p>Posted by: {job.postedBy}</p>
