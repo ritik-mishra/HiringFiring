@@ -65,7 +65,6 @@ class EditJobForm extends Component {
         this.setState({
             redirect: true
         });
-        // this.props.history.push("/jobboard");
     }
     render() {
         if (this.state.redirect) {

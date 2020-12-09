@@ -7,7 +7,6 @@ import './Jobboard.css';
 class Jobboard extends Component {
     constructor(props) {
         var pg = 1, x = localStorage.getItem("page");
-        console.log(x);
         if (x) {
             pg = parseInt(x);
             localStorage.clear();
@@ -22,7 +21,6 @@ class Jobboard extends Component {
     }
     componentDidMount() {
         this.fetchJobs();
-        // this.myRef.current.scrollTo(0, 0);
         window.scrollTo(0, 0);
     }
     setLocal = (x) => {
@@ -53,11 +51,6 @@ class Jobboard extends Component {
         const jc = this.state.jobcount;//change this accordingly
         let pagec = jc / PAGE_SIZE + ((jc % PAGE_SIZE) ? 1 : 0);
         for (let num = 1; num <= pagec; num++) {
-            // items.push(
-            // <Pagination.Item onClick={() => this.clickHandler(num)} key={num} active={num === this.state.page}>
-            //         {num}
-            //     </Pagination.Item>,
-            // );
             var col = "white";
             if (num === this.state.page)
                 col = "rgb(248, 114, 3)";
