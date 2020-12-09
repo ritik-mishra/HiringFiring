@@ -38,7 +38,13 @@ class EditJobForm extends Component {
             isReferral: '',
             jobExpiry: '',
         };
+        //In JavaScript, class methods are not bound by default. 
+        //If you forget to bind this.myChangeHandler and pass it to onChange, this will be undefined when the function is actually called.
+        //But it works as the syntax we are using namely "Public Class Field Syntax" allows class fields to correctly bind callbacks.
+
     }
+    // This syntax ensures `this` is bound within myChangeHandler and submitHandler.
+    // We are using the experimental public class fields syntax, We can use class fields to correctly bind callbacks
     myChangeHandler = (event) => {
         let nam = event.target.name;
 

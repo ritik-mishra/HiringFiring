@@ -94,11 +94,29 @@ class AddJobForm extends Component {
                             onChange={this.myChangeHandler}
                         />
                         <p>Is Referral required :</p>
-                        <input
-                            type='text'
-                            name='isReferral'
-                            onChange={this.myChangeHandler}
-                        />
+                        <p>
+                            <label>
+                                <input className="with-gap" type="radio"
+                                name='isReferral' value ="Yes"
+                                onChange={this.myChangeHandler}
+                                />
+                                <span>Yes</span>
+                            </label>&nbsp;&nbsp;&nbsp;
+                            <label>
+                                <input className="with-gap" type="radio"
+                                name='isReferral' value="No"
+                                onChange={this.myChangeHandler}
+                                />
+                                <span>No</span>
+                            </label>&nbsp;&nbsp;&nbsp;
+                            <label>
+                                <input className="with-gap" type="radio" 
+                                name='isReferral' value="Maybe"
+                                onChange={this.myChangeHandler}
+                                />
+                                <span>Maybe</span>
+                            </label>
+                        </p>
                         <p>Job Expiry Date (if known):</p>
                         <input
                             type='date'
