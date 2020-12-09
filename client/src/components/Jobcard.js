@@ -11,8 +11,14 @@ class Jobcard extends Component {
         this.state = {
             showDelete: false,
             showCard: true,
-            redirect: false
+            redirect: false,
+            job: this.props.job,
+            showEdit: false
         };
+        // console.log("Yes");
+    }
+    componentDidMount() {
+        // console.log(this.state.job);
     }
     deleteHandler = async (event) => {
         event.preventDefault();
@@ -31,14 +37,15 @@ class Jobcard extends Component {
     }
 
     editHandler = async (event) => {
-        // event.preventDefault();
+        this.props.setLocal();
         this.setState({ redirect: true })
     }
 
 
     render() {
-        const job = this.props.job;
+        const job = this.state.job;
         const auth = this.props.auth;
+        // console.log(job);
 
         //delete and edit job link logic
         var del = null, edit = null;
@@ -66,6 +73,9 @@ class Jobcard extends Component {
         default_date.setHours(0, 0, 0, 0)
         const jobExpiry_date = new Date(job.jobExpiry);
         jobExpiry_date.setHours(0, 0, 0, 0)
+        var editback = this.deleteHandler;
+        // console.log(editback);
+        var a = { "job": job, "fun": editback };
         if (this.state.redirect) {
             return <Redirect to={{
                 pathname: "/editjob",
@@ -75,7 +85,6 @@ class Jobcard extends Component {
         if (this.state.showCard) {
             return (
                 <div>
-
                     <div className="jobcard" key={job.jobID}>
                         <div >
                             <div className="col s12 m6">
@@ -85,8 +94,8 @@ class Jobcard extends Component {
                                         <hr></hr>
                                         <p>Role: {job.jobTitle}</p>
                                         <p>Batch applicable: {job.batch}</p>
-                                        {default_date.getTime()!=jobExpiry_date.getTime() &&
-                                        <p>Apply Before: {date.toLocaleDateString()}</p>}
+                                        {default_date.getTime() != jobExpiry_date.getTime() &&
+                                            <p>Apply Before: {date.toLocaleDateString()}</p>}
                                         <p>Referral Applicable: {job.isReferral}</p>
                                         <p>Posted by: {job.postedBy}</p>
                                     </div>
