@@ -6,11 +6,17 @@ import './Jobboard.css';
 
 class Jobboard extends Component {
     constructor(props) {
+        var pg = 1, x = localStorage.getItem("page");
+        console.log(x);
+        if (x) {
+            pg = parseInt(x);
+            localStorage.clear();
+        }
         super(props);
         this.myRef = React.createRef();
         this.state = {
             jobs: [],
-            page: 1,
+            page: pg,
             jobcount: 1
         }
     }
@@ -18,6 +24,9 @@ class Jobboard extends Component {
         this.fetchJobs();
         // this.myRef.current.scrollTo(0, 0);
         window.scrollTo(0, 0);
+    }
+    setLocal = (x) => {
+        localStorage.setItem("page", this.state.page);
     }
     async fetchJobs() {
         const page_jobs = await axios.get(`${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`);
@@ -66,7 +75,7 @@ class Jobboard extends Component {
                     <div>
                         {
                             JOBS.map(job => (
-                                <Jobcard key={job.jobId} job={job} />
+                                <Jobcard job={job} setLocal={this.setLocal} />
                             )
                             )
                         }
