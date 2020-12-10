@@ -31,7 +31,7 @@ class Jobcard extends Component {
     }
 
     editHandler = async (event) => {
-        // event.preventDefault();
+        event.preventDefault();
         this.setState({ redirect: true })
     }
 
@@ -67,7 +67,8 @@ class Jobcard extends Component {
         const jobExpiry_date = new Date(job.jobExpiry);
         jobExpiry_date.setHours(0, 0, 0, 0)
         if (this.state.redirect) {
-            return <Redirect to={{
+            return <Redirect push
+            to={{
                 pathname: "/editjob",
                 state: { editJob: job }
             }} />;

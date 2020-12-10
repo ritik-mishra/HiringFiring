@@ -74,7 +74,7 @@ class AddJobForm extends Component {
 
         const { redirect } = this.state;
         if (redirect) {
-            return <Redirect to="/jobboard" />;
+            return <Redirect push to="/jobboard" />;
         }
 
 
