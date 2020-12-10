@@ -25,6 +25,7 @@ class AddJobForm extends Component {
     // This syntax ensures `this` is bound within myChangeHandler and submitHandler.
     // We are using the experimental public class fields syntax, We can use class fields to correctly bind callbacks
     myChangeHandler = (event) => {
+        console.log(event);
         let nam = event.target.name;
         let val = event.target.value;
         this.setState({ [nam]: val });
@@ -40,8 +41,8 @@ class AddJobForm extends Component {
             jobExpiry: this.state.jobExpiry
 
         }
-
-        axios.post(`${process.env.PUBLIC_URL}/api/add_job`, job).then(
+        
+        axios.post(`${process.env.PUBLIC_URL}/api/add_job`,job).then(
             (res, err) => {
                 if (err)
                     throw err;

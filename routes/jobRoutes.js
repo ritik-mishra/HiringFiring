@@ -10,6 +10,15 @@ const keys = require('../config/keys');
 
 module.exports = (app) => {
 
+    //Get Job
+    app.get('/api/all_jobs', requireLogin, (req, res) => {
+        Job.find({}).exec(function (err, all_jobs) {
+            if (err) throw err;
+            res.send(all_jobs);
+        });
+
+    });
+
     //Get job by page number
     app.get('/api/page_job', requireLogin, async (req, res) => {
         const page = parseInt(req.query.page);
@@ -31,7 +40,7 @@ module.exports = (app) => {
 
     //  Delete Job
     app.delete('/api/delete_job/:jobId', requireLogin, requireAuthor, async (req, res) => {
-
+    
         const jobId = req.params['jobId'];
         const del = await Job.deleteOne({ jobId: jobId }, (err) => {
             if (err)
@@ -43,10 +52,6 @@ module.exports = (app) => {
     //  Add Job
     app.post('/api/add_job', requireLogin, async (req, res) => {
         const newId = uuidv4();
-        var dt = Date.now() + (90 * 24 * 60 * 60 * 1000);
-        dt = new Date(dt);
-        if (req.body.jobExpiry)
-            dt = req.body.jobExpiry;
         const newJob = await new Job({
             jobId: newId,
             companyName: req.body.companyName,
@@ -54,7 +59,7 @@ module.exports = (app) => {
             jobLink: req.body.jobLink,
             batch: req.body.batch,
             isReferral: req.body.isReferral,
-            jobExpiry: dt,
+            jobExpiry: req.body.jobExpiry,
             postedBy: req.user.name,
             postedById: req.user.id
         }).save();
@@ -64,6 +69,7 @@ module.exports = (app) => {
     //update jobs
     app.put('/api/update/:jobId', requireLogin, requireAuthor, async (req, res) => {
         try {
+            console.log("Entering Update API");
             let job = await Job.findOneAndUpdate({ jobId: req.params.jobId }, req.body, {
                 new: true,
                 runValidators: true,

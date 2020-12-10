@@ -2,19 +2,17 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import './AddJobForm.css';
 import ls from 'local-storage';
-import { Redirect } from "react-router-dom";
 
 class EditJobForm extends Component {
     componentDidMount() {
         //console.log(this.props.location.state.editJob);
         var editJob;
-        if (this.props.location.state) {
-
+        if(this.props.location.state){
+            
             editJob = this.props.location.state.editJob;
-            ls.set('editJob', JSON.stringify(editJob));
-            console.log(this.props.location.state);
+            ls.set('editJob',JSON.stringify(editJob));
         }
-        else {
+        else{
             const editJobString = ls.get('editJob');
             editJob = JSON.parse(editJobString);
         }
@@ -25,14 +23,13 @@ class EditJobForm extends Component {
             jobLink: editJob.jobLink,
             batch: editJob.batch,
             isReferral: editJob.isReferral,
-            jobExpiry: editJob.jobExpiry.toString().substr(0, 10)
+            jobExpiry: editJob.jobExpiry
         })
     }
     constructor(props) {
         super(props);
         // console.log(this.props);
         this.state = {
-            redirect: false,
             jobId: '',
             companyName: '',
             jobTitle: '',
@@ -48,7 +45,7 @@ class EditJobForm extends Component {
         let val = event.target.value;
         this.setState({ [nam]: val });
     }
-    submitHandler = async (event) => {
+    submitHandler = (event) => {
         event.preventDefault();
         const newJob = {
             companyName: this.state.companyName,
@@ -58,18 +55,19 @@ class EditJobForm extends Component {
             isReferral: this.state.isReferral,
             jobExpiry: this.state.jobExpiry
         }
-
+        
         var updateLink = `${process.env.PUBLIC_URL}/api/update/` + this.state.jobId;
 
-        await axios.put(updateLink, newJob);
-        this.setState({
-            redirect: true
-        });
+        axios.put(updateLink, newJob).then(
+            (res, err) => {
+                if (err)
+                    throw err;
+                console.log(res);
+            }
+        )
+        this.props.history.push("/jobboard");
     }
     render() {
-        if (this.state.redirect) {
-            return <Redirect to="/jobboard" />
-        }
         let allowSubmit = '';
         if (this.state.companyName && this.state.jobTitle && this.state.jobLink && this.state.batch) {
             allowSubmit = <input

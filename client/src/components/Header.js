@@ -12,7 +12,7 @@ class Header extends Component {
                 return;
             case false:
                 return (
-                    <li><a href={`${process.env.PUBLIC_URL}/auth/google`}>Login With Google</a></li>
+                    <li><a href={ `${process.env.PUBLIC_URL}/auth/google`}>Login With Google</a></li>
                 );
             default:
                 return (
