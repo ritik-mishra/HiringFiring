@@ -1,5 +1,6 @@
+
 body {
-    background-image: url('../media/land-back.png');
+  background-image: url('../media/land-back.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -11,3 +12,21 @@ body {
   div{
       color:white;
   }
+  @font-face {
+    font-family: 'GameofThrones';
+    src: url('./fonts/GameofThrones.eot');
+    src: url('./fonts/GameofThrones.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/GameofThrones.woff2') format('woff2'),
+        url('./fonts/GameofThrones.woff') format('woff'),
+        url('./fonts/GameofThrones.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+.GOTtext{
+  font-family: 'GameofThrones';
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: rgb(28, 55, 59);
+}
+
