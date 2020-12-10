@@ -119,13 +119,36 @@ class EditJobForm extends Component {
                             onChange={this.myChangeHandler}
                             value={this.state.batch}
                         />
+
                         <p>Is Referral required :</p>
-                        <input
-                            type='text'
-                            name='isReferral'
-                            onChange={this.myChangeHandler}
-                            value={this.state.isReferral}
-                        />
+                        <p>
+                            <label>
+                                <input className="with-gap" type="radio"
+                                name='isReferral'  value="Yes"
+                                checked={this.state.isReferral === "Yes"}
+                                onChange={this.myChangeHandler}
+                                />
+                                <span>Yes</span>
+                            </label>&nbsp;&nbsp;&nbsp;
+                            <label>
+                                <input className="with-gap" type="radio"
+                                name='isReferral'  value="No"
+                                checked={this.state.isReferral === "No"}
+                                onChange={this.myChangeHandler}
+                                />
+                                <span>No</span>
+                            </label>&nbsp;&nbsp;&nbsp;
+                            <label>
+                                <input className="with-gap" type="radio" 
+                                name='isReferral'  value="Maybe"
+                                checked={this.state.isReferral === "Maybe"}
+                                onChange={this.myChangeHandler}
+                                />
+                                
+                                <span>Maybe</span>
+                            </label>
+                        </p>
+
                         <p>Job Expiry Date (if known):</p>
                         <input
                             type='date'
