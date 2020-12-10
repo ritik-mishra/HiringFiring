@@ -84,7 +84,10 @@ class Jobcard extends Component {
                                         <span className="card-title"><b>{job.companyName}</b></span>
                                         <hr></hr>
                                         <p>Role: {job.jobTitle}</p>
-                                        <p>Batch applicable: {job.batch}</p>
+                                        <p>Batch applicable: 
+                                            {job.batch["is2021"]?"2021":null}&nbsp;{job.batch["is2022"]?"2022":null}&nbsp;
+                                            {job.batch["is2023"]?"2023":null}&nbsp;{job.batch["is2024"]?"2024":null}
+                                        </p>
                                         {default_date.getTime()!=jobExpiry_date.getTime() &&
                                         <p>Apply Before: {date.toLocaleDateString()}</p>}
                                         <p>Referral Applicable: {job.isReferral}</p>
