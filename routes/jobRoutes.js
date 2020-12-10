@@ -51,6 +51,9 @@ module.exports = (app) => {
 
     //  Add Job
     app.post('/api/add_job', requireLogin, async (req, res) => {
+        if(!req.body.companyName || !req.body.jobTitle || !req.body.jobLink || !req.body.batch){
+            return res.status(400).send("Mandatory field(s) missing/Input values not coherent with rules");
+        }
         const newId = uuidv4();
         const newJob = await new Job({
             jobId: newId,
@@ -69,7 +72,6 @@ module.exports = (app) => {
     //update jobs
     app.put('/api/update/:jobId', requireLogin, requireAuthor, async (req, res) => {
         try {
-            console.log("Entering Update API");
             let job = await Job.findOneAndUpdate({ jobId: req.params.jobId }, req.body, {
                 new: true,
                 runValidators: true,
