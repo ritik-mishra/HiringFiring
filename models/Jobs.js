@@ -6,7 +6,7 @@ const jobSchema = new Schema({
     companyName: String,
     jobTitle: String,
     jobLink: String,
-    batch: String,
+    batch: Map,
     isReferral: String,
     jobExpiry: { type: Date },
     postedOn: { type: Date, default: Date.now },
