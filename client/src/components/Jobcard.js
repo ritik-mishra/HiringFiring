@@ -85,8 +85,8 @@ class Jobcard extends Component {
                                         <hr></hr>
                                         <p>Role: {job.jobTitle}</p>
                                         <p>Batch applicable: 
-                                            {job.batch["is2021"]?"2021":null} {job.batch["is2022"]?"2022":null}
-                                            {job.batch["is2023"]?"2023":null} {job.batch["is2024"]?"2024":null}
+                                            {job.batch["is2021"]?"2021":null}&nbsp;{job.batch["is2022"]?"2022":null}&nbsp;
+                                            {job.batch["is2023"]?"2023":null}&nbsp;{job.batch["is2024"]?"2024":null}
                                         </p>
                                         {default_date.getTime()!=jobExpiry_date.getTime() &&
                                         <p>Apply Before: {date.toLocaleDateString()}</p>}
