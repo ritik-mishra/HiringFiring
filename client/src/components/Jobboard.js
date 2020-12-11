@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
+//import localStorage from 'local-storage';
 import Jobcard from './Jobcard';
 import './Jobboard.css';
 
@@ -9,7 +9,7 @@ class Jobboard extends Component {
         var pg = 1, x = localStorage.getItem("page");
         if (x) {
             pg = parseInt(x);
-            localStorage.clear();
+            localStorage.removeItem("page");
         }
         super(props);
         this.myRef = React.createRef();
@@ -37,10 +37,11 @@ class Jobboard extends Component {
     }
     async clickHandler(p) {
         const newp = parseInt(p);
-        await this.setState({
+         this.setState({
             page: newp
-        });
-        await this.fetchJobs();
+        }, async() => {
+            await this.fetchJobs();
+        })
         window.scrollTo(0, 0);
     }
     render() {
@@ -62,13 +63,16 @@ class Jobboard extends Component {
 
 
         const JOBS = this.state.jobs.data;
+        
         if (JOBS)
             return (
                 <div>
                     <div>
                         {
                             JOBS.map(job => (
-                                <Jobcard job={job} setLocal={this.setLocal} />
+                                //Adding key property here is segregating the the jobs being called and on changing the page calling the,
+                                //child's component again
+                                <Jobcard key={job.jobId} job={job} setLocal={this.setLocal} />
                             )
                             )
                         }

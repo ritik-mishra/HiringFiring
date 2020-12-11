@@ -8,6 +8,7 @@ import './Jobcard.css'
 class Jobcard extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             showDelete: false,
             showCard: true,
@@ -15,7 +16,6 @@ class Jobcard extends Component {
             job: this.props.job,
             showEdit: false
         };
-        // console.log("Yes");
     }
     componentDidMount() {
         // console.log(this.state.job);
@@ -37,15 +37,15 @@ class Jobcard extends Component {
     }
 
     editHandler = async (event) => {
+        event.preventDefault();
         this.props.setLocal();
         this.setState({ redirect: true })
     }
 
 
     render() {
-        const job = this.state.job;
+        const job = this.props.job;//this was previously accessed through state and constructor was not getting called again when the component's key attribute was not specified
         const auth = this.props.auth;
-        // console.log(job);
 
         //delete and edit job link logic
         var del = null, edit = null;
@@ -72,12 +72,13 @@ class Jobcard extends Component {
         const default_date = new Date('1970,01,01');
         default_date.setHours(0, 0, 0, 0)
         const jobExpiry_date = new Date(job.jobExpiry);
-        jobExpiry_date.setHours(0, 0, 0, 0)
+        jobExpiry_date.setHours(0, 0, 0, 0);
         var editback = this.deleteHandler;
         // console.log(editback);
         var a = { "job": job, "fun": editback };
         if (this.state.redirect) {
-            return <Redirect to={{
+            return <Redirect push
+            to={{
                 pathname: "/editjob",
                 state: { editJob: job }
             }} />;
@@ -85,6 +86,7 @@ class Jobcard extends Component {
         if (this.state.showCard) {
             return (
                 <div>
+
                     <div className="jobcard" key={job.jobID}>
                         <div >
                             <div className="col s12 m6">
@@ -93,9 +95,12 @@ class Jobcard extends Component {
                                         <span className="card-title"><b>{job.companyName}</b></span>
                                         <hr></hr>
                                         <p>Role: {job.jobTitle}</p>
-                                        <p>Batch applicable: {job.batch}</p>
-                                        {default_date.getTime() !== jobExpiry_date.getTime() &&
-                                            <p>Apply Before: {date.toLocaleDateString()}</p>}
+                                        <p>Batch applicable: 
+                                            {job.batch["is2021"]?"2021":null}&nbsp;{job.batch["is2022"]?"2022":null}&nbsp;
+                                            {job.batch["is2023"]?"2023":null}&nbsp;{job.batch["is2024"]?"2024":null}
+                                        </p>
+                                        {default_date.getTime()!==jobExpiry_date.getTime() &&
+                                        <p>Apply Before: {date.toLocaleDateString()}</p>}
                                         <p>Referral Applicable: {job.isReferral}</p>
                                         <p>Posted by: {job.postedBy}</p>
                                     </div>

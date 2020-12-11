@@ -33,7 +33,7 @@ class App extends Component {
             </div >
         );
     }
-}
+};
 // first argument is about map state's of props function and the second argument is to wire up all the action creators with the app
 // The actions are assigned to the app component as the props
 export default connect(null, actions)(App);

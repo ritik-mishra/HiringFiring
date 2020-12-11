@@ -31,7 +31,7 @@ module.exports = (app) => {
 
     //  Delete Job
     app.delete('/api/delete_job/:jobId', requireLogin, requireAuthor, async (req, res) => {
-
+    
         const jobId = req.params['jobId'];
         const del = await Job.deleteOne({ jobId: jobId }, (err) => {
             if (err)
@@ -42,6 +42,9 @@ module.exports = (app) => {
 
     //  Add Job
     app.post('/api/add_job', requireLogin, async (req, res) => {
+        if(!req.body.companyName || !req.body.jobTitle || !req.body.jobLink || !req.body.batch){
+            return res.status(400).send("Mandatory field(s) missing/Input values not coherent with rules");
+        }
         const newId = uuidv4();
         var dt = Date.now() + (90 * 24 * 60 * 60 * 1000);
         dt = new Date(dt);
