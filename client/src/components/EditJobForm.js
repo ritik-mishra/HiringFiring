@@ -17,7 +17,6 @@ class EditJobForm extends Component {
             const editJobString = ls.get('editJob');
             editJob = JSON.parse(editJobString);
         }
-        console.log(editJob);
         this.setState({
             jobId: editJob.jobId,
             companyName: editJob.companyName,
@@ -55,7 +54,6 @@ class EditJobForm extends Component {
         this.setState({ [nam]: val });
     }
     batchChangeHandler = (event) => {
-        console.log(event);
         var obj = this.state.batch;
         let val = event.target.value;
         obj[val] = !obj[val];
@@ -83,7 +81,7 @@ class EditJobForm extends Component {
     }
     render() {
         if (this.state.redirect) {
-            return <Redirect to="/jobboard" />
+            return <Redirect push to="/jobboard" />
         }
         let allowSubmit = '';
         if (this.state.companyName && this.state.jobTitle && this.state.jobLink && this.state.batch) {
