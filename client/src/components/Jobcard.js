@@ -8,10 +8,18 @@ import './Jobcard.css'
 class Jobcard extends Component {
     constructor(props) {
         super(props);
+        var hc = 0, h = false;
+        this.person = this.props.auth.googleId;
+        if (this.props.job.likers.length) {
+            hc = this.props.job.likers.length;
+            h = this.props.job.likers.includes(this.person);
+        }
         this.state = {
             showDelete: false,
             showCard: true,
-            redirect: false
+            redirect: false,
+            heart: h,
+            heartCount: hc
         };
     }
     deleteHandler = async (event) => {
@@ -34,11 +42,34 @@ class Jobcard extends Component {
         event.preventDefault();
         this.setState({ redirect: true })
     }
+    heartClick = async () => {
+        var body = { user: this.person, jobId: this.props.job.jobId };
+        if (this.state.heart) {
+            await this.setState({
+                heart: !this.state.heart,
+                heartCount: this.state.heartCount - 1
+            });
+            await axios.post(`${process.env.PUBLIC_URL}/api/remove_liker`, body);
+        }
+        else {
+            await this.setState({
+                heart: !this.state.heart,
+                heartCount: this.state.heartCount + 1
+            });
+            await axios.post(`${process.env.PUBLIC_URL}/api/add_liker`, body);
+        }
 
-
+    }
+    getHeart = () => {
+        if (this.state.heart) {
+            return <i onClick={this.heartClick} className="fa fa-heart" style={{ fontSize: "30px", color: "#b38600", cursor: "pointer" }}></i>;
+        }
+        return <i onClick={this.heartClick} className="fa fa-heart" style={{ fontSize: "30px", color: "white", cursor: "pointer" }}></i>;
+    }
     render() {
         const job = this.props.job;
         const auth = this.props.auth;
+        // console.log(auth.googleId);
 
         //delete and edit job link logic
         var del = null, edit = null;
@@ -46,7 +77,6 @@ class Jobcard extends Component {
             del = <a onClick={this.deleteHandler} href="#">Delete Job</a>;
             edit = <a onClick={this.editHandler} href="#">Edit Job</a>;
         }
-
         //delete popup text logic
         var deleteText = null;
         if (this.state.showDelete) {
@@ -68,10 +98,10 @@ class Jobcard extends Component {
         jobExpiry_date.setHours(0, 0, 0, 0)
         if (this.state.redirect) {
             return <Redirect push
-            to={{
-                pathname: "/editjob",
-                state: { editJob: job }
-            }} />;
+                to={{
+                    pathname: "/editjob",
+                    state: { editJob: job }
+                }} />;
         }
         if (this.state.showCard) {
             return (
@@ -85,12 +115,12 @@ class Jobcard extends Component {
                                         <span className="card-title"><b>{job.companyName}</b></span>
                                         <hr></hr>
                                         <p>Role: {job.jobTitle}</p>
-                                        <p>Batch applicable: 
-                                            {job.batch["is2021"]?"2021":null}&nbsp;{job.batch["is2022"]?"2022":null}&nbsp;
-                                            {job.batch["is2023"]?"2023":null}&nbsp;{job.batch["is2024"]?"2024":null}
+                                        <p>Batch applicable:
+                                            {job.batch["is2021"] ? "2021" : null}&nbsp;{job.batch["is2022"] ? "2022" : null}&nbsp;
+                                            {job.batch["is2023"] ? "2023" : null}&nbsp;{job.batch["is2024"] ? "2024" : null}
                                         </p>
-                                        {default_date.getTime()!=jobExpiry_date.getTime() &&
-                                        <p>Apply Before: {date.toLocaleDateString()}</p>}
+                                        {default_date.getTime() !== jobExpiry_date.getTime() &&
+                                            <p>Apply Before: {date.toLocaleDateString()}</p>}
                                         <p>Referral Applicable: {job.isReferral}</p>
                                         <p>Posted by: {job.postedBy}</p>
                                     </div>
@@ -98,6 +128,8 @@ class Jobcard extends Component {
                                         <a target="_blank" rel="noreferrer" href={url}>Apply here</a>
                                         {del}
                                         {edit}
+                                        {this.getHeart()}
+                                        {this.state.heartCount}
                                     </div>
                                     <div>
                                         {deleteText}
