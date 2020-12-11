@@ -9,7 +9,11 @@ const requireAuthor = require('../middlewares/requireAuthor');
 const keys = require('../config/keys');
 
 module.exports = (app) => {
-
+    app.get('/api/getOneJob', async (req, res) => {
+        var job = await Job.findOne({ jobId: req.body.jobId });
+        console.log(job);
+        res.send(job);
+    })
     //Get Job
     app.get('/api/all_jobs', requireLogin, (req, res) => {
         Job.find({}).exec(function (err, all_jobs) {
@@ -30,21 +34,32 @@ module.exports = (app) => {
         res.send(page_jobs);
     })
     //Add liker
-    app.post('api/add_liker', requireLogin, async (req, res) => {
+    app.post('/api/add_liker', requireLogin, async (req, res) => {
+        console.log(req.body);
+        console.log("in add");
         const user = req.body.user;
         const jobId = req.body.jobId;
         var job = await Job.findOne({ jobId: jobId });
-        job.likers.push(user);
+        var isPresent = job.likers.includes(user);
+        if (!isPresent)
+            job.likers.push(user);
         await job.save();
+        res.send("true");
     })
     //remove liker
-    app.post('api/add_liker', requireLogin, async (req, res) => {
+    app.post('/api/remove_liker', requireLogin, async (req, res) => {
+        console.log(req.body);
+        console.log("in remove");
         const user = req.body.user;
         const jobId = req.body.jobId;
         var job = await Job.findOne({ jobId: jobId });
-        const index = job.likers.indexOf(user);
-        job.likers.splice(index, 1);
+        var isPresent = job.likers.includes(user);
+        if (isPresent) {
+            const index = job.likers.indexOf(user);
+            job.likers.splice(index, 1);
+        }
         await job.save();
+        res.send("true");
     })
     //count jobs
     app.get('/api/count_job', requireLogin, async (req, res) => {
