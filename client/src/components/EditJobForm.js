@@ -125,6 +125,13 @@ class EditJobForm extends Component {
                         <p>Batch* :</p>
                         <p>
                             <label>
+                                <input type="checkbox" name='batch' value="is2020"
+                                    checked={this.state.batch["is2020"] === true}
+                                    onChange={this.batchChangeHandler}
+                                />
+                                <span>2020</span>
+                            </label>&nbsp;&nbsp;&nbsp;
+                            <label>
                                 <input type="checkbox" name='batch' value="is2021"
                                     checked={this.state.batch["is2021"] === true}
                                     onChange={this.batchChangeHandler}
