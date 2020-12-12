@@ -37,9 +37,9 @@ class Jobboard extends Component {
     }
     async clickHandler(p) {
         const newp = parseInt(p);
-         this.setState({
+        this.setState({
             page: newp
-        }, async() => {
+        }, async () => {
             await this.fetchJobs();
         })
         window.scrollTo(0, 0);
@@ -63,7 +63,7 @@ class Jobboard extends Component {
 
 
         const JOBS = this.state.jobs.data;
-        
+
         if (JOBS)
             return (
                 <div>

@@ -8,12 +8,12 @@ class EditJobForm extends Component {
     componentDidMount() {
         //console.log(this.props.location.state.editJob);
         var editJob;
-        if(this.props.location.state){
-            
+        if (this.props.location.state) {
+
             editJob = this.props.location.state.editJob;
-            ls.set('editJob',JSON.stringify(editJob));
+            ls.set('editJob', JSON.stringify(editJob));
         }
-        else{
+        else {
             const editJobString = ls.get('editJob');
             editJob = JSON.parse(editJobString);
         }
@@ -71,13 +71,14 @@ class EditJobForm extends Component {
             isReferral: this.state.isReferral,
             jobExpiry: this.state.jobExpiry
         }
-        
+
         var updateLink = `${process.env.PUBLIC_URL}/api/update/` + this.state.jobId;
 
         await axios.put(updateLink, newJob);
-        this.setState({
+        await this.setState({
             redirect: true
         });
+        ls.clear();
     }
     render() {
         if (this.state.redirect) {
@@ -124,30 +125,30 @@ class EditJobForm extends Component {
                         <p>Batch* :</p>
                         <p>
                             <label>
-                                <input type="checkbox"   name='batch'  value = "is2021"
-                                checked={this.state.batch["is2021"] === true}
-                                onChange={this.batchChangeHandler} 
+                                <input type="checkbox" name='batch' value="is2021"
+                                    checked={this.state.batch["is2021"] === true}
+                                    onChange={this.batchChangeHandler}
                                 />
                                 <span>2021</span>
                             </label>&nbsp;&nbsp;&nbsp;
                             <label>
-                                <input type="checkbox"   name='batch'  value = "is2022"
-                                checked={this.state.batch["is2022"] === true}
-                                onChange={this.batchChangeHandler}  
+                                <input type="checkbox" name='batch' value="is2022"
+                                    checked={this.state.batch["is2022"] === true}
+                                    onChange={this.batchChangeHandler}
                                 />
                                 <span>2022</span>
                             </label>&nbsp;&nbsp;&nbsp;
                             <label>
-                                <input type="checkbox"   name='batch'  value = "is2023"
-                                checked={this.state.batch["is2023"] === true}
-                                onChange={this.batchChangeHandler} 
+                                <input type="checkbox" name='batch' value="is2023"
+                                    checked={this.state.batch["is2023"] === true}
+                                    onChange={this.batchChangeHandler}
                                 />
                                 <span>2023</span>
                             </label>&nbsp;&nbsp;&nbsp;
                             <label>
-                                <input type="checkbox"   name='batch'  value = "is2024"
-                                checked={this.state.batch["is2024"] === true}
-                                onChange={this.batchChangeHandler}  
+                                <input type="checkbox" name='batch' value="is2024"
+                                    checked={this.state.batch["is2024"] === true}
+                                    onChange={this.batchChangeHandler}
                                 />
                                 <span>2024</span>
                             </label>
@@ -157,27 +158,27 @@ class EditJobForm extends Component {
                         <p>
                             <label>
                                 <input className="with-gap" type="radio"
-                                name='isReferral'  value="Yes"
-                                checked={this.state.isReferral === "Yes"}
-                                onChange={this.myChangeHandler}
+                                    name='isReferral' value="Yes"
+                                    checked={this.state.isReferral === "Yes"}
+                                    onChange={this.myChangeHandler}
                                 />
                                 <span>Yes</span>
                             </label>&nbsp;&nbsp;&nbsp;
                             <label>
                                 <input className="with-gap" type="radio"
-                                name='isReferral'  value="No"
-                                checked={this.state.isReferral === "No"}
-                                onChange={this.myChangeHandler}
+                                    name='isReferral' value="No"
+                                    checked={this.state.isReferral === "No"}
+                                    onChange={this.myChangeHandler}
                                 />
                                 <span>No</span>
                             </label>&nbsp;&nbsp;&nbsp;
                             <label>
-                                <input className="with-gap" type="radio" 
-                                name='isReferral'  value="Maybe"
-                                checked={this.state.isReferral === "Maybe"}
-                                onChange={this.myChangeHandler}
+                                <input className="with-gap" type="radio"
+                                    name='isReferral' value="Maybe"
+                                    checked={this.state.isReferral === "Maybe"}
+                                    onChange={this.myChangeHandler}
                                 />
-                                
+
                                 <span>Maybe</span>
                             </label>
                         </p>
