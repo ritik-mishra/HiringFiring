@@ -19,7 +19,8 @@ class Jobcard extends Component {
             showCard: true,
             redirect: false,
             heart: h,
-            heartCount: hc
+            heartCount: hc,
+            isLikeProcessing: false
         };
     }
     deleteHandler = async (event) => {
@@ -43,22 +44,28 @@ class Jobcard extends Component {
         this.setState({ redirect: true })
     }
     heartClick = async () => {
-        var body = { user: this.person, jobId: this.props.job.jobId };
-        if (this.state.heart) {
-            await this.setState({
-                heart: !this.state.heart,
-                heartCount: this.state.heartCount - 1
-            });
-            await axios.post(`${process.env.PUBLIC_URL}/api/remove_liker`, body);
+        if (!this.state.isLikeProcessing) {
+            this.setState({
+                isLikeProcessing: true
+            })
+            var body = { user: this.person, jobId: this.props.job.jobId };
+            if (this.state.heart) {
+                await axios.post(`${process.env.PUBLIC_URL}/api/remove_liker`, body);
+                await this.setState({
+                    heart: !this.state.heart,
+                    heartCount: this.state.heartCount - 1,
+                    isLikeProcessing: false
+                });
+            }
+            else {
+                await axios.post(`${process.env.PUBLIC_URL}/api/add_liker`, body);
+                await this.setState({
+                    heart: !this.state.heart,
+                    heartCount: this.state.heartCount + 1,
+                    isLikeProcessing: false
+                });
+            }
         }
-        else {
-            await this.setState({
-                heart: !this.state.heart,
-                heartCount: this.state.heartCount + 1
-            });
-            await axios.post(`${process.env.PUBLIC_URL}/api/add_liker`, body);
-        }
-
     }
     getHeart = () => {
         if (this.state.heart) {

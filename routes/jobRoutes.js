@@ -71,6 +71,7 @@ module.exports = (app) => {
 
     //  Add Job
     app.post('/api/add_job', requireLogin, async (req, res) => {
+        console.log("Yes");
         if (!req.body.companyName || !req.body.jobTitle || !req.body.jobLink || !req.body.batch) {
             return res.status(400).send("Mandatory field(s) missing/Input values not coherent with rules");
         }
