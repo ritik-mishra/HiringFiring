@@ -12,7 +12,8 @@ const jobSchema = new Schema({
     postedOn: { type: Date, default: Date.now },
     postedBy: String,
     postedById: String,
-    jobDesciption: String
+    jobDesciption: String,
+    likers: Array
 
 });
 
