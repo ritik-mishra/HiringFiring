@@ -17,7 +17,7 @@ class Jobboard extends Component {
         this.state = {
             jobs: [],
             page: pg,
-            selectedCompnies: [],
+            selectedCompanies: [],
             role: [],
             sortBy: "postedOn",
             comparator: -1,
@@ -41,6 +41,17 @@ class Jobboard extends Component {
             role: this.state.role,
             companies: this.state.selectedCompanies
         }
+        if (body.batch.length === 0) {
+            body.batch = ["2020", "2021", "2022", "2023", "2024"];
+        }
+        if (body.role.length === 0) {
+            body.role = ["isIntern", "isFulltime"];
+        }
+        if (body.companies.length === 0) {
+            var comp = await await axios.get(`${process.env.PUBLIC_URL}/api/company_list`);
+            body.companies = comp.data;
+        }
+        console.log(body);
         const page_jobs = await axios.get(`${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`);
         const jc = await axios.get(`${process.env.PUBLIC_URL}/api/count_job`);
         const jobcount = parseInt(jc.data);

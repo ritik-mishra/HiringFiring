@@ -111,6 +111,15 @@ class Sortingfilters extends Component {
             role: this.state.role,
             selectedCompanies: this.state.selectedCompanies
         }
+        if (body.selectedCompanies.length === 0) {
+            body.selectedCompanies = this.state.company_list;
+        }
+        if (body.batch.length === 0) {
+            body.batch = ["2020", "2021", "2022", "2023", "2024"];
+        }
+        if (body.role.length === 0) {
+            body.role = ["isIntern", "isFulltime"];
+        }
         this.props.filterHandler(body);
     }
     render() {
