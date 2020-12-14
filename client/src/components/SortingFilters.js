@@ -102,7 +102,6 @@ class Sortingfilters extends Component {
         await this.setState({
             selectedCompanies: event
         })
-        console.log(this.state.selectedCompanies);
     }
     applyClickHandler = () => {
         var body = {
@@ -112,11 +111,9 @@ class Sortingfilters extends Component {
             role: this.state.role,
             selectedCompanies: this.state.selectedCompanies
         }
-        console.log(body.selectedCompanies);
         this.props.filterHandler(body);
     }
     render() {
-        // console.log(this.state.company_list);
 
         return (
             <div className="container">

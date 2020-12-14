@@ -41,7 +41,6 @@ class Jobboard extends Component {
             role: this.state.role,
             companies: this.state.selectedCompanies
         }
-        console.log(body);
         const page_jobs = await axios.get(`${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`);
         const jc = await axios.get(`${process.env.PUBLIC_URL}/api/count_job`);
         const jobcount = parseInt(jc.data);
@@ -60,7 +59,6 @@ class Jobboard extends Component {
         window.scrollTo(0, 0);
     }
     filterHandler = async (body) => {
-        // console.log(body);
         await this.setState({
             page: 1,
             sortBy: body.sortBy,
@@ -69,7 +67,6 @@ class Jobboard extends Component {
             role: body.role,
             selectedCompanies: body.selectedCompanies
         })
-        console.log(this.state);
         this.fetchJobs();
     }
     render() {
