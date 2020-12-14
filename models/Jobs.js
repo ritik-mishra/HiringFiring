@@ -14,6 +14,7 @@ const jobSchema = new Schema({
     postedById: String,
     jobDesciption: String,
     likers: Array,
+    likersCount: { type: Number, default: 0 },
     isIntern: false,
     isFulltime: false
 

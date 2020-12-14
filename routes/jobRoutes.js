@@ -16,7 +16,10 @@ module.exports = (app) => {
             res.send(all_jobs);
         });
     });
-
+    app.get('/api/company_list', requireLogin, async (req, res) => {
+        var list = await Job.find().distinct('companyName');
+        res.send(list);
+    })
     //Get job by page number
     app.get('/api/page_job', requireLogin, async (req, res) => {
         const page = parseInt(req.query.page);
@@ -34,8 +37,10 @@ module.exports = (app) => {
         const jobId = req.body.jobId;
         var job = await Job.findOne({ jobId: jobId });
         var isPresent = job.likers.includes(user);
-        if (!isPresent)
+        if (!isPresent) {
             job.likers.push(user);
+            job.likersCount += 1;
+        }
         await job.save();
         res.send("true");
     })
@@ -48,6 +53,7 @@ module.exports = (app) => {
         if (isPresent) {
             const index = job.likers.indexOf(user);
             job.likers.splice(index, 1);
+            job.likersCount -= 1;
         }
         await job.save();
         res.send("true");

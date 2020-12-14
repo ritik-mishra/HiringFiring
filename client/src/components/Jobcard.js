@@ -125,7 +125,7 @@ class Jobcard extends Component {
                     state: { editJob: job }
                 }} />;
         }
-        console.log(job);
+        // console.log(job);
         if (this.state.showCard) {
             return (
                 <div>

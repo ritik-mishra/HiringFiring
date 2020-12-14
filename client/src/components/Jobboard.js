@@ -17,6 +17,11 @@ class Jobboard extends Component {
         this.state = {
             jobs: [],
             page: pg,
+            selectedCompnies: [],
+            role: [],
+            sortBy: "postedOn",
+            comparator: -1,
+            batch: [],
             jobcount: 1
         }
     }
@@ -28,6 +33,15 @@ class Jobboard extends Component {
         localStorage.setItem("page", this.state.page);
     }
     async fetchJobs() {
+        var body = {
+            page: this.state.page,
+            sortBy: this.state.sortBy,
+            comparator: this.state.comparator,
+            batch: this.state.batch,
+            role: this.state.role,
+            companies: this.state.selectedCompanies
+        }
+        console.log(body);
         const page_jobs = await axios.get(`${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`);
         const jc = await axios.get(`${process.env.PUBLIC_URL}/api/count_job`);
         const jobcount = parseInt(jc.data);
@@ -44,6 +58,19 @@ class Jobboard extends Component {
             await this.fetchJobs();
         })
         window.scrollTo(0, 0);
+    }
+    filterHandler = async (body) => {
+        // console.log(body);
+        await this.setState({
+            page: 1,
+            sortBy: body.sortBy,
+            comparator: body.comparator,
+            batch: body.batch,
+            role: body.role,
+            selectedCompanies: body.selectedCompanies
+        })
+        console.log(this.state);
+        this.fetchJobs();
     }
     render() {
 
@@ -86,7 +113,7 @@ class Jobboard extends Component {
 
                         </div>
                         <div className="sorting-filters">
-                            <Sortingfilters />
+                            <Sortingfilters filterHandler={this.filterHandler} />
                         </div>
                     </div>
                 </div>
