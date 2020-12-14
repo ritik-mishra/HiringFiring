@@ -89,9 +89,11 @@ module.exports = (app) => {
             isReferral: req.body.isReferral,
             jobExpiry: dt,
             postedBy: req.user.name,
-            postedById: req.user.id
+            postedById: req.user.id,
+            isIntern: req.body.isIntern,
+            isFulltime: req.body.isFulltime
         }).save();
-        res.send(newJob);
+        res.send(true);
     });
 
     //update jobs
@@ -105,5 +107,6 @@ module.exports = (app) => {
         } catch (err) {
             console.error(err);
         }
+        res.send(true);
     });
 }

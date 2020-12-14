@@ -49,33 +49,44 @@ class Jobcard extends Component {
     }
     heartClick = async () => {
         if (!this.state.isLikeProcessing) {
-            this.setState({
+            await this.setState({
                 isLikeProcessing: true
             })
             var body = { user: this.person, jobId: this.props.job.jobId };
             if (this.state.heart) {
+                this.setState({
+                    heart: !this.state.heart,
+                    heartCount: this.state.heartCount - 1
+                })
                 await axios.post(`${process.env.PUBLIC_URL}/api/remove_liker`, body);
                 await this.setState({
-                    heart: !this.state.heart,
-                    heartCount: this.state.heartCount - 1,
                     isLikeProcessing: false
                 });
             }
             else {
+                this.setState({
+                    heart: !this.state.heart,
+                    heartCount: this.state.heartCount + 1
+                })
                 await axios.post(`${process.env.PUBLIC_URL}/api/add_liker`, body);
                 await this.setState({
-                    heart: !this.state.heart,
-                    heartCount: this.state.heartCount + 1,
                     isLikeProcessing: false
                 });
             }
         }
     }
     getHeart = () => {
-        if (this.state.heart) {
-            return <i onClick={this.heartClick} className="fa fa-heart" style={{ fontSize: "30px", color: "#b38600", cursor: "pointer" }}></i>;
+        return <i onClick={this.heartClick} className="fa fa-heart" style={{ fontSize: "1.7rem", color: this.state.heart ? "#e68a00" : "#bfbfbf", cursor: "pointer" }}></i>;
+    }
+    internFulltime = () => {
+        if (this.props.job.isIntern && this.props.job.isFulltime) {
+            return "Intern | Fulltime"
         }
-        return <i onClick={this.heartClick} className="fa fa-heart" style={{ fontSize: "30px", color: "white", cursor: "pointer" }}></i>;
+        else if (this.props.job.isIntern) {
+            return "Intern";
+        }
+        else
+            return "Fulltime";
     }
     render() {
         const job = this.props.job;//this was previously accessed through state and constructor was not getting called again when the component's key attribute was not specified
@@ -107,9 +118,6 @@ class Jobcard extends Component {
         default_date.setHours(0, 0, 0, 0)
         const jobExpiry_date = new Date(job.jobExpiry);
         jobExpiry_date.setHours(0, 0, 0, 0);
-        var editback = this.deleteHandler;
-        // console.log(editback);
-        var a = { "job": job, "fun": editback };
         if (this.state.redirect) {
             return <Redirect push
                 to={{
@@ -117,22 +125,25 @@ class Jobcard extends Component {
                     state: { editJob: job }
                 }} />;
         }
+        console.log(job);
         if (this.state.showCard) {
             return (
                 <div>
 
-                    <div className="jobcard" key={job.jobID}>
+                    <div className="jobcard">
                         <div >
                             <div className="col s12 m6">
                                 <div className="card blue-grey darken-1">
                                     <div className="card-content white-text">
                                         <span className="card-title"><b>{job.companyName}</b></span>
                                         <hr></hr>
-                                        <p>Role: {job.jobTitle}</p>
-                                        <p>Batch applicable:
-                                            {job.batch["is2021"] ? "2021" : null}&nbsp;{job.batch["is2022"] ? "2022" : null}&nbsp;
-                                            {job.batch["is2023"] ? "2023" : null}&nbsp;{job.batch["is2024"] ? "2024" : null}
-                                        </p>
+                                        <p>Role: {this.internFulltime()}</p>
+                                        <p>Job Title: {job.jobTitle}</p>
+                                        <p className="inline">Batch applicable:&nbsp;</p>
+                                        <div className="inline">{job.batch.map(each_batch => (
+                                            <p className="inline" key={each_batch}>
+                                                {each_batch}&nbsp;</p>))}
+                                        </div>
                                         {default_date.getTime() !== jobExpiry_date.getTime() &&
                                             <p>Apply Before: {date.toLocaleDateString()}</p>}
                                         <p>Referral Applicable: {job.isReferral}</p>
