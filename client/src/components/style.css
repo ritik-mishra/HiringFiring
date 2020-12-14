@@ -62,8 +62,8 @@ code {
     color: rgb(22, 14, 14);
 }
 .optionContainer li:hover,
-.highlight {
-  background: rgb(253, 249, 249);
+ .highlight {
+  background: rgb(27, 177, 144);
   color: rgb(22, 14, 14);
 }
 /* Ends overriding */
