@@ -6,14 +6,16 @@ const jobSchema = new Schema({
     companyName: String,
     jobTitle: String,
     jobLink: String,
-    batch: Map,
+    batch: Array,
     isReferral: String,
     jobExpiry: { type: Date },
     postedOn: { type: Date, default: Date.now },
     postedBy: String,
     postedById: String,
     jobDesciption: String,
-    likers: Array
+    likers: Array,
+    isIntern: false,
+    isFulltime: false
 
 });
 

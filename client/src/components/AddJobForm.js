@@ -12,16 +12,12 @@ class AddJobForm extends Component {
             companyName: '',
             jobTitle: '',
             jobLink: '',
-            batch: {
-                "is2020": false,
-                "is2021": false,
-                "is2022": false,
-                "is2023": false,
-                "is2024": false
-            },
+            batch: [],
             isReferral: '',
             jobExpiry: '',
-            redirect: false
+            redirect: false,
+            isIntern: false,
+            isFulltime: false
         };
 
         //In JavaScript, class methods are not bound by default. 
@@ -32,7 +28,6 @@ class AddJobForm extends Component {
     // This syntax ensures `this` is bound within myChangeHandler and submitHandler.
     // We are using the experimental public class fields syntax, We can use class fields to correctly bind callbacks
     myChangeHandler = (event) => {
-        console.log(event);
         let nam = event.target.name;
         let val = event.target.value;
         this.setState({ [nam]: val });
@@ -40,14 +35,32 @@ class AddJobForm extends Component {
 
     batchChangeHandler = (event) => {
         console.log(event);
-        var obj = this.state.batch;
         let val = event.target.value;
-        obj[val] = !obj[val];
-        this.setState({
-            batch: obj
-        });
+        var new_batch = this.state.batch;
+        const index = this.state.batch.indexOf(val);
+        if (index > -1) {
+            new_batch.splice(index, 1);
+            this.setState({ batch: new_batch });
+        }
+        else {
+            new_batch.push(val);
+            this.setState({ batch: new_batch });
+        }
     }
-    submitHandler = (event) => {
+    roleChangeHandler = (event) => {
+        let val = event.target.value;
+        if (val === "isIntern") {
+            this.setState({
+                isIntern: !this.state.isIntern
+            })
+        }
+        else {
+            this.setState({
+                isFulltime: !this.state.isFulltime
+            })
+        }
+    }
+    submitHandler = async (event) => {
         event.preventDefault();
         const job = {
             companyName: this.state.companyName,
@@ -55,21 +68,19 @@ class AddJobForm extends Component {
             jobLink: this.state.jobLink,
             batch: this.state.batch,
             isReferral: this.state.isReferral,
-            jobExpiry: this.state.jobExpiry
+            jobExpiry: this.state.jobExpiry,
+            isIntern: this.state.isIntern,
+            isFulltime: this.state.isFulltime
 
         }
-
-        axios.post(`${process.env.PUBLIC_URL}/api/add_job`, job).then(
-            (res, err) => {
-                if (err)
-                    throw err;
-                this.setState({ redirect: true })
-            }
-        )
+        console.log("1");
+        await axios.post(`${process.env.PUBLIC_URL}/api/add_job`, job);
+        this.setState({ redirect: true });
+        console.log("job added");
     }
     render() {
         //button logic
-        var x = this.state.companyName && this.state.jobTitle && this.state.jobLink && (this.state.batch.is2021 || this.state.batch.is2022 || this.state.batch.is2023 || this.state.batch.is2024);
+        var x = this.state.companyName && this.state.jobLink && this.state.batch.length && (this.state.isIntern || this.state.isFulltime);
         let pp = x ? <input style={{ color: "red" }} type='submit' /> : "fill the mandatory(*) fields first";
 
 
@@ -92,7 +103,22 @@ class AddJobForm extends Component {
                             name='companyName'
                             onChange={this.myChangeHandler}
                         />
-                        <p>Job Title* :</p>
+                        <p>Role* :</p>
+                        <p>
+                            <label>
+                                <input type="checkbox" name='role'
+                                    onChange={this.roleChangeHandler} value="isIntern"
+                                />
+                                <span>Intern</span>
+                            </label>&nbsp;&nbsp;&nbsp;
+                            <label>
+                                <input type="checkbox" name='role'
+                                    onChange={this.roleChangeHandler} value="isFulltime"
+                                />
+                                <span>Full time</span>
+                            </label>&nbsp;&nbsp;&nbsp;
+                        </p>
+                        <p>Job Title: (e.g. Frontend dev, SDE-1, Tester)</p>
                         <input
                             type='text'
                             name='jobTitle'
@@ -108,31 +134,31 @@ class AddJobForm extends Component {
                         <p>
                             <label>
                                 <input type="checkbox" name='batch'
-                                    onChange={this.batchChangeHandler} value="is2020"
+                                    onChange={this.batchChangeHandler} value="2020"
                                 />
                                 <span>2020</span>
                             </label>&nbsp;&nbsp;&nbsp;
                             <label>
                                 <input type="checkbox" name='batch'
-                                    onChange={this.batchChangeHandler} value="is2021"
+                                    onChange={this.batchChangeHandler} value="2021"
                                 />
                                 <span>2021</span>
                             </label>&nbsp;&nbsp;&nbsp;
                             <label>
                                 <input type="checkbox" name='batch'
-                                    onChange={this.batchChangeHandler} value="is2022"
+                                    onChange={this.batchChangeHandler} value="2022"
                                 />
                                 <span>2022</span>
                             </label>&nbsp;&nbsp;&nbsp;
                             <label>
                                 <input type="checkbox" name='batch'
-                                    onChange={this.batchChangeHandler} value="is2023"
+                                    onChange={this.batchChangeHandler} value="2023"
                                 />
                                 <span>2023</span>
                             </label>&nbsp;&nbsp;&nbsp;
                             <label>
                                 <input type="checkbox" name='batch'
-                                    onChange={this.batchChangeHandler} value="is2024"
+                                    onChange={this.batchChangeHandler} value="2024"
                                 />
                                 <span>2024</span>
                             </label>

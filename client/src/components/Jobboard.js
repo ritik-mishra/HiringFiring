@@ -3,6 +3,7 @@ import axios from 'axios';
 //import localStorage from 'local-storage';
 import Jobcard from './Jobcard';
 import './Jobboard.css';
+import Sortingfilters from "./SortingFilters";
 
 class Jobboard extends Component {
     constructor(props) {
@@ -57,7 +58,7 @@ class Jobboard extends Component {
                 col = "rgb(248, 114, 3)";
             items.push(
                 <button onClick={() => this.clickHandler(num)} key={num} style={{ backgroundColor: col }
-                } className="button button5" > {num}</button>
+                } className="button3 button5" > {num}</button>
             );
         }
 
@@ -66,21 +67,28 @@ class Jobboard extends Component {
 
         if (JOBS)
             return (
-                <div>
-                    <div>
-                        {
-                            JOBS.map(job => (
-                                //Adding key property here is segregating the the jobs being called and on changing the page calling the,
-                                //child's component again
-                                <Jobcard key={job.jobId} job={job} setLocal={this.setLocal} />
-                            )
-                            )
-                        }
-                    </div>
-                    <div className="center">
-                        {items}
-                    </div>
+                <div className="content">
+                    <div className="jobboard">
+                        <div className="jobs">
+                            <div>
+                                {
+                                    JOBS.map(job => (
+                                        //Adding key property here is segregating the the jobs being called and on changing the page calling the,
+                                        //child's component again
+                                        <Jobcard key={job.jobId} job={job} setLocal={this.setLocal} />
+                                    )
+                                    )
+                                }
+                            </div>
+                            <div className="center">
+                                {items}
+                            </div>
 
+                        </div>
+                        <div className="sorting-filters">
+                            <Sortingfilters />
+                        </div>
+                    </div>
                 </div>
             )
         else

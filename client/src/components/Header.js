@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '../media/logo.png';
 
+import './Header.css'
 
 
 class Header extends Component {
@@ -12,7 +13,7 @@ class Header extends Component {
                 return;
             case false:
                 return (
-                    <li><a href={ `${process.env.PUBLIC_URL}/auth/google`}>Login With Google</a></li>
+                    <li><a href={`${process.env.PUBLIC_URL}/auth/google`}>Login With Google</a></li>
                 );
             default:
                 return (
@@ -29,7 +30,7 @@ class Header extends Component {
     render() {
         return (
             <nav>
-                <div className="nav-wrapper" style={{ backgroundColor: "#204060" }}>
+                <div className="nav-wrapper" >
                     <Link
                         // to={this.props.auth ? '/dashboard' : '/'}
                         to='/'
