@@ -106,7 +106,7 @@ module.exports = (app) => {
     app.patch('/api/update/:jobId', async (req,res)=>{
         try{
             //console.log("Updating job");
-            if(req.body.companyName&&req.body.jobTitle&&req.body.role&&req.body.jobLink&&req.body.batch&&req.body.isReferral&&req.body.jobExpiry)
+            if(req.body.companyName&&req.body.jobTitle&&req.body.role&&req.body.jobLink&&req.body.batch)
             {
               const updatedJob=await Job.updateOne({jobId:req.params.jobId},
                 {$set: {
@@ -117,13 +117,9 @@ module.exports = (app) => {
                   batch:req.body.batch,
                   isReferral:req.body.isReferral,
                   jobExpiry:req.body.jobExpiry},
-      
                  });
                  res.send("Job updated");
             }
-        
-        
-        redirect('/dashboard');
         }catch(err){
           res.send(err); 
         }
