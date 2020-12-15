@@ -132,15 +132,15 @@ class EditJobForm extends Component {
                         <p>Role* :</p>
                         <p>
                             <label>
-                                <input type="checkbox" name='role' value="isIntern"
-                                    checked={this.state.role.includes("isIntern")}
+                                <input type="checkbox" name='role' value="Intern"
+                                    checked={this.state.role.includes("Intern")}
                                     onChange={this.roleChangeHandler}
                                 />
                                 <span>Intern</span>
                             </label>&nbsp;&nbsp;&nbsp;
                             <label>
-                                <input type="checkbox" name='role' value="isFulltime"
-                                    checked={this.state.role.includes("isFulltime")}
+                                <input type="checkbox" name='role' value="Full time"
+                                    checked={this.state.role.includes("Full time")}
                                     onChange={this.roleChangeHandler}
                                 />
                                 <span>Full time</span>

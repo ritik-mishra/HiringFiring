@@ -103,13 +103,13 @@ class AddJobForm extends Component {
                             <p>
                                 <label>
                                     <input type="checkbox" name='role'
-                                        onChange={this.roleChangeHandler} value="isIntern"
+                                        onChange={this.roleChangeHandler} value="Intern"
                                     />
                                     <span>Intern</span>
                                 </label>&nbsp;&nbsp;&nbsp;
                             <label>
                                     <input type="checkbox" name='role'
-                                        onChange={this.roleChangeHandler} value="isFulltime"
+                                        onChange={this.roleChangeHandler} value="Full time"
                                     />
                                     <span>Full time</span>
                                 </label>&nbsp;&nbsp;&nbsp;
