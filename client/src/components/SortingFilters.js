@@ -118,7 +118,7 @@ class Sortingfilters extends Component {
             body.batch = ["2020", "2021", "2022", "2023", "2024"];
         }
         if (body.role.length === 0) {
-            body.role = ["isIntern", "isFulltime"];
+            body.role = ["Intern", "Full time"];
         }
         this.props.filterHandler(body);
     }
@@ -222,15 +222,15 @@ class Sortingfilters extends Component {
                     <div style={{ textAlign: "center" }} >Role</div>
                     <p>
                         <label>
-                            <input type="checkbox" name='role' value="isIntern"
-                                checked={this.state.role.includes("isIntern")}
+                            <input type="checkbox" name='role' value="Intern"
+                                checked={this.state.role.includes("Intern")}
                                 onChange={this.roleChangeHandler}
                             />
                             <span>Intern</span>
                         </label>&nbsp;&nbsp;&nbsp;
                             <label>
-                            <input type="checkbox" name='role' value="isFulltime"
-                                checked={this.state.role.includes("isFulltime")}
+                            <input type="checkbox" name='role' value="Full time"
+                                checked={this.state.role.includes("Full time")}
                                 onChange={this.roleChangeHandler}
                             />
                             <span>Full time</span>

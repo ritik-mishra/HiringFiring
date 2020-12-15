@@ -46,7 +46,7 @@ class Jobboard extends Component {
             body.batch = ["2020", "2021", "2022", "2023", "2024"];
         }
         if (body.role.length === 0) {
-            body.role = ["isIntern", "isFulltime"];
+            body.role = ["Intern", "Full time"];
         }
         if (body.companies.length === 0) {
             var comp = await await axios.get(`${process.env.PUBLIC_URL}/api/company_list`);
@@ -55,6 +55,7 @@ class Jobboard extends Component {
         const page_jobs = await axios.get(`${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`);
         const jc = await axios.get(`${process.env.PUBLIC_URL}/api/count_job`);
         const jobcount = parseInt(jc.data);
+        console.log(page_jobs);
         this.setState({
             jobs: page_jobs,
             jobcount: jobcount

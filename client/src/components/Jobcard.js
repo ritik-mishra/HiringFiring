@@ -82,13 +82,13 @@ class Jobcard extends Component {
         var infl = null;
         var role = this.props.job.role;
         if (role.length === 2) {
-            infl = "Intern | Fulltime";
+            infl = "Intern | Full time";
         }
-        else if (role.includes("isIntern")) {
+        else if (role.includes("Intern")) {
             infl = "Intern";
         }
         else
-            infl = "Fulltime";
+            infl = "Full time";
         return infl;
     }
     render() {

@@ -22,10 +22,15 @@ module.exports = (app) => {
     })
     //Get job by page number
     app.get('/api/page_job', requireLogin, async (req, res) => {
-        const page = parseInt(req.query.page);
+        const page = parseInt(req.body.page);
         const PAGE_SIZE = 5;//change this accordingly
         const skip = (page - 1) * PAGE_SIZE;
-        var page_jobs = await Job.find({})
+        const body_batch = req.body.batch;
+        const body_companyName = req.body.companyName;
+        const body_role = req.body.role;
+
+        var page_jobs = await Job.find({  "$and":[  {"batch": { "$in": body_batch }}, {"companyName": {"$in": body_companyName }},
+            {"role": {"$in": body_role }}]} )
             .sort({ postedOn: -1 })
             .skip(skip)
             .limit(PAGE_SIZE);
@@ -60,7 +65,13 @@ module.exports = (app) => {
     })
     //count jobs
     app.get('/api/count_job', requireLogin, async (req, res) => {
-        const jobcount = await Job.countDocuments();
+        const body_batch = req.body.batch;
+        const body_companyName = req.body.companyName;
+        const body_role = req.body.role;
+        
+        var job = await Job.find( { "$and":[  {"batch": { "$in": body_batch }}, {"companyName": {"$in": body_companyName }},
+            {"role": {"$in": body_role }}]} );
+        const jobcount = job.length;
         var jobc = '' + jobcount
         res.send(jobc);
     })
@@ -77,14 +88,12 @@ module.exports = (app) => {
 
     //  Add Job
     app.post('/api/add_job', requireLogin, async (req, res) => {
-        console.log("Yes");
-        if (!req.body.companyName || !req.body.jobTitle || !req.body.jobLink || !req.body.batch) {
+        if (!req.body.companyName || !req.body.role || !req.body.jobLink || !req.body.batch) {
             return res.status(400).send("Mandatory field(s) missing/Input values not coherent with rules");
         }
         const newId = uuidv4();
         var dt = Date.now() + (90 * 24 * 60 * 60 * 1000);
         dt = new Date(dt);
-        console.log(req.body);
         if (req.body.jobExpiry)
             dt = req.body.jobExpiry;
         const newJob = await new Job({
@@ -115,4 +124,17 @@ module.exports = (app) => {
         }
         res.send(true);
     });
+
+    //filter on jobboard
+    app.get('/api/posts',requireLogin, async (req,res) => {
+        const body_batch = req.body.batch;
+        const body_companyName = req.body.companyName;
+        const body_role = req.body.role;
+        
+        var job = await Job.find( { "$and":[  {"batch": { "$in": body_batch }}, {"companyName": {"$in": body_companyName }},
+            {"role": {"$in": body_role }}]} );
+       
+        res.send(job);
+        
+    })
 }

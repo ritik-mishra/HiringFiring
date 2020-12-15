@@ -90,8 +90,7 @@ class EditJobForm extends Component {
             batch: this.state.batch,
             isReferral: this.state.isReferral,
             jobExpiry: this.state.jobExpiry,
-            isIntern: this.state.isIntern,
-            isFulltime: this.state.isFulltime
+            role: this.state.role
         }
 
         var updateLink = `${process.env.PUBLIC_URL}/api/update/` + this.state.jobId;
@@ -133,15 +132,15 @@ class EditJobForm extends Component {
                         <p>Role* :</p>
                         <p>
                             <label>
-                                <input type="checkbox" name='role' value="isIntern"
-                                    checked={this.state.role.includes("isIntern")}
+                                <input type="checkbox" name='role' value="Intern"
+                                    checked={this.state.role.includes("Intern")}
                                     onChange={this.roleChangeHandler}
                                 />
                                 <span>Intern</span>
                             </label>&nbsp;&nbsp;&nbsp;
                             <label>
-                                <input type="checkbox" name='role' value="isFulltime"
-                                    checked={this.state.role.includes("isFulltime")}
+                                <input type="checkbox" name='role' value="Full time"
+                                    checked={this.state.role.includes("Full time")}
                                     onChange={this.roleChangeHandler}
                                 />
                                 <span>Full time</span>
