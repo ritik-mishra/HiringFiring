@@ -79,14 +79,17 @@ class Jobcard extends Component {
         return <i onClick={this.heartClick} className="fa fa-heart" style={{ fontSize: "1.7rem", color: this.state.heart ? "#e68a00" : "#bfbfbf", cursor: "pointer" }}></i>;
     }
     internFulltime = () => {
-        if (this.props.job.isIntern && this.props.job.isFulltime) {
-            return "Intern | Fulltime"
+        var infl = null;
+        var role = this.props.job.role;
+        if (role.length === 2) {
+            infl = "Intern | Fulltime";
         }
-        else if (this.props.job.isIntern) {
-            return "Intern";
+        else if (role.includes("isIntern")) {
+            infl = "Intern";
         }
         else
-            return "Fulltime";
+            infl = "Fulltime";
+        return infl;
     }
     render() {
         const job = this.props.job;//this was previously accessed through state and constructor was not getting called again when the component's key attribute was not specified

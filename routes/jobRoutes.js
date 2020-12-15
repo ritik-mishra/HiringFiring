@@ -84,6 +84,7 @@ module.exports = (app) => {
         const newId = uuidv4();
         var dt = Date.now() + (90 * 24 * 60 * 60 * 1000);
         dt = new Date(dt);
+        console.log(req.body);
         if (req.body.jobExpiry)
             dt = req.body.jobExpiry;
         const newJob = await new Job({
@@ -96,8 +97,7 @@ module.exports = (app) => {
             jobExpiry: dt,
             postedBy: req.user.name,
             postedById: req.user.id,
-            isIntern: req.body.isIntern,
-            isFulltime: req.body.isFulltime
+            role: req.body.role
         }).save();
         res.send(true);
     });

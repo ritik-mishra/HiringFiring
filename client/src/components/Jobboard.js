@@ -4,6 +4,7 @@ import axios from 'axios';
 import Jobcard from './Jobcard';
 import './Jobboard.css';
 import Sortingfilters from "./SortingFilters";
+import Loading from './Loading';
 
 class Jobboard extends Component {
     constructor(props) {
@@ -127,7 +128,7 @@ class Jobboard extends Component {
                 </div>
             )
         else
-            return <h1 className="container" style={{ color: "white" }}>Loading...</h1>
+            return <Loading />
     }
 }
 export default Jobboard;
