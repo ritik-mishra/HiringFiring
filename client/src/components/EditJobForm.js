@@ -87,15 +87,15 @@ class EditJobForm extends Component {
             companyName: this.state.companyName,
             jobTitle: this.state.jobTitle,
             jobLink: this.state.jobLink,
+            role: this.state.role,
             batch: this.state.batch,
             isReferral: this.state.isReferral,
-            jobExpiry: this.state.jobExpiry,
-            role: this.state.role
+            jobExpiry: this.state.jobExpiry
         }
 
         var updateLink = `${process.env.PUBLIC_URL}/api/update/` + this.state.jobId;
 
-        await axios.put(updateLink, newJob);
+        await axios.patch(updateLink, newJob);
         await this.setState({
             redirect: true
         });

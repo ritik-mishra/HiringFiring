@@ -25,6 +25,7 @@ class Jobboard extends Component {
             batch: [],
             jobcount: 1
         }
+        this.refJobs = React.createRef();
     }
     componentDidMount() {
         this.fetchJobs();
@@ -75,7 +76,7 @@ class Jobboard extends Component {
         }, async () => {
             await this.fetchJobs();
         })
-        window.scrollTo(0, 0);
+        this.refJobs.current.scrollTop = 0;
     }
     filterHandler = async (body) => {
         await this.setState({
@@ -112,7 +113,7 @@ class Jobboard extends Component {
             return (
                 <div className="content">
                     <div className="jobboard">
-                        <div className="jobs">
+                        <div className="jobs" id="jobs" ref={this.refJobs}>
                             <div>
                                 {
                                     JOBS.map(job => (

@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const requireLogin = require('../middlewares/requireLogin');
 const requireAuthor = require('../middlewares/requireAuthor');
+const requireFields = require('../middlewares/requireFields');
 
 const keys = require('../config/keys');
 
@@ -89,15 +90,10 @@ module.exports = (app) => {
     })
 
     //  Add Job
-    app.post('/api/add_job', requireLogin, async (req, res) => {
-        if (!req.body.companyName || !req.body.role || !req.body.jobLink || !req.body.batch) {
-            return res.status(400).send("Mandatory field(s) missing/Input values not coherent with rules");
-        }
+    app.post('/api/add_job', requireLogin, requireFields, async (req, res) => {
+
         const newId = uuidv4();
-        var dt = Date.now() + (90 * 24 * 60 * 60 * 1000);
-        dt = new Date(dt);
-        if (req.body.jobExpiry)
-            dt = req.body.jobExpiry;
+        
         const newJob = await new Job({
             jobId: newId,
             companyName: req.body.companyName,
@@ -105,7 +101,7 @@ module.exports = (app) => {
             jobLink: req.body.jobLink,
             batch: req.body.batch,
             isReferral: req.body.isReferral,
-            jobExpiry: dt,
+            jobExpiry: req.body.jobExpiry,
             postedBy: req.user.name,
             postedById: req.user.id,
             role: req.body.role
@@ -114,17 +110,24 @@ module.exports = (app) => {
     });
 
     //update jobs
-    app.put('/api/update/:jobId', requireLogin, requireAuthor, async (req, res) => {
-        try {
-            let job = await Job.findOneAndUpdate({ jobId: req.params.jobId }, req.body, {
-                new: true,
-                runValidators: true,
-            });
-            res.status(200).send(job);
-        } catch (err) {
-            console.error(err);
+    app.patch('/api/update/:jobId', requireLogin, requireAuthor, requireFields, async (req,res)=>{
+        try{
+            const updatedJob=await Job.updateOne({jobId:req.params.jobId},
+            {$set: {
+                companyName:req.body.companyName,
+                role:req.body.role,
+                jobTitle:req.body.jobTitle,
+                jobLink:req.body.jobLink,
+                batch:req.body.batch,
+                isReferral:req.body.isReferral,
+                jobExpiry:req.body.jobExpiry},
+                });
+                res.send("Job updated");
+            
         }
-        res.send(true);
+        catch(err){
+          res.send(err); 
+        }
     });
 
 }
