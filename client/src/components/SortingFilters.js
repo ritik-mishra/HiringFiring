@@ -129,6 +129,7 @@ class Sortingfilters extends Component {
                 <div style={{ marginTop: "1rem" }} className="sorting">
                     <div style={{ textAlign: 'center' }}><b>Sort By</b></div>
                     <hr />
+                    <br />
                     <label>
                         <input className="with-gap" type="radio"
                             name='sort' value="recentpost"
@@ -136,8 +137,9 @@ class Sortingfilters extends Component {
                             onChange={this.sortByHandler}
                         />
                         <span >Recent Posted</span>
-                    </label>&nbsp;&nbsp;&nbsp;
-                            <label>
+                    </label>
+                    <br />
+                    <label>
                         <input className="with-gap" type="radio"
                             name='sort' value="firstpost"
                             checked={this.state.checkSort === "firstpost"}
@@ -145,6 +147,7 @@ class Sortingfilters extends Component {
                         />
                         <span >First Posted</span>
                     </label>
+                    <br />
                     <label>
                         <input className="with-gap" type="radio"
                             name='sort' value="recentexpiry"
@@ -153,6 +156,7 @@ class Sortingfilters extends Component {
                         />
                         <span >Recent Expiry</span>
                     </label>
+                    <br />
                     <label>
                         <input className="with-gap" type="radio"
                             name='sort' value="lastexpiry"
@@ -161,6 +165,7 @@ class Sortingfilters extends Component {
                         />
                         <span >Late Expiry</span>
                     </label>
+                    <br />
                     <label>
                         <input className="with-gap" type="radio"
                             name='sort' value="mostliked"
@@ -169,6 +174,7 @@ class Sortingfilters extends Component {
                         <span >Most Liked</span>
                     </label>
                 </div>
+                <br />
 
 
 
@@ -193,8 +199,9 @@ class Sortingfilters extends Component {
                                 onChange={this.batchChangeHandler}
                             />
                             <span>2021</span>
-                        </label>&nbsp;&nbsp;&nbsp;
-                            <label>
+                        </label>
+                        <br />
+                        <label>
                             <input type="checkbox" name='batch' value="2022"
                                 checked={this.state.batch.includes("2022")}
                                 onChange={this.batchChangeHandler}
@@ -207,8 +214,9 @@ class Sortingfilters extends Component {
                                 onChange={this.batchChangeHandler}
                             />
                             <span>2023</span>
-                        </label>&nbsp;&nbsp;&nbsp;
-                            <label>
+                        </label>
+                        <br />
+                        <label>
                             <input type="checkbox" name='batch' value="2024"
                                 checked={this.state.batch.includes("2024")}
                                 onChange={this.batchChangeHandler}
@@ -237,7 +245,7 @@ class Sortingfilters extends Component {
                         </label>&nbsp;&nbsp;&nbsp;
                         </p>
                     <div style={{ textAlign: "center" }} >
-                        <p><b>Company</b> (atmost 5)</p>
+                        <p><b>Companies</b> (atmost 5)</p>
                     </div>
                     <div style={{ color: "black" }}>
                         <Multiselect
