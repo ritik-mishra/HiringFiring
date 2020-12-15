@@ -4,6 +4,7 @@ import axios from 'axios';
 import Jobcard from './Jobcard';
 import './Jobboard.css';
 import Sortingfilters from "./SortingFilters";
+import Loading from './Loading';
 
 class Jobboard extends Component {
     constructor(props) {
@@ -17,6 +18,11 @@ class Jobboard extends Component {
         this.state = {
             jobs: [],
             page: pg,
+            selectedCompanies: [],
+            role: [],
+            sortBy: "postedOn",
+            comparator: -1,
+            batch: [],
             jobcount: 1
         }
     }
@@ -28,6 +34,24 @@ class Jobboard extends Component {
         localStorage.setItem("page", this.state.page);
     }
     async fetchJobs() {
+        var body = {
+            page: this.state.page,
+            sortBy: this.state.sortBy,
+            comparator: this.state.comparator,
+            batch: this.state.batch,
+            role: this.state.role,
+            companies: this.state.selectedCompanies
+        }
+        if (body.batch.length === 0) {
+            body.batch = ["2020", "2021", "2022", "2023", "2024"];
+        }
+        if (body.role.length === 0) {
+            body.role = ["isIntern", "isFulltime"];
+        }
+        if (body.companies.length === 0) {
+            var comp = await await axios.get(`${process.env.PUBLIC_URL}/api/company_list`);
+            body.companies = comp.data;
+        }
         const page_jobs = await axios.get(`${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`);
         const jc = await axios.get(`${process.env.PUBLIC_URL}/api/count_job`);
         const jobcount = parseInt(jc.data);
@@ -44,6 +68,17 @@ class Jobboard extends Component {
             await this.fetchJobs();
         })
         window.scrollTo(0, 0);
+    }
+    filterHandler = async (body) => {
+        await this.setState({
+            page: 1,
+            sortBy: body.sortBy,
+            comparator: body.comparator,
+            batch: body.batch,
+            role: body.role,
+            selectedCompanies: body.selectedCompanies
+        })
+        this.fetchJobs();
     }
     render() {
 
@@ -86,13 +121,13 @@ class Jobboard extends Component {
 
                         </div>
                         <div className="sorting-filters">
-                            <Sortingfilters />
+                            <Sortingfilters filterHandler={this.filterHandler} />
                         </div>
                     </div>
                 </div>
             )
         else
-            return <h1 className="container" style={{ color: "white" }}>Loading...</h1>
+            return <Loading />
     }
 }
 export default Jobboard;

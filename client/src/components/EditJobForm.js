@@ -25,8 +25,7 @@ class EditJobForm extends Component {
             batch: editJob.batch,
             isReferral: editJob.isReferral,
             jobExpiry: editJob.jobExpiry.toString().substr(0, 10),
-            isIntern: editJob.isIntern,
-            isFulltime: editJob.isFulltime
+            role: editJob.role
         })
     }
     constructor(props) {
@@ -41,8 +40,7 @@ class EditJobForm extends Component {
             batch: '',
             isReferral: '',
             jobExpiry: '',
-            isIntern: null,
-            isFulltime: null
+            role: []
         };
         //In JavaScript, class methods are not bound by default. 
         //If you forget to bind this.myChangeHandler and pass it to onChange, this will be undefined when the function is actually called.
@@ -72,15 +70,15 @@ class EditJobForm extends Component {
     }
     roleChangeHandler = async (event) => {
         let val = event.target.value;
-        if (val === "isIntern") {
-            await this.setState({
-                isIntern: !this.state.isIntern
-            })
+        var new_role = this.state.role;
+        const index = this.state.role.indexOf(val);
+        if (index > -1) {
+            new_role.splice(index, 1);
+            this.setState({ role: new_role });
         }
         else {
-            await this.setState({
-                isFulltime: !this.state.isFulltime
-            })
+            new_role.push(val);
+            this.setState({ role: new_role });
         }
     }
     submitHandler = async (event) => {
@@ -109,7 +107,7 @@ class EditJobForm extends Component {
             return <Redirect push to="/jobboard" />
         }
         let allowSubmit = '';
-        if (this.state.companyName && this.state.jobLink && this.state.batch.length && (this.state.isIntern || this.state.isFulltime)) {
+        if (this.state.companyName && this.state.jobLink && this.state.batch.length && this.state.role.length) {
             allowSubmit = <input
                 style={{ color: "red" }}
                 type='submit'
@@ -136,14 +134,14 @@ class EditJobForm extends Component {
                         <p>
                             <label>
                                 <input type="checkbox" name='role' value="isIntern"
-                                    checked={this.state.isIntern}
+                                    checked={this.state.role.includes("isIntern")}
                                     onChange={this.roleChangeHandler}
                                 />
                                 <span>Intern</span>
                             </label>&nbsp;&nbsp;&nbsp;
                             <label>
                                 <input type="checkbox" name='role' value="isFulltime"
-                                    checked={this.state.isFulltime}
+                                    checked={this.state.role.includes("isFulltime")}
                                     onChange={this.roleChangeHandler}
                                 />
                                 <span>Full time</span>
