@@ -49,13 +49,20 @@ class Jobboard extends Component {
             body.role = ["Intern", "Full time"];
         }
         if (body.companies.length === 0) {
-            var comp = await await axios.get(`${process.env.PUBLIC_URL}/api/company_list`);
+            var comp = await axios.get(`${process.env.PUBLIC_URL}/api/company_list`);
             body.companies = comp.data;
         }
-        const page_jobs = await axios.get(`${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`);
-        const jc = await axios.get(`${process.env.PUBLIC_URL}/api/count_job`);
+        
+        const page_jobs = await axios({
+            method: 'get',
+            url: `${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`,
+            params:body});
+        const jc = await axios(
+            {method: 'get',
+            url: `${process.env.PUBLIC_URL}/api/count_job`,
+            params:body});
+
         const jobcount = parseInt(jc.data);
-        console.log(page_jobs);
         this.setState({
             jobs: page_jobs,
             jobcount: jobcount

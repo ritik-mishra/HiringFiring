@@ -22,16 +22,17 @@ module.exports = (app) => {
     })
     //Get job by page number
     app.get('/api/page_job', requireLogin, async (req, res) => {
-        const page = parseInt(req.body.page);
+        const page = parseInt(req.query.page);
         const PAGE_SIZE = 5;//change this accordingly
         const skip = (page - 1) * PAGE_SIZE;
-        const body_batch = req.body.batch;
-        const body_companyName = req.body.companyName;
-        const body_role = req.body.role;
-
+        const body_batch = req.query.batch;
+        const body_companyName = req.query.companies;
+        const body_role = req.query.role;
+        const sortBy = req.query.sortBy;
+        
         var page_jobs = await Job.find({  "$and":[  {"batch": { "$in": body_batch }}, {"companyName": {"$in": body_companyName }},
-            {"role": {"$in": body_role }}]} )
-            .sort({ postedOn: -1 })
+            {"role": {"$in": body_role }}]})
+            .sort({[req.query.sortBy]: req.query.comparator})
             .skip(skip)
             .limit(PAGE_SIZE);
         res.send(page_jobs);
@@ -65,14 +66,15 @@ module.exports = (app) => {
     })
     //count jobs
     app.get('/api/count_job', requireLogin, async (req, res) => {
-        const body_batch = req.body.batch;
-        const body_companyName = req.body.companyName;
-        const body_role = req.body.role;
+        const body_batch = req.query.batch;
+        const body_companyName = req.query.companies;
+        const body_role = req.query.role;
         
         var job = await Job.find( { "$and":[  {"batch": { "$in": body_batch }}, {"companyName": {"$in": body_companyName }},
             {"role": {"$in": body_role }}]} );
         const jobcount = job.length;
         var jobc = '' + jobcount
+        
         res.send(jobc);
     })
 
@@ -125,16 +127,4 @@ module.exports = (app) => {
         res.send(true);
     });
 
-    //filter on jobboard
-    app.get('/api/posts',requireLogin, async (req,res) => {
-        const body_batch = req.body.batch;
-        const body_companyName = req.body.companyName;
-        const body_role = req.body.role;
-        
-        var job = await Job.find( { "$and":[  {"batch": { "$in": body_batch }}, {"companyName": {"$in": body_companyName }},
-            {"role": {"$in": body_role }}]} );
-       
-        res.send(job);
-        
-    })
 }
