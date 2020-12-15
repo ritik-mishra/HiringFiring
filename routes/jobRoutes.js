@@ -103,16 +103,25 @@ module.exports = (app) => {
     });
 
     //update jobs
-    app.put('/api/update/:jobId', requireLogin, requireAuthor, async (req, res) => {
-        try {
-            let job = await Job.findOneAndUpdate({ jobId: req.params.jobId }, req.body, {
-                new: true,
-                runValidators: true,
-            });
-            res.status(200).send(job);
-        } catch (err) {
-            console.error(err);
+    app.patch('/api/update/:jobId', async (req,res)=>{
+        try{
+            //console.log("Updating job");
+            if(req.body.companyName&&req.body.jobTitle&&req.body.role&&req.body.jobLink&&req.body.batch)
+            {
+              const updatedJob=await Job.updateOne({jobId:req.params.jobId},
+                {$set: {
+                  companyName:req.body.companyName,
+                  role:req.body.role,
+                  jobTitle:req.body.jobTitle,
+                  jobLink:req.body.jobLink,
+                  batch:req.body.batch,
+                  isReferral:req.body.isReferral,
+                  jobExpiry:req.body.jobExpiry},
+                 });
+                 res.send("Job updated");
+            }
+        }catch(err){
+          res.send(err); 
         }
-        res.send(true);
-    });
+      });
 }
