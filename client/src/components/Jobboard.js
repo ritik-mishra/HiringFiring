@@ -52,7 +52,6 @@ class Jobboard extends Component {
             var comp = await await axios.get(`${process.env.PUBLIC_URL}/api/company_list`);
             body.companies = comp.data;
         }
-        console.log(body);
         const page_jobs = await axios.get(`${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`);
         const jc = await axios.get(`${process.env.PUBLIC_URL}/api/count_job`);
         const jobcount = parseInt(jc.data);

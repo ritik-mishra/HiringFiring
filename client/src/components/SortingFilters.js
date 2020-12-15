@@ -23,8 +23,8 @@ class Sortingfilters extends Component {
             },
             searchBox: {
                 border: "none",
-                "border-bottom": "1px solid blue",
-                "border-radius": "0px"
+                "borderBottom": "1px solid blue",
+                "borderRadius": "0px"
             },
             multiselectContainer: {
                 color: "red"
@@ -253,7 +253,7 @@ class Sortingfilters extends Component {
                     </div>
 
 
-                    <button style={{ marginLeft: "4rem" }} onClick={this.applyClickHandler} class="button"><b>Apply</b></button>
+                    <button style={{ marginLeft: "4rem" }} onClick={this.applyClickHandler} className="button"><b>Apply</b></button>
                 </div>
             </div >
         )

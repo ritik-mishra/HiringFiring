@@ -5,7 +5,7 @@ class Loading extends Component {
     render() {
         return (
             <div style={{ marginTop: "20rem" }} className="bookshelf_wrapper">
-                <ul class="books_list">
+                <ul className="books_list">
                     <li className="book_item first"></li>
                     <li className="book_item second"></li>
                     <li className="book_item third"></li>
