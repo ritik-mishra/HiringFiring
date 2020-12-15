@@ -15,7 +15,8 @@ class Sortingfilters extends Component {
             batch: [],
             role: [],
             selectedCompanies: [],
-            company_list: []
+            company_list: [],
+            isFilterProcessing: false
         }
         this.style = {
             chips: {
@@ -103,7 +104,11 @@ class Sortingfilters extends Component {
             selectedCompanies: event
         })
     }
-    applyClickHandler = () => {
+    applyClickHandler = async() => {
+        if (!this.state.isFilterProcessing) {
+            await this.setState({
+                isFilterProcessing: true
+            })}
         var body = {
             sortBy: this.state.sortBy,
             comparator: this.state.comparator,
@@ -121,6 +126,9 @@ class Sortingfilters extends Component {
             body.role = ["Intern", "Full time"];
         }
         this.props.filterHandler(body);
+        await this.setState({
+            isFilterProcessing: false
+        });
     }
     render() {
 
