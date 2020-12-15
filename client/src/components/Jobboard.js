@@ -35,6 +35,7 @@ class Jobboard extends Component {
         localStorage.setItem("page", this.state.page);
     }
     async fetchJobs() {
+        this.refJobs.current.scrollTop = 0;
         var body = {
             page: this.state.page,
             sortBy: this.state.sortBy,
@@ -76,7 +77,7 @@ class Jobboard extends Component {
         }, async () => {
             await this.fetchJobs();
         })
-        this.refJobs.current.scrollTop = 0;
+        
     }
     filterHandler = async (body) => {
         await this.setState({
