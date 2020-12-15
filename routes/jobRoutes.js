@@ -33,7 +33,7 @@ module.exports = (app) => {
         res.send(page_jobs);
     })
     //Add liker
-    app.post('/api/add_liker', requireLogin, requireFields,async (req, res) => {
+    app.post('/api/add_liker', requireLogin, async (req, res) => {
         const user = req.body.user;
         const jobId = req.body.jobId;
         var job = await Job.findOne({ jobId: jobId });
