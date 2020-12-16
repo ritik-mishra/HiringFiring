@@ -68,6 +68,7 @@ class Jobboard extends Component {
             jobs: page_jobs,
             jobcount: jobcount
         })
+        this.refJobs.current.scrollTop = 0;
     }
     async clickHandler(p) {
         const newp = parseInt(p);
@@ -76,7 +77,7 @@ class Jobboard extends Component {
         }, async () => {
             await this.fetchJobs();
         })
-        this.refJobs.current.scrollTop = 0;
+//         this.refJobs.current.scrollTop = 0;
     }
     filterHandler = async (body) => {
         await this.setState({
