@@ -39,7 +39,7 @@ class Jobcard extends Component {
             showCard: false
         });
         var del_link = `${process.env.PUBLIC_URL}/api/delete_job/` + this.props.job.jobId;
-        const res = await axios.delete(del_link);
+        const res = await axios.patch(del_link);
     }
 
     editHandler = async (event) => {
@@ -52,7 +52,7 @@ class Jobcard extends Component {
             await this.setState({
                 isLikeProcessing: true
             })
-            var body = { user: this.person, jobId: this.props.job.jobId };
+            var body = { jobId: this.props.job.jobId };
             if (this.state.heart) {
                 this.setState({
                     heart: !this.state.heart,
