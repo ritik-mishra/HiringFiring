@@ -37,7 +37,7 @@ class Header extends Component {
                         className="left brand-logo"
                     >
                         {/* Hiring-Firing */}
-                        <img src={logo} alt="Logo" style={{ width: "90px", height: "55px", marginLeft: "10px", marginTop: "5px" }} />
+                        <img src={logo} alt="Logo" style={{ width: "4rem", height: "3rem", marginLeft: "1rem", marginTop: "0.5rem" }} />
                     </Link>
                     <ul className="right">
                         {this.renderContent()}
