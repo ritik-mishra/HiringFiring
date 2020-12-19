@@ -7,7 +7,8 @@ const jobStackSchema = new Schema({
     jobId: String,
     status: { type: String, default: "Not Applied" },
     followUp: { type: String, default: "No" },
-    comment: { type: String, default: "" }
-})
+    comment: { type: String, default: "" },
+    addTime: { type: Date, default: Date.now }
+});
 
 mongoose.model('jobstack', jobStackSchema);

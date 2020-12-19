@@ -23,13 +23,17 @@ class Jobboard extends Component {
             sortBy: "postedOn",
             comparator: -1,
             batch: [],
-            jobcount: 1
+            jobcount: 1,
+            userJobstack: []
         }
         this.refJobs = React.createRef();
+        // this.userJobstack = [];
     }
-    componentDidMount() {
+    async componentDidMount() {
         this.fetchJobs();
-        window.scrollTo(0, 0);
+        const userJobstack = await axios.get(`${process.env.PUBLIC_URL}/api/jobstack_userjobs`);
+        this.setState({ userJobstack: userJobstack.data });
+        console.log(this.state.userJobstack);
     }
     setLocal = (x) => {
         localStorage.setItem("page", this.state.page);
@@ -121,7 +125,7 @@ class Jobboard extends Component {
                                     JOBS.map(job => (
                                         //Adding key property here is segregating the the jobs being called and on changing the page calling the,
                                         //child's component again
-                                        <Jobcard key={job.jobId} job={job} setLocal={this.setLocal} />
+                                        <Jobcard key={job.jobId} job={job} setLocal={this.setLocal} notButton={this.state.userJobstack.includes(job.jobId)} />
                                     )
                                     )
                                 }

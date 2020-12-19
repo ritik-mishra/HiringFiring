@@ -20,6 +20,7 @@ class Header extends Component {
                     <div>
                         <li><a href={`${process.env.PUBLIC_URL}/jobboard`}>Job Board</a></li>
                         <li><a href={`${process.env.PUBLIC_URL}/addnewjob`}> Add New Job</a></li>
+                        <li><a href={`${process.env.PUBLIC_URL}/myjobstack`}>My Jobstack</a></li>
                         <li><a href={`${process.env.PUBLIC_URL}/api/logout`}>Logout</a></li>
                     </div>
                 );

@@ -17,7 +17,8 @@ const jobSchema = new Schema({
     likersCount: { type: Number, default: 0 },
     role: Array,
     isDeleted: { type: Boolean, default: false },
-    lastModified: { type: Date, default: Date.now }
+    lastModified: { type: Date, default: Date.now },
+    salary: String
 });
 
 mongoose.model('jobs', jobSchema);

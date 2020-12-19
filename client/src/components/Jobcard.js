@@ -20,7 +20,8 @@ class Jobcard extends Component {
             redirect: false,
             heart: h,
             heartCount: hc,
-            isLikeProcessing: false
+            isLikeProcessing: false,
+            noAddJobstackButton: this.props.notButton
         };
     }
     componentDidMount() {
@@ -77,6 +78,18 @@ class Jobcard extends Component {
     }
     getHeart = () => {
         return <i onClick={this.heartClick} className="fa fa-heart" style={{ fontSize: "1.7rem", color: this.state.heart ? "#e68a00" : "#bfbfbf", cursor: "pointer" }}></i>;
+    }
+    addJobstackHandler = async () => {
+        this.setState({
+            noAddJobstackButton: true
+        })
+        var add = `${process.env.PUBLIC_URL}/api/addto_jobstack/` + this.props.job.jobId;
+        const res = await axios.post(add);
+    }
+    getJobstackButton = () => {
+        if (this.state.noAddJobstackButton)
+            return <button disabled style={{ display: "inline", float: "right" }} >Added in Jobstack</button>
+        return <button onClick={this.addJobstackHandler} style={{ display: "inline", float: "right" }} >Add to Jobstack</button>
     }
     internFulltime = () => {
         var infl = null;
@@ -138,7 +151,8 @@ class Jobcard extends Component {
                             <div className="col s12 m6">
                                 <div className="card blue-grey darken-1">
                                     <div className="card-content white-text">
-                                        <span className="card-title"><b>{job.companyName}</b></span>
+                                        <span style={{ display: "inline" }} className="card-title"><b>{job.companyName}</b></span>
+                                        {this.getJobstackButton()}
                                         <hr></hr>
                                         <p>Role: {this.internFulltime()}</p>
                                         <p>Job Title: {job.jobTitle}</p>

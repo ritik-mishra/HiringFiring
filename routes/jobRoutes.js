@@ -17,10 +17,16 @@ module.exports = (app) => {
             res.send(all_jobs);
         });
     });
+    //get single Job by,to be used in jobstack
+    app.get('/api/jobidjob/:jobId', requireLogin, async (req, res) => {
+        const job = await Job.findOne({ "jobId": req.params['jobId'] });
+        res.send(job);
+    });
+    //company list to be used to populate in dropdown
     app.get('/api/company_list', requireLogin, async (req, res) => {
         var list = await Job.find().distinct('companyName');
         res.send(list);
-    })
+    });
     //Get job by page number
     app.get('/api/page_job', requireLogin, async (req, res) => {
         const page = parseInt(req.query.page);
