@@ -20,6 +20,7 @@ class Header extends Component {
                     <div>
                         <li><a href={`${process.env.PUBLIC_URL}/jobboard`}>Job Board</a></li>
                         <li><a href={`${process.env.PUBLIC_URL}/addnewjob`}> Add New Job</a></li>
+                        <li><a href={`${process.env.PUBLIC_URL}/myjobstack`}>My Jobstack</a></li>
                         <li><a href={`${process.env.PUBLIC_URL}/api/logout`}>Logout</a></li>
                     </div>
                 );
@@ -37,7 +38,7 @@ class Header extends Component {
                         className="left brand-logo"
                     >
                         {/* Hiring-Firing */}
-                        <img src={logo} alt="Logo" style={{ width: "90px", height: "55px", marginLeft: "10px", marginTop: "5px" }} />
+                        <img src={logo} alt="Logo" style={{ width: "4rem", height: "3rem", marginLeft: "1rem", marginTop: "0.5rem" }} />
                     </Link>
                     <ul className="right">
                         {this.renderContent()}
