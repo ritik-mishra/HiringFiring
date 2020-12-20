@@ -9,6 +9,7 @@ import Landing from './Landing';
 import AddJobForm from './AddJobForm';
 import Jobboard from './Jobboard';
 import EditJobForm from './EditJobForm';
+import Jobstack from './Jobstack';
 
 class App extends Component {
     //Lifecycle hook
@@ -26,6 +27,7 @@ class App extends Component {
                         <Header />
                         <Route exact path="/" component={Landing} />
                         <Route exact path="/jobboard" component={Jobboard} />
+                        <Route exact path="/jobstack" component={Jobstack} />
                         <Route exact path="/addnewjob" component={AddJobForm} />
                         <Route exact path="/editjob" render={(props) => <EditJobForm {...props} />} />
                     </div>
