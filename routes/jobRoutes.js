@@ -17,10 +17,16 @@ module.exports = (app) => {
             res.send(all_jobs);
         });
     });
+    //get single Job by,to be used in jobstack
+    app.get('/api/jobidjob/:jobId', requireLogin, async (req, res) => {
+        const job = await Job.findOne({ "jobId": req.params['jobId'] });
+        res.send(job);
+    });
+    //company list to be used to populate in dropdown
     app.get('/api/company_list', requireLogin, async (req, res) => {
         var list = await Job.find().distinct('companyName');
         res.send(list);
-    })
+    });
     //Get job by page number
     app.get('/api/page_job', requireLogin, async (req, res) => {
         const page = parseInt(req.query.page);
@@ -30,20 +36,24 @@ module.exports = (app) => {
         const body_companyName = req.query.companies;
         const body_role = req.query.role;
         const sortBy = req.query.sortBy;
-        
-        var page_jobs = await Job.find({  "$and":[  {"batch": { "$in": body_batch }}, {"companyName": {"$in": body_companyName }},
-            {"role": {"$in": body_role }}]})
-            .sort({[req.query.sortBy]: req.query.comparator})
+
+        var page_jobs = await Job.find({
+            "$and": [{ "batch": { "$in": body_batch } }, { isDeleted: false }, { "companyName": { "$in": body_companyName } },
+            { "role": { "$in": body_role } }]
+        })
+            .sort({ [req.query.sortBy]: req.query.comparator })
             .skip(skip)
             .limit(PAGE_SIZE);
         res.send(page_jobs);
     })
     //Add liker
     app.post('/api/add_liker', requireLogin, async (req, res) => {
-        const user = req.body.user;
+        const user = req.user.googleId
+        console.log(user);
         const jobId = req.body.jobId;
         var job = await Job.findOne({ jobId: jobId });
         var isPresent = job.likers.includes(user);
+        console.log(isPresent);
         if (!isPresent) {
             job.likers.push(user);
             job.likersCount += 1;
@@ -53,7 +63,7 @@ module.exports = (app) => {
     })
     //remove liker
     app.post('/api/remove_liker', requireLogin, async (req, res) => {
-        const user = req.body.user;
+        const user = req.user.googleId;
         const jobId = req.body.jobId;
         var job = await Job.findOne({ jobId: jobId });
         var isPresent = job.likers.includes(user);
@@ -70,30 +80,34 @@ module.exports = (app) => {
         const body_batch = req.query.batch;
         const body_companyName = req.query.companies;
         const body_role = req.query.role;
-        
-        var job = await Job.find( { "$and":[  {"batch": { "$in": body_batch }}, {"companyName": {"$in": body_companyName }},
-            {"role": {"$in": body_role }}]} );
+
+        var job = await Job.find({
+            "$and": [{ "batch": { "$in": body_batch } }, { isDeleted: false }, { "companyName": { "$in": body_companyName } },
+            { "role": { "$in": body_role } }]
+        });
         const jobcount = job.length;
         var jobc = '' + jobcount
-        
+
         res.send(jobc);
     })
 
     //  Delete Job
-    app.delete('/api/delete_job/:jobId', requireLogin, requireAuthor, async (req, res) => {
+    app.patch('/api/delete_job/:jobId', requireLogin, requireAuthor, async (req, res) => {
         const jobId = req.params['jobId'];
-        const del = await Job.deleteOne({ jobId: jobId }, (err) => {
+        const job = await Job.findOne({ jobId: jobId }, (err) => {
             if (err)
                 throw err;
         });
-        res.send(del);
+        job.isDeleted = true;
+        job.save();
+        res.send(true);
     })
 
     //  Add Job 
     app.post('/api/add_job', requireLogin, requireFields, async (req, res) => {
 
         const newId = uuidv4();
-        
+
         const newJob = await new Job({
             jobId: newId,
             companyName: req.body.companyName,
@@ -110,23 +124,25 @@ module.exports = (app) => {
     });
 
     //update jobs
-    app.patch('/api/update/:jobId', requireLogin, requireAuthor, requireFields, async (req,res)=>{
-        try{
-            const updatedJob=await Job.updateOne({jobId:req.params.jobId},
-            {$set: {
-                companyName:req.body.companyName,
-                role:req.body.role,
-                jobTitle:req.body.jobTitle,
-                jobLink:req.body.jobLink,
-                batch:req.body.batch,
-                isReferral:req.body.isReferral,
-                jobExpiry:req.body.jobExpiry},
+    app.patch('/api/update/:jobId', requireLogin, requireAuthor, requireFields, async (req, res) => {
+        try {
+            const updatedJob = await Job.updateOne({ jobId: req.params.jobId },
+                {
+                    $set: {
+                        companyName: req.body.companyName,
+                        role: req.body.role,
+                        jobTitle: req.body.jobTitle,
+                        jobLink: req.body.jobLink,
+                        batch: req.body.batch,
+                        isReferral: req.body.isReferral,
+                        jobExpiry: req.body.jobExpiry
+                    },
                 });
-                res.send("Job updated");
-            
+            res.send("Job updated");
+
         }
-        catch(err){
-          res.send(err); 
+        catch (err) {
+            res.send(err);
         }
     });
 

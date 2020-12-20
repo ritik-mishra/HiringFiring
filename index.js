@@ -5,6 +5,7 @@ const passport = require('passport');
 const keys = require('./config/keys');
 require('./models/User');
 require('./models/Jobs');
+require('./models/Jobstack');
 require('./services/passport');
 require('dotenv').config();
 
@@ -25,14 +26,15 @@ require('./routes/authRoutes')(app);
 app.use(express.json());
 
 require('./routes/jobRoutes')(app);
+require('./routes/jobstackRoutes')(app);
 
-if(process.env.NODE_ENV === 'production'){
+if (process.env.NODE_ENV === 'production') {
     //Serve Production assets, main.js and main.css
     app.use(express.static('client/build'));
 
     //serve index.html file
     const path = require('path');
-    app.get('*',(req, res) => {
+    app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     })
 }

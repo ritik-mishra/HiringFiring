@@ -24,13 +24,17 @@ class Jobboard extends Component {
             sortBy: "postedOn",
             comparator: -1,
             batch: [],
-            jobcount: 1
+            jobcount: 1,
+            userJobstack: []
         }
         this.refJobs = React.createRef();
+        // this.userJobstack = [];
     }
-    componentDidMount() {
+    async componentDidMount() {
         this.fetchJobs();
-        window.scrollTo(0, 0);
+        const userJobstack = await axios.get(`${process.env.PUBLIC_URL}/api/jobstack_userjobs`);
+        this.setState({ userJobstack: userJobstack.data });
+        console.log(this.state.userJobstack);
     }
     setLocal = (x) => {
         localStorage.setItem("page", this.state.page);
@@ -54,16 +58,18 @@ class Jobboard extends Component {
             var comp = await axios.get(`${process.env.PUBLIC_URL}/api/company_list`);
             body.companies = comp.data;
         }
-        
+
         const page_jobs = await axios({
             method: 'get',
             url: `${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`,
-            params:body});
+            params: body
+        });
         const jc = await axios(
-            {method: 'get',
-            url: `${process.env.PUBLIC_URL}/api/count_job`,
-            params:body});
-
+            {
+                method: 'get',
+                url: `${process.env.PUBLIC_URL}/api/count_job`,
+                params: body
+            });
         const jobcount = parseInt(jc.data);
         this.setState({
             jobs: page_jobs,
@@ -78,7 +84,6 @@ class Jobboard extends Component {
         }, async () => {
             await this.fetchJobs();
         })
-//         this.refJobs.current.scrollTop = 0;
     }
     filterHandler = async (body) => {
         await this.setState({
@@ -122,7 +127,7 @@ class Jobboard extends Component {
                                     JOBS.map(job => (
                                         //Adding key property here is segregating the the jobs being called and on changing the page calling the,
                                         //child's component again
-                                        <Jobcard key={job.jobId} job={job} setLocal={this.setLocal} />
+                                        <Jobcard key={job.jobId} job={job} setLocal={this.setLocal} notButton={this.state.userJobstack.includes(job.jobId)} />
                                     )
                                     )
                                 }

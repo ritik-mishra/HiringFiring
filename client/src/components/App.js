@@ -10,6 +10,7 @@ import Landing from './Landing';
 import AddJobForm from './AddJobForm';
 import Jobboard from './Jobboard';
 import EditJobForm from './EditJobForm';
+import Jobstack from './Jobstack';
 
 
 class App extends Component {
@@ -22,6 +23,7 @@ class App extends Component {
     }
     render() {
         return (
+<<<<<<< HEAD
                 <div>
                     {this.props.location.pathname !== '/jobboard' && <Header/>}
                     <Route exact path="/jobboard" component={Jobboard} />
@@ -29,6 +31,20 @@ class App extends Component {
                     <Route exact path="/addnewjob" component={AddJobForm} />
                     <Route exact path="/editjob" render={(props) => <EditJobForm {...props} />} />
                 </div>
+=======
+            <div>
+                <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
+                    <div>
+                        <Header />
+                        <Route exact path="/" component={Landing} />
+                        <Route exact path="/jobboard" component={Jobboard} />
+                        <Route exact path="/addnewjob" component={AddJobForm} />
+                        <Route exact path="/editjob" render={(props) => <EditJobForm {...props} />} />
+                        <Route exact path="/myjobstack" component={Jobstack} />
+                    </div>
+                </BrowserRouter>
+            </div >
+>>>>>>> 9480c0b9c2a165329414aeecb6be4b9842037cfb
         );
     }
 };
