@@ -29,6 +29,7 @@ class App extends Component {
                     <Route exact path="/" component={Landing} />
                     <Route exact path="/addnewjob" component={AddJobForm} />
                     <Route exact path="/editjob" render={(props) => <EditJobForm {...props} />} />
+                    <Route exact path="/myjobstack" component={Jobstack} />
                 </div>
         );
     }
