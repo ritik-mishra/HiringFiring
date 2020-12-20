@@ -10,7 +10,7 @@ const requireFields = require('../middlewares/requireFields');
 module.exports = (app) => {
     //add a job in jobstack of a user
     app.post('/api/addto_jobstack/:jobId', requireLogin, async (req, res) => {
-        const jb = await Jobstack.find({ "jobId": req.params['jobId'] });
+        const jb = await Jobstack.find({ "jobId": req.params['jobId'], "googleId": req.user.googleId });
         if (jb.length === 0) {
             const newJob = await new Jobstack({
                 googleId: req.user.googleId,
