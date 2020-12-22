@@ -3,8 +3,9 @@ import axios from 'axios';
 //import localStorage from 'local-storage';
 import Jobcard from './Jobcard';
 import './Jobboard.css';
-import Sortingfilters from "./SortingFilters";
 import Loading from './Loading';
+import ResponsiveDrawer from './ResponsiveDrawer';
+
 
 class Jobboard extends Component {
     constructor(props) {
@@ -118,7 +119,8 @@ class Jobboard extends Component {
         if (JOBS)
             return (
                 <div className="content">
-                    <div className="jobboard">
+                    <ResponsiveDrawer filterHandler={this.filterHandler}></ResponsiveDrawer>
+                    <div className="jobboard"> 
                         <div className="jobs" id="jobs" ref={this.refJobs}>
                             <div>
                                 {
@@ -135,9 +137,9 @@ class Jobboard extends Component {
                             </div>
 
                         </div>
-                        <div className="sorting-filters">
+                        {/* <div className="sorting-filters">
                             <Sortingfilters filterHandler={this.filterHandler} />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             )

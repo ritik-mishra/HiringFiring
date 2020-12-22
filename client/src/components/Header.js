@@ -31,7 +31,7 @@ class Header extends Component {
     render() {
         return (
             <nav>
-                <div className="nav-wrapper" >
+                <div className="nav-wrapper" data-observe-resizes >
                     <Link
                         // to={this.props.auth ? '/dashboard' : '/'}
                         to='/'
