@@ -51,4 +51,14 @@ module.exports = (app) => {
             res.send(err);
         }
     });
+    app.delete("/api/delete_jobstack/:jobId",requireLogin, async (req, res) => {
+        try {
+            await Jobstack.deleteOne({ "jobId": req.params['jobId'], "googleId": req.user.googleId });
+            res.send("Job deleted");
+
+        }
+        catch (err) {
+            res.send(err);
+        }
+    });
 }

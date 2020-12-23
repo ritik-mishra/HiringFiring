@@ -12,6 +12,8 @@ import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 class Jobstack extends Component {
@@ -52,7 +54,15 @@ class Jobstack extends Component {
             comment: this.state.jobs[i].comment
         }
         await axios.patch(`${process.env.PUBLIC_URL}/api/update_jobstack/`+this.state.jobs[i].job_id, job);
-        // this.setState({ redirect: true });
+        alert("Job updated!");
+    }
+    deleteHandler = async (row, event) => {
+        event.preventDefault();
+        const i = this.state.jobs.indexOf(row);
+        var ch = this.state.jobs;
+        await axios.delete(`${process.env.PUBLIC_URL}/api/delete_jobstack/`+this.state.jobs[i].job_id);
+        ch.splice(i, 1);
+        this.setState({jobs: ch});
     }
     async componentDidMount() {
         const st = await axios.get(`${process.env.PUBLIC_URL}/api/jobstack`);
@@ -86,7 +96,6 @@ class Jobstack extends Component {
     }
     
 render(){
-
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
@@ -141,6 +150,11 @@ render(){
               </TableCell>
               <TableCell align="center">
                 <input style={{ color: "red" }} type='submit' value="Update Changes" onClick={this.submitHandler.bind(this,row)} />
+              </TableCell>
+              <TableCell>
+                <IconButton aria-label="delete" onClick={this.deleteHandler.bind(this,row)}>
+                <DeleteIcon fontSize="small" />
+                </IconButton>
               </TableCell>
             </TableRow>
           ))}
