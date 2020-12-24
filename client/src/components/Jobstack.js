@@ -14,13 +14,111 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import FirstPageIcon from '@material-ui/icons/FirstPage';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import LastPageIcon from '@material-ui/icons/LastPage';
+import PropTypes from 'prop-types';
+import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 
+const useStyles1 = makeStyles((theme) => ({
+    root: {
+      flexShrink: 0,
+      marginLeft: theme.spacing(2.5),
+    },
+  }));
+  
+  function TablePaginationActions(props) {
+    const classes = useStyles1();
+    const theme = useTheme();
+    const { count, page, rowsPerPage, onChangePage } = props;
+  
+    const handleFirstPageButtonClick = (event) => {
+      onChangePage(event, 0);
+    };
+  
+    const handleBackButtonClick = (event) => {
+      onChangePage(event, page - 1);
+    };
+  
+    const handleNextButtonClick = (event) => {
+      onChangePage(event, page + 1);
+        
+    };
+  
+    const handleLastPageButtonClick = (event) => {
+      onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+    };
+  
+    return (
+      <div className={classes.root}>
+        <IconButton
+          onClick={handleFirstPageButtonClick}
+          disabled={page === 0}
+          aria-label="first page"
+        >
+          {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+        </IconButton>
+        <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
+          {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+        </IconButton>
+        <IconButton
+          onClick={handleNextButtonClick}
+          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+          aria-label="next page"
+        >
+          {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+        </IconButton>
+        <IconButton
+          onClick={handleLastPageButtonClick}
+          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+          aria-label="last page"
+        >
+          {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+        </IconButton>
+      </div>
+    );
+  }
+TablePaginationActions.propTypes = {
+    count: PropTypes.number.isRequired,
+    onChangePage: PropTypes.func.isRequired,
+    page: PropTypes.number.isRequired,
+    rowsPerPage: PropTypes.number.isRequired,
+  };
+
+  const styles = (theme) => ({
+    root: {
+        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        border: 0,
+        borderRadius: 3,
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        color: 'white',
+        height: 48,
+        padding: '0 30px',
+      },
+      margin: {
+        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+      },
+      table: {
+        minWidth: 500,
+      },
+  });
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 class Jobstack extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            jobs: []
+            jobs: [],
+            page: 0,
+            rowsPerPage: 6,
+            open: false,
         }
     }
     handleChangeStatus = (row, event) => {
@@ -45,6 +143,13 @@ class Jobstack extends Component {
         ch[i][nam]=val;
         this.setState({jobs: ch});
     };
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({open: false});
+      };
     submitHandler = async (row, event) => {
         event.preventDefault();
         const i = this.state.jobs.indexOf(row);
@@ -54,7 +159,7 @@ class Jobstack extends Component {
             comment: this.state.jobs[i].comment
         }
         await axios.patch(`${process.env.PUBLIC_URL}/api/update_jobstack/`+this.state.jobs[i].job_id, job);
-        alert("Job updated!");
+        this.setState({open: true});
     }
     deleteHandler = async (row, event) => {
         event.preventDefault();
@@ -64,6 +169,12 @@ class Jobstack extends Component {
         ch.splice(i, 1);
         this.setState({jobs: ch});
     }
+    handleChangePage = async( event, newPage) => {
+        console.log(newPage);
+        this.setState({page: newPage});
+      };
+    
+    
     async componentDidMount() {
         const st = await axios.get(`${process.env.PUBLIC_URL}/api/jobstack`);
         const stack = st.data;
@@ -96,9 +207,12 @@ class Jobstack extends Component {
     }
     
 render(){
+    const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.jobs.length - this.state.page * this.state.rowsPerPage);
+    const { classes } = this.props;
   return (
+      <div>
     <TableContainer component={Paper}>
-      <Table aria-label="simple table">
+      <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell className="table-head" align="center" >Company</TableCell>
@@ -113,9 +227,12 @@ render(){
           </TableRow>
         </TableHead>
         <TableBody>
-          {this.state.jobs.map((row) => (
+          {(this.state.rowsPerPage > 0
+            ? this.state.jobs.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
+            : this.state.jobs
+          ).map((row) => (
             <TableRow key={row.name}>
-              <TableCell align="center">{row.companyName}</TableCell>
+              <TableCell align="center"><a href={row.jobLink}>{row.companyName}</a></TableCell>
               <TableCell align="center">{row.role}</TableCell>
               <TableCell align="center">{row.jobTitle}</TableCell>
               <TableCell align="center">{row.isReferral}</TableCell>
@@ -150,9 +267,14 @@ render(){
               </TableCell>
               <TableCell align="center">
                 <input style={{ color: "red" }} type='submit' value="Update Changes" onClick={this.submitHandler.bind(this,row)} />
+                <Snackbar open={this.state.open} autoHideDuration={6000} onClose={this.handleClose} >
+                <Alert onClose={this.handleClose} severity="success">
+                    Job details updated!
+                </Alert>
+      </Snackbar>
               </TableCell>
               <TableCell>
-                <IconButton aria-label="delete" onClick={this.deleteHandler.bind(this,row)}>
+                <IconButton aria-label="delete" className={classes.margin} onClick={this.deleteHandler.bind(this,row)}>
                 <DeleteIcon fontSize="small" />
                 </IconButton>
               </TableCell>
@@ -161,9 +283,31 @@ render(){
         </TableBody>
       </Table>
     </TableContainer>
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label="custom pagination table">
+      <TableFooter className={classes.root}>
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={[6]}
+              colSpan={3}
+              count={this.state.jobs.length}
+              rowsPerPage={6}
+              page={this.state.page}
+              SelectProps={{
+                inputProps: { 'aria-label': 'rows per page' },
+                native: true,
+              }}
+              onChangePage={this.handleChangePage}
+              ActionsComponent={TablePaginationActions}
+            />
+          </TableRow>
+        </TableFooter>
+      </Table>
+    </TableContainer>
+  </div>
   );
 }
 }
 
 
-export default Jobstack;
+export default withStyles(styles)(Jobstack);
