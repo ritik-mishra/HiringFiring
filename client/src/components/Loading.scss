@@ -38,7 +38,7 @@ body {
   height: 120px;
   opacity: 0;
   background-color: #7c848d;
-  border: $thickness solid white;
+  border: $thickness solid rgb(121, 101, 101);
   transform-origin: bottom left;
   transform: translateX(300px);
   animation: travel #{$duration}ms linear infinite;

@@ -49,11 +49,9 @@ module.exports = (app) => {
     //Add liker
     app.post('/api/add_liker', requireLogin, async (req, res) => {
         const user = req.user.googleId
-        console.log(user);
         const jobId = req.body.jobId;
         var job = await Job.findOne({ jobId: jobId });
         var isPresent = job.likers.includes(user);
-        console.log(isPresent);
         if (!isPresent) {
             job.likers.push(user);
             job.likersCount += 1;

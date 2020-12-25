@@ -1,12 +1,15 @@
 input{
-    color:white;
+    color:black;
 
 }
+
 .form{
     /* width: 320px; */
   padding: 20px;
   border: 5px solid gray;
   margin: 0;
+  overflow: auto;
+    height: 90rem;
 }
 
 .button {
@@ -25,3 +28,10 @@ input{
     opacity: 0.6;
     cursor: not-allowed;
   }
+  .addform {
+    overflow: auto;
+    height: 90rem;
+  }
+span{
+  color:black;
+}

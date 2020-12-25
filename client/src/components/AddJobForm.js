@@ -88,112 +88,114 @@ class AddJobForm extends Component {
         return (
             <div className="addform">
                 <div className="container">
-                    <div style={{ color: "white" }}>
-                        <h3>Add new Job</h3>
-                    </div>
-                    <div className="form">
-                        <form onSubmit={this.submitHandler}>
-                            <p>Company Name* :</p>
-                            <input
-                                type='text'
-                                name='companyName'
-                                onChange={this.myChangeHandler}
-                            />
-                            <p>Role* :</p>
-                            <p>
-                                <label>
-                                    <input type="checkbox" name='role'
-                                        onChange={this.roleChangeHandler} value="Intern"
-                                    />
-                                    <span>Intern</span>
-                                </label>&nbsp;&nbsp;&nbsp;
+                    <div style={{ color: "black", overflow: "auto" }} className="addfo">
+                        <div style={{ color: "black" }}>
+                            <h3>Add new Job</h3>
+                        </div>
+                        <div style={{ color: "black" }} className="form">
+                            <form onSubmit={this.submitHandler}>
+                                <p>Company Name* :</p>
+                                <input
+                                    type='text'
+                                    name='companyName'
+                                    onChange={this.myChangeHandler}
+                                />
+                                <p>Role* :</p>
+                                <p>
+                                    <label>
+                                        <input type="checkbox" name='role'
+                                            onChange={this.roleChangeHandler} value="Intern"
+                                        />
+                                        <span>Intern</span>
+                                    </label>&nbsp;&nbsp;&nbsp;
                             <label>
-                                    <input type="checkbox" name='role'
-                                        onChange={this.roleChangeHandler} value="Full time"
-                                    />
-                                    <span>Full time</span>
-                                </label>&nbsp;&nbsp;&nbsp;
+                                        <input type="checkbox" name='role'
+                                            onChange={this.roleChangeHandler} value="Full time"
+                                        />
+                                        <span>Full time</span>
+                                    </label>&nbsp;&nbsp;&nbsp;
                         </p>
-                            <p>Job Title: (e.g. Frontend dev, SDE-1, Tester)</p>
-                            <input
-                                type='text'
-                                name='jobTitle'
-                                onChange={this.myChangeHandler}
-                            />
-                            <p>Job Link* :</p>
-                            <input
-                                type='text'
-                                name='jobLink'
-                                onChange={this.myChangeHandler}
-                            />
-                            <p>Batch* :</p>
-                            <p>
-                                <label>
-                                    <input type="checkbox" name='batch'
-                                        onChange={this.batchChangeHandler} value="2020"
-                                    />
-                                    <span>2020</span>
-                                </label>&nbsp;&nbsp;&nbsp;
+                                <p>Job Title: (e.g. Frontend dev, SDE-1, Tester)</p>
+                                <input
+                                    type='text'
+                                    name='jobTitle'
+                                    onChange={this.myChangeHandler}
+                                />
+                                <p>Job Link* :</p>
+                                <input
+                                    type='text'
+                                    name='jobLink'
+                                    onChange={this.myChangeHandler}
+                                />
+                                <p>Batch* :</p>
+                                <p>
+                                    <label>
+                                        <input type="checkbox" name='batch'
+                                            onChange={this.batchChangeHandler} value="2020"
+                                        />
+                                        <span>2020</span>
+                                    </label>&nbsp;&nbsp;&nbsp;
                             <label>
-                                    <input type="checkbox" name='batch'
-                                        onChange={this.batchChangeHandler} value="2021"
-                                    />
-                                    <span>2021</span>
-                                </label>&nbsp;&nbsp;&nbsp;
+                                        <input type="checkbox" name='batch'
+                                            onChange={this.batchChangeHandler} value="2021"
+                                        />
+                                        <span>2021</span>
+                                    </label>&nbsp;&nbsp;&nbsp;
                             <label>
-                                    <input type="checkbox" name='batch'
-                                        onChange={this.batchChangeHandler} value="2022"
-                                    />
-                                    <span>2022</span>
-                                </label>&nbsp;&nbsp;&nbsp;
+                                        <input type="checkbox" name='batch'
+                                            onChange={this.batchChangeHandler} value="2022"
+                                        />
+                                        <span>2022</span>
+                                    </label>&nbsp;&nbsp;&nbsp;
                             <label>
-                                    <input type="checkbox" name='batch'
-                                        onChange={this.batchChangeHandler} value="2023"
-                                    />
-                                    <span>2023</span>
-                                </label>&nbsp;&nbsp;&nbsp;
+                                        <input type="checkbox" name='batch'
+                                            onChange={this.batchChangeHandler} value="2023"
+                                        />
+                                        <span>2023</span>
+                                    </label>&nbsp;&nbsp;&nbsp;
                             <label>
-                                    <input type="checkbox" name='batch'
-                                        onChange={this.batchChangeHandler} value="2024"
-                                    />
-                                    <span>2024</span>
-                                </label>
-                            </p>
+                                        <input type="checkbox" name='batch'
+                                            onChange={this.batchChangeHandler} value="2024"
+                                        />
+                                        <span>2024</span>
+                                    </label>
+                                </p>
 
-                            <p>Is Referral required :</p>
-                            <p>
-                                <label>
-                                    <input className="with-gap" type="radio"
-                                        name='isReferral' value="Yes"
-                                        onChange={this.myChangeHandler}
-                                    />
-                                    <span>Yes</span>
-                                </label>&nbsp;&nbsp;&nbsp;
+                                <p>Is Referral required :</p>
+                                <p>
+                                    <label>
+                                        <input className="with-gap" type="radio"
+                                            name='isReferral' value="Yes"
+                                            onChange={this.myChangeHandler}
+                                        />
+                                        <span>Yes</span>
+                                    </label>&nbsp;&nbsp;&nbsp;
                             <label>
-                                    <input className="with-gap" type="radio"
-                                        name='isReferral' value="No"
-                                        onChange={this.myChangeHandler}
-                                    />
-                                    <span>No</span>
-                                </label>&nbsp;&nbsp;&nbsp;
+                                        <input className="with-gap" type="radio"
+                                            name='isReferral' value="No"
+                                            onChange={this.myChangeHandler}
+                                        />
+                                        <span>No</span>
+                                    </label>&nbsp;&nbsp;&nbsp;
                             <label>
-                                    <input className="with-gap" type="radio"
-                                        name='isReferral' value="Maybe"
-                                        onChange={this.myChangeHandler}
-                                    />
-                                    <span>Maybe</span>
-                                </label>
-                            </p>
-                            <p>Job Expiry Date (if known):</p>
-                            <input
-                                type='date'
-                                name='jobExpiry'
-                                onChange={this.myChangeHandler}
-                            />
-                            <div>
-                                {pp}
-                            </div>
-                        </form>
+                                        <input className="with-gap" type="radio"
+                                            name='isReferral' value="Maybe"
+                                            onChange={this.myChangeHandler}
+                                        />
+                                        <span>Maybe</span>
+                                    </label>
+                                </p>
+                                <p>Job Expiry Date (if known):</p>
+                                <input
+                                    type='date'
+                                    name='jobExpiry'
+                                    onChange={this.myChangeHandler}
+                                />
+                                <div>
+                                    {pp}
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

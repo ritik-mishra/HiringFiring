@@ -5,6 +5,7 @@ import { Multiselect } from 'multiselect-react-dropdown';
 import './SortingFilters.css';
 import './style.css'
 
+
 class Sortingfilters extends Component {
     constructor(props) {
         super(props);
@@ -23,6 +24,7 @@ class Sortingfilters extends Component {
                 background: "#0099cc"
             },
             searchBox: {
+                height: "4rem",
                 border: "none",
                 "borderBottom": "1px solid blue",
                 "borderRadius": "0px"
@@ -104,11 +106,12 @@ class Sortingfilters extends Component {
             selectedCompanies: event
         })
     }
-    applyClickHandler = async() => {
+    applyClickHandler = async () => {
         if (!this.state.isFilterProcessing) {
             await this.setState({
                 isFilterProcessing: true
-            })}
+            })
+        }
         var body = {
             sortBy: this.state.sortBy,
             comparator: this.state.comparator,
@@ -255,10 +258,10 @@ class Sortingfilters extends Component {
                     <div style={{ textAlign: "center" }} >
                         <p><b>Companies</b> (atmost 5)</p>
                     </div>
-                    <div style={{ color: "black" }}>
+                    <div className="multiselect">
                         <Multiselect
                             options={this.state.company_list}
-                            style={this.style}
+                            // style={{ zIndex: 450, height: "10rem" }}
                             isObject={false}
                             onSelect={this.companyChangeHandler}
                             onRemove={this.companyChangeHandler}

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-//import localStorage from 'local-storage';
 import Jobcard from './Jobcard';
 import './Jobboard.css';
-import Loading from './Loading';
-import ResponsiveDrawer from './ResponsiveDrawer';
+import Sortingfilters from './SortingFilters';
 
 
 class Jobboard extends Component {
@@ -25,7 +23,9 @@ class Jobboard extends Component {
             comparator: -1,
             batch: [],
             jobcount: 1,
-            userJobstack: []
+            userJobstack: [],
+            floatButton: 0,
+            sortingClass: "sorting-filters"
         }
         this.refJobs = React.createRef();
         // this.userJobstack = [];
@@ -34,7 +34,6 @@ class Jobboard extends Component {
         this.fetchJobs();
         const userJobstack = await axios.get(`${process.env.PUBLIC_URL}/api/jobstack_userjobs`);
         this.setState({ userJobstack: userJobstack.data });
-        console.log(this.state.userJobstack);
     }
     setLocal = (x) => {
         localStorage.setItem("page", this.state.page);
@@ -96,6 +95,21 @@ class Jobboard extends Component {
         })
         this.fetchJobs();
     }
+    showSorting = () => {
+        var cls = this.state.sortingClass;
+        var flBu = this.state.floatButton;
+        if (cls === "sorting-filters") {
+            cls = cls + " show-sorting";
+        }
+        else {
+            cls = "sorting-filters";
+        }
+        this.setState({
+            sortingClass: cls,
+            floatButton: !this.state.floatButton
+        });
+
+    }
     render() {
 
         //Pagination Logic
@@ -106,10 +120,10 @@ class Jobboard extends Component {
         for (let num = 1; num <= pagec; num++) {
             var col = "white";
             if (num === this.state.page)
-                col = "rgb(248, 114, 3)";
+                col = "rgb(85, 185, 144)";
             items.push(
                 <button onClick={() => this.clickHandler(num)} key={num} style={{ backgroundColor: col }
-                } className="button3 button5" > {num}</button>
+                } className="pagination" > {num}</button>
             );
         }
 
@@ -119,8 +133,10 @@ class Jobboard extends Component {
         if (JOBS)
             return (
                 <div className="content">
-                    <ResponsiveDrawer filterHandler={this.filterHandler}></ResponsiveDrawer>
-                    <div className="jobboard"> 
+                    <div className="filter-button">
+                        <button className="filterbtn" onClick={this.showSorting}>{this.state.floatButton ? <i className="fa fa-close"></i> : <i className="fa fa-bars"></i>}Filters</button>
+                    </div>
+                    <div className="jobboard">
                         <div className="jobs" id="jobs" ref={this.refJobs}>
                             <div>
                                 {
@@ -132,19 +148,20 @@ class Jobboard extends Component {
                                     )
                                 }
                             </div>
+
                             <div className="center">
                                 {items}
                             </div>
 
                         </div>
-                        {/* <div className="sorting-filters">
+                        <div className={this.state.sortingClass}>
                             <Sortingfilters filterHandler={this.filterHandler} />
-                        </div> */}
+                        </div>
                     </div>
                 </div>
             )
         else
-            return <Loading />
+            return (<h1 style={{ alignContent: "center" }}>Loading...</h1>);
     }
 }
 export default Jobboard;
