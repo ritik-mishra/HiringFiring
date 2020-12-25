@@ -24,6 +24,10 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 
 const useStyles1 = makeStyles((theme) => ({
@@ -119,6 +123,7 @@ class Jobstack extends Component {
             page: 0,
             rowsPerPage: 6,
             open: false,
+            deleteOpen: false,
         }
     }
     handleChangeStatus = (row, event) => {
@@ -143,6 +148,12 @@ class Jobstack extends Component {
         ch[i][nam]=val;
         this.setState({jobs: ch});
     };
+    handleClickOpen = (o, event) => {
+        this.setState({[o]: true});
+      };
+      handleDeleteClose = () =>{
+          this.setState({deleteOpen: false});
+      }
     handleClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;
@@ -168,6 +179,7 @@ class Jobstack extends Component {
         await axios.delete(`${process.env.PUBLIC_URL}/api/delete_jobstack/`+this.state.jobs[i].job_id);
         ch.splice(i, 1);
         this.setState({jobs: ch});
+        this.setState({deleteOpen: false});
     }
     handleChangePage = async( event, newPage) => {
         console.log(newPage);
@@ -188,11 +200,11 @@ class Jobstack extends Component {
             var obj = {
                 companyName: obj2.companyName,
                 role: obj2.role,
-                jobTitle: obj2.jobTitle,
+                jobTitle: obj2.jobTitle || "N/A",
                 jobLink: obj2.jobLink,
-                isReferral: obj2.isReferral,
+                isReferral: obj2.isReferral || "N/A",
                 jobExpiry: obj2.jobExpiry,
-                salary: obj2.salary,
+                salary: obj2.salary || "N/A",
                 status: obj1.status,
                 followUp: obj1.followUp,
                 comment: obj1.comment,
@@ -215,7 +227,7 @@ render(){
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell className="table-head" align="center" >Company</TableCell>
+            <TableCell className="table-headd" align="center" >Company</TableCell>
             <TableCell className="table-head" align="center">Role</TableCell>
             <TableCell align="center">Job Title</TableCell>
             <TableCell align="center">Referral applicable</TableCell>
@@ -251,6 +263,7 @@ render(){
                 <MenuItem value={"Interview Scheduled"} name="status">Interview Scheduled</MenuItem>
                 </Select>
               </TableCell>
+
               <TableCell align="center">
                 <Select
                 labelId="demo-simple-select-label"
@@ -262,22 +275,42 @@ render(){
                 <MenuItem value={"Yes"} >Yes</MenuItem>
                 </Select> 
               </TableCell>
+
               <TableCell align="center">
                 <TextField id="standard-basic" name="comment" value = {row.comment} label="Add a comment" onChange={this.handleChange.bind(this,row)}/>
               </TableCell>
+
               <TableCell align="center">
                 <input style={{ color: "red" }} type='submit' value="Update Changes" onClick={this.submitHandler.bind(this,row)} />
                 <Snackbar open={this.state.open} autoHideDuration={6000} onClose={this.handleClose} >
                 <Alert onClose={this.handleClose} severity="success">
                     Job details updated!
                 </Alert>
-      </Snackbar>
+                </Snackbar>
               </TableCell>
+              
               <TableCell>
-                <IconButton aria-label="delete" className={classes.margin} onClick={this.deleteHandler.bind(this,row)}>
+                <IconButton aria-label="delete" className={classes.margin} onClick={this.handleClickOpen.bind(this, "deleteOpen")}>
                 <DeleteIcon fontSize="small" />
                 </IconButton>
+                <Dialog
+                    open={this.state.deleteOpen}
+                    onClose={this.handleClose.bind(this,"deleteOpen")}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle style={{color: "black"}} id="alert-dialog-title">{"Are you sure you want to delete?"}</DialogTitle>
+                    <DialogActions>
+                        <Button style={{backgroundColor: "green"}} onClick={this.handleDeleteClose} >
+                            No
+                        </Button>
+                        <Button style={{backgroundColor: "red"}} onClick={this.deleteHandler.bind(this,row)} color="primary" autoFocus>
+                            Yes
+                        </Button>
+                    </DialogActions>
+                </Dialog>
               </TableCell>
+
             </TableRow>
           ))}
         </TableBody>
