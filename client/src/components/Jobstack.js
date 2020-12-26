@@ -124,6 +124,7 @@ class Jobstack extends Component {
             rowsPerPage: 6,
             open: false,
             deleteOpen: false,
+            current_row: 0
         }
     }
     handleChangeStatus = (row, event) => {
@@ -148,11 +149,12 @@ class Jobstack extends Component {
         ch[i][nam]=val;
         this.setState({jobs: ch});
     };
-    handleClickOpen = (o, event) => {
-        this.setState({[o]: true});
+    handleClickOpen = (row,event) => {
+        const i = this.state.jobs.indexOf(row);
+        this.setState({deleteOpen: true, current_row: i});
       };
       handleDeleteClose = () =>{
-          this.setState({deleteOpen: false});
+          this.setState({deleteOpen: false, current_row: 0});
       }
     handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -290,12 +292,12 @@ render(){
               </TableCell>
               
               <TableCell>
-                <IconButton aria-label="delete" className={classes.margin} onClick={this.handleClickOpen.bind(this, "deleteOpen")}>
+                <IconButton aria-label="delete" className={classes.margin} onClick={this.handleClickOpen.bind(this,row)}>
                 <DeleteIcon fontSize="small" />
                 </IconButton>
                 <Dialog
                     open={this.state.deleteOpen}
-                    onClose={this.handleClose.bind(this,"deleteOpen")}
+                    onClose={this.handleDeleteClose}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
@@ -304,7 +306,7 @@ render(){
                         <Button style={{backgroundColor: "green"}} onClick={this.handleDeleteClose} >
                             No
                         </Button>
-                        <Button style={{backgroundColor: "red"}} onClick={this.deleteHandler.bind(this,row)} color="primary" autoFocus>
+                        <Button style={{backgroundColor: "red"}} onClick={this.deleteHandler.bind(this,this.state.jobs[this.state.current_row])} color="primary" autoFocus>
                             Yes
                         </Button>
                     </DialogActions>
