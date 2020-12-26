@@ -88,11 +88,11 @@ class AddJobForm extends Component {
         return (
             <div className="addform">
                 <div className="container">
-                    <div style={{ color: "black", overflow: "auto" }} className="addfo">
+                    <div className="addfo">
                         <div style={{ color: "black" }}>
                             <h3>Add new Job</h3>
                         </div>
-                        <div style={{ color: "black" }} className="form">
+                        <div style={{ overflow: "scroll" }} className="form">
                             <form onSubmit={this.submitHandler}>
                                 <p>Company Name* :</p>
                                 <input
