@@ -114,7 +114,7 @@ class EditJobForm extends Component {
             />;
         }
         else {
-            allowSubmit = 'Fill all the mandatory fields';
+            allowSubmit = <p style={{ color: "red" }}>Fill all the mandatory fields</p>;
         }
         return (
             <div className="editform">
@@ -124,14 +124,14 @@ class EditJobForm extends Component {
                     </div>
                     <div style={{ color: "black" }} className="form">
                         <form onSubmit={this.submitHandler}>
-                            <p>Company Name* :</p>
+                            <p><b>Company Name* :</b></p>
                             <input
                                 type='text'
                                 name='companyName'
                                 onChange={this.myChangeHandler}
                                 value={this.state.companyName}
                             />
-                            <p>Role* :</p>
+                            <p><b>Role* :</b></p>
                             <p style={{ color: "black" }}>
                                 <label>
                                     <input type="checkbox" name='role' value="Intern"
@@ -148,21 +148,21 @@ class EditJobForm extends Component {
                                     <span>Full time</span>
                                 </label>&nbsp;&nbsp;&nbsp;
                         </p>
-                            <p>Job Title: (e.g. Frontend dev, SDE-1, Tester)</p>
+                            <p><b>Job Title:</b> (e.g. Frontend dev, SDE-1, Tester)</p>
                             <input
                                 type='text'
                                 name='jobTitle'
                                 onChange={this.myChangeHandler}
                                 value={this.state.jobTitle}
                             />
-                            <p>Job Link* :</p>
+                            <p><b>Job Link* :</b></p>
                             <input
                                 type='text'
                                 name='jobLink'
                                 onChange={this.myChangeHandler}
                                 value={this.state.jobLink}
                             />
-                            <p>Batch* :</p>
+                            <p><b>Batch* :</b></p>
                             <p>
                                 <label>
                                     <input type="checkbox" name='batch' value="2020"
@@ -200,7 +200,7 @@ class EditJobForm extends Component {
                                     <span>2024</span>
                                 </label>
                             </p>
-                            <p>Is Referral required :</p>
+                            <p><b>Referral Applicable :</b></p>
                             <p>
                                 <label>
                                     <input className="with-gap" type="radio"
@@ -229,7 +229,7 @@ class EditJobForm extends Component {
                                 </label>
                             </p>
 
-                            <p>Job Expiry Date (if known):</p>
+                            <p><b>Job Expiry Date</b> (if known):</p>
                             <input
                                 type='date'
                                 name='jobExpiry'

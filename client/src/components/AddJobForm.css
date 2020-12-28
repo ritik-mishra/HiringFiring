@@ -15,7 +15,7 @@ input{
   border: 5px solid gray;
   margin: 0;
   overflow: scroll;
-  height: 30rem;
+  height: auto;
   color: black;
 }
 

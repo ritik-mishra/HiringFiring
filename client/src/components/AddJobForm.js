@@ -76,7 +76,7 @@ class AddJobForm extends Component {
     render() {
         //button logic
         var x = this.state.companyName && this.state.jobLink && this.state.batch.length && this.state.role.length;
-        let pp = x ? <input style={{ color: "red" }} type='submit' /> : "fill the mandatory * fields first";
+        let pp = x ? <input style={{ color: "red" }} type='submit' /> : <p style={{ color: "red" }}>fill the mandatory * fields first</p>;
 
 
         const { redirect } = this.state;
@@ -94,13 +94,13 @@ class AddJobForm extends Component {
                         </div>
                         <div style={{ overflow: "scroll" }} className="form">
                             <form onSubmit={this.submitHandler}>
-                                <p>Company Name* :</p>
+                                <p><b>Company Name* :</b></p>
                                 <input
                                     type='text'
                                     name='companyName'
                                     onChange={this.myChangeHandler}
                                 />
-                                <p>Role* :</p>
+                                <p><b>Role* :</b></p>
                                 <p>
                                     <label>
                                         <input type="checkbox" name='role'
@@ -115,19 +115,19 @@ class AddJobForm extends Component {
                                         <span>Full time</span>
                                     </label>&nbsp;&nbsp;&nbsp;
                         </p>
-                                <p>Job Title: (e.g. Frontend dev, SDE-1, Tester)</p>
+                                <p style={{ marginTop: "1rem" }}><b>Job Title:</b> (e.g. Frontend dev, SDE-1, Tester)</p>
                                 <input
                                     type='text'
                                     name='jobTitle'
                                     onChange={this.myChangeHandler}
                                 />
-                                <p>Job Link* :</p>
+                                <p><b>Job Link* :</b></p>
                                 <input
                                     type='text'
                                     name='jobLink'
                                     onChange={this.myChangeHandler}
                                 />
-                                <p>Batch* :</p>
+                                <p><b>Batch* :</b></p>
                                 <p>
                                     <label>
                                         <input type="checkbox" name='batch'
@@ -161,7 +161,7 @@ class AddJobForm extends Component {
                                     </label>
                                 </p>
 
-                                <p>Is Referral required :</p>
+                                <p style={{ marginTop: "1rem" }}><b>Referral Applicable :</b></p>
                                 <p>
                                     <label>
                                         <input className="with-gap" type="radio"
@@ -185,7 +185,7 @@ class AddJobForm extends Component {
                                         <span>Maybe</span>
                                     </label>
                                 </p>
-                                <p>Job Expiry Date (if known):</p>
+                                <p style={{ marginTop: "1rem" }}><b>Job Expiry Date (if known):</b></p>
                                 <input
                                     type='date'
                                     name='jobExpiry'
