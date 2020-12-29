@@ -14,7 +14,8 @@ module.exports = (app) => {
         if (jb.length === 0) {
             const newJob = await new Jobstack({
                 googleId: req.user.googleId,
-                jobId: req.params['jobId']
+                jobId: req.params['jobId'],
+                jobExpiry: req.body.jobExpiry,
             }).save();
             res.send(true);
         }
@@ -28,7 +29,8 @@ module.exports = (app) => {
     })
     //to get all jobs in jobstack of a user to show on jobstack page
     app.get("/api/jobstack", requireLogin, async (req, res) => {
-        const jobs = await Jobstack.find({ "googleId": req.user.googleId });
+        const jobs = await Jobstack.find({ "googleId": req.user.googleId 
+            }).sort({ [req.query.sortBy]: req.query.comparator });
         // await Jobstack.remove({});
         res.send(jobs);
     })

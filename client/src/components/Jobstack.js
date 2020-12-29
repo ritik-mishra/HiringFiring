@@ -124,7 +124,9 @@ class Jobstack extends Component {
             rowsPerPage: 6,
             open: false,
             deleteOpen: false,
-            current_row: 0
+            current_row: 0,
+            sortBy: "addTime",
+            comparator: -1,
         }
     }
     handleChangeStatus = (row, event) => {
@@ -153,14 +155,13 @@ class Jobstack extends Component {
         const i = this.state.jobs.indexOf(row);
         this.setState({deleteOpen: true, current_row: i});
       };
-      handleDeleteClose = () =>{
+    handleDeleteClose = () =>{
           this.setState({deleteOpen: false, current_row: 0});
-      }
+    }
     handleClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;
         }
-    
         this.setState({open: false});
       };
     submitHandler = async (row, event) => {
@@ -187,37 +188,64 @@ class Jobstack extends Component {
         console.log(newPage);
         this.setState({page: newPage});
       };
+    async fetchJobstack() {
+      const body ={
+        sortBy: this.state.sortBy,
+        comparator: this.state.comparator
+      }
+      const st = await axios({
+        method: 'get',
+        url: `${process.env.PUBLIC_URL}/api/jobstack`,
+        params: body
+      });
+      const stack = st.data;
+      var jobs = [];
+      for (var k = 0; k < stack.length; k++) {
+          var obj1 = stack[k];
+          var info = await axios.get(`${process.env.PUBLIC_URL}/api/jobidjob/` + obj1.jobId);
+          var obj2 = info.data;
+          // console.log(obj2);
+          // console.log(obj1);
+          var obj = {
+              companyName: obj2.companyName,
+              role: obj2.role,
+              jobTitle: obj2.jobTitle || "N/A",
+              jobLink: obj2.jobLink,
+              isReferral: obj2.isReferral || "N/A",
+              jobExpiry: obj2.jobExpiry,
+              salary: obj2.salary || "N/A",
+              status: obj1.status,
+              followUp: obj1.followUp,
+              comment: obj1.comment,
+              isDeleted: obj2.isDeleted,
+              job_id: obj1.jobId
+          }
+          jobs.push(obj);
+      }
+      this.setState({
+          jobs: jobs
+      })
+    }
+    handleChangeSort = async(event) => {
+      const val = event.target.value;
+      if (val === "addTime") {
+        await this.setState({
+            sortBy: val,
+            comparator: -1,
+        })
+      }
+      else if (val === "jobExpiry") {
+        await this.setState({
+            sortBy: "jobExpiry",
+            comparator: 1,
+        })
+      }
+      this.fetchJobstack();
+    };
     
     
     async componentDidMount() {
-        const st = await axios.get(`${process.env.PUBLIC_URL}/api/jobstack`);
-        const stack = st.data;
-        var jobs = [];
-        for (var k = 0; k < stack.length; k++) {
-            var obj1 = stack[k];
-            var info = await axios.get(`${process.env.PUBLIC_URL}/api/jobidjob/` + obj1.jobId);
-            var obj2 = info.data;
-            // console.log(obj2);
-            // console.log(obj1);
-            var obj = {
-                companyName: obj2.companyName,
-                role: obj2.role,
-                jobTitle: obj2.jobTitle || "N/A",
-                jobLink: obj2.jobLink,
-                isReferral: obj2.isReferral || "N/A",
-                jobExpiry: obj2.jobExpiry,
-                salary: obj2.salary || "N/A",
-                status: obj1.status,
-                followUp: obj1.followUp,
-                comment: obj1.comment,
-                isDeleted: obj2.isDeleted,
-                job_id: obj1.jobId
-            }
-            jobs.push(obj);
-        }
-        this.setState({
-            jobs: jobs
-        })
+      this.fetchJobstack();
     }
     
 render(){
@@ -322,19 +350,31 @@ render(){
       <Table className={classes.table} aria-label="custom pagination table">
       <TableFooter className={classes.root}>
           <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[6]}
-              colSpan={3}
-              count={this.state.jobs.length}
-              rowsPerPage={6}
-              page={this.state.page}
-              SelectProps={{
-                inputProps: { 'aria-label': 'rows per page' },
-                native: true,
-              }}
-              onChangePage={this.handleChangePage}
-              ActionsComponent={TablePaginationActions}
-            />
+            <TableCell> Sort By: &nbsp;
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={this.state.sortBy}
+                    onChange={this.handleChangeSort}
+                    >
+                    <MenuItem value={"addTime"} > Recent Added</MenuItem>
+                    <MenuItem value={"jobExpiry"} >Job Expiry</MenuItem>
+                </Select>
+              </TableCell>
+
+              <TablePagination
+                rowsPerPageOptions={[6]}
+                colSpan={3}
+                count={this.state.jobs.length}
+                rowsPerPage={6}
+                page={this.state.page}
+                SelectProps={{
+                    inputProps: { 'aria-label': 'rows per page' },
+                    native: true,
+                }}
+                onChangePage={this.handleChangePage}
+                ActionsComponent={TablePaginationActions}
+              />
           </TableRow>
         </TableFooter>
       </Table>
