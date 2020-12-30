@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './Jobstack.css';
-import Loading from './Loading';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -28,6 +27,16 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Checkbox from '@material-ui/core/Checkbox';
 
 
 const useStyles1 = makeStyles((theme) => ({
@@ -111,6 +120,17 @@ TablePaginationActions.propTypes = {
       table: {
         minWidth: 500,
       },
+      container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+      },
+      formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+      },
+      formControl2: {
+        margin: theme.spacing(3),
+      },
   });
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -127,6 +147,9 @@ class Jobstack extends Component {
             current_row: 0,
             sortBy: "addTime",
             comparator: -1,
+            filerOpen: false,
+            role: '',
+            status: [],
         }
     }
     handleChangeStatus = (row, event) => {
@@ -164,6 +187,28 @@ class Jobstack extends Component {
         }
         this.setState({open: false});
       };
+    handleClickFilterOpen = () =>{
+      this.setState({filterOpen: true});
+    }
+    handleFilterClose =() => {
+      this.setState({filterOpen: false});
+    }
+    roleChangeHandler = (event) => {
+      let val = event.target.value;
+      this.setState({role: val});
+    }
+    statusChangeHandler = (event) => {
+      let val = event.target.name;
+      var new_status = this.state.status;
+      const index = this.state.status.indexOf(val);
+      if (index > -1) {
+          new_status.splice(index, 1);
+      }
+      else {
+          new_status.push(val);
+      }
+      this.setState({ status: new_status });
+    }
     submitHandler = async (row, event) => {
         event.preventDefault();
         const i = this.state.jobs.indexOf(row);
@@ -172,14 +217,14 @@ class Jobstack extends Component {
             followUp: this.state.jobs[i].followUp,
             comment: this.state.jobs[i].comment
         }
-        await axios.patch(`${process.env.PUBLIC_URL}/api/update_jobstack/`+this.state.jobs[i].job_id, job);
+        await axios.patch(`${process.env.PUBLIC_URL}/api/update_jobstack/`+this.state.jobs[i].jobId, job);
         this.setState({open: true});
     }
     deleteHandler = async (row, event) => {
         event.preventDefault();
         const i = this.state.jobs.indexOf(row);
         var ch = this.state.jobs;
-        await axios.delete(`${process.env.PUBLIC_URL}/api/delete_jobstack/`+this.state.jobs[i].job_id);
+        await axios.delete(`${process.env.PUBLIC_URL}/api/delete_jobstack/`+this.state.jobs[i].jobId);
         ch.splice(i, 1);
         this.setState({jobs: ch});
         this.setState({deleteOpen: false});
@@ -188,40 +233,30 @@ class Jobstack extends Component {
         console.log(newPage);
         this.setState({page: newPage});
       };
+    applyClickHandler = async() => {
+      this.fetchJobstack();
+      this.setState({filterOpen: false});
+    }
+
     async fetchJobstack() {
       const body ={
         sortBy: this.state.sortBy,
-        comparator: this.state.comparator
+        comparator: this.state.comparator,
+        role: this.state.role,
+        status: this.state.status,
       }
+      if (body.role.length === 0) 
+        body.role = ["Intern", "Full time"];
+      
+      if (body.status.length === 0)
+        body.status = ["Not Applied", "Applied", "Asked for Referral", "Interview Scheduled"];
+      
       const st = await axios({
         method: 'get',
         url: `${process.env.PUBLIC_URL}/api/jobstack`,
         params: body
       });
-      const stack = st.data;
-      var jobs = [];
-      for (var k = 0; k < stack.length; k++) {
-          var obj1 = stack[k];
-          var info = await axios.get(`${process.env.PUBLIC_URL}/api/jobidjob/` + obj1.jobId);
-          var obj2 = info.data;
-          // console.log(obj2);
-          // console.log(obj1);
-          var obj = {
-              companyName: obj2.companyName,
-              role: obj2.role,
-              jobTitle: obj2.jobTitle || "N/A",
-              jobLink: obj2.jobLink,
-              isReferral: obj2.isReferral || "N/A",
-              jobExpiry: obj2.jobExpiry,
-              salary: obj2.salary || "N/A",
-              status: obj1.status,
-              followUp: obj1.followUp,
-              comment: obj1.comment,
-              isDeleted: obj2.isDeleted,
-              job_id: obj1.jobId
-          }
-          jobs.push(obj);
-      }
+      const jobs = st.data;
       this.setState({
           jobs: jobs
       })
@@ -276,10 +311,10 @@ render(){
             <TableRow key={row.name}>
               <TableCell align="center"><a href={row.jobLink}>{row.companyName}</a></TableCell>
               <TableCell align="center">{row.role}</TableCell>
-              <TableCell align="center">{row.jobTitle}</TableCell>
+              <TableCell align="center">{row.jobTitle || "N/A"}</TableCell>
               <TableCell align="center">{row.isReferral}</TableCell>
               <TableCell align="center">{row.jobExpiry}</TableCell>
-              <TableCell align="center">{row.salary}</TableCell>
+              <TableCell align="center">{row.salary || "N/A"}</TableCell>
               <TableCell align="center">
                 <Select
                 labelId="demo-simple-select-label"
@@ -360,6 +395,59 @@ render(){
                     <MenuItem value={"addTime"} > Recent Added</MenuItem>
                     <MenuItem value={"jobExpiry"} >Job Expiry</MenuItem>
                 </Select>
+              </TableCell>
+
+              <TableCell>
+              <Button onClick={this.handleClickFilterOpen}>Filter</Button>
+                <Dialog disableBackdropClick disableEscapeKeyDown open={this.state.filterOpen} onClose={this.handleFilterClose}>
+                  <DialogTitle style={{color: "black"}} >Select Filter</DialogTitle>
+                  <DialogContent>
+                    <form >
+                      <FormControl className={classes.margin} component="fieldset">
+                        <FormLabel component="legend">Role</FormLabel>
+                        <RadioGroup name="role" value={this.state.role} onChange={this.roleChangeHandler}>
+                          <FormControlLabel value="Intern" checked={this.state.role==="Intern"} control={<Radio />} label="Intern" />
+                          <FormControlLabel value="Full time" checked={this.state.role==="Full time"} control={<Radio />} label="Full time"  />
+                        </RadioGroup>
+                      </FormControl>
+                      
+                      <FormControl component="fieldset" className={classes.margin}>
+                        <FormLabel component="legend">Status</FormLabel>
+                        <FormGroup>
+                          <FormControlLabel
+                            control={<Checkbox checked={this.state.status.includes("Not Applied")} 
+                              onChange={this.statusChangeHandler} name="Not Applied" />}
+                            label="Not Applied"
+                          />
+                          <FormControlLabel
+                            control={<Checkbox checked={this.state.status.includes("Applied")} 
+                              onChange={this.statusChangeHandler} name="Applied" />}
+                            label="Applied"
+                          />
+                          <FormControlLabel
+                            control={<Checkbox checked={this.state.status.includes("Asked for Referral")} 
+                              onChange={this.statusChangeHandler} name="Asked for Referral" />}
+                            label="Asked for Referral"
+                          />
+                          <FormControlLabel
+                            control={<Checkbox checked={this.state.status.includes("Interview Scheduled")} 
+                              onChange={this.statusChangeHandler} name="Interview Scheduled" />}
+                            label="Interview Scheduled"
+                          />
+                        </FormGroup>
+                      </FormControl>
+                      
+                    </form>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button style={{backgroundColor: "red"}} onClick={this.handleFilterClose} >
+                      Cancel
+                    </Button>
+                    <Button style={{backgroundColor: "green"}} onClick={this.applyClickHandler} >
+                      Apply
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </TableCell>
 
               <TablePagination
