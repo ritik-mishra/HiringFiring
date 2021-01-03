@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Job = mongoose.model('jobs');
 
 const Jobstack = mongoose.model('jobstack');
 
@@ -28,13 +29,44 @@ module.exports = (app) => {
     })
     //to get all jobs in jobstack of a user to show on jobstack page
     app.get("/api/jobstack", requireLogin, async (req, res) => {
-        const jobs = await Jobstack.find({ "googleId": req.user.googleId });
-        // await Jobstack.remove({});
-        res.send(jobs);
+        const body_status = req.query.status;
+        const body_role = req.query.role;
+        const jobs = await Jobstack.find({
+            "$and": [{ "status": { "$in": body_status } }, { "googleId": req.user.googleId }]
+        }).sort({
+            [req.query.sortBy]: req.query.comparator
+        });
+
+        var jobid = [];
+        for (var i in jobs) {
+            jobid.push(jobs[i].jobId);
+        }
+        const curr_jobs = await Job.find({ "$and": [{ "jobId": { "$in": jobid } }, { "role": { "$in": body_role } }] });
+        var finalList = [];
+
+        for (var i in jobs) {
+            var obj = { jobId: jobs[i].jobId, status: jobs[i].status, comment: jobs[i].comment, followUp: jobs[i].followUp };
+
+            for (var j in curr_jobs) {
+                if (jobs[i].jobId == curr_jobs[j].jobId) {
+                    obj.batch = curr_jobs[j].batch;
+                    obj.role = curr_jobs[j].role;
+                    obj.jobTitle = curr_jobs[j].jobTitle;
+                    obj.jobExpiry = curr_jobs[j].jobExpiry;
+                    obj.jobLink = curr_jobs[j].jobLink;
+                    obj.isReferral = curr_jobs[j].isReferral;
+                    obj.companyName = curr_jobs[j].companyName;
+                    obj.salary = curr_jobs[j].salary;
+                    obj.isDeleted = curr_jobs[j].isDeleted;
+                    finalList.push(obj);
+                }
+            }
+        }
+        res.send(finalList);
     })
 
     //edit job in my jobStack
-    app.patch("/api/update_jobstack/:jobId",requireLogin, async (req, res) => {
+    app.patch("/api/update_jobstack/:jobId", requireLogin, async (req, res) => {
         try {
             const updatedJob = await Jobstack.updateOne({ "jobId": req.params['jobId'], "googleId": req.user.googleId },
                 {
@@ -51,7 +83,7 @@ module.exports = (app) => {
             res.send(err);
         }
     });
-    app.delete("/api/delete_jobstack/:jobId",requireLogin, async (req, res) => {
+    app.delete("/api/delete_jobstack/:jobId", requireLogin, async (req, res) => {
         try {
             await Jobstack.deleteOne({ "jobId": req.params['jobId'], "googleId": req.user.googleId });
             res.send("Job deleted");

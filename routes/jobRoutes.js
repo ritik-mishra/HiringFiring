@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const Job = mongoose.model('jobs');
+
 const { v4: uuidv4 } = require('uuid');
 
 const requireLogin = require('../middlewares/requireLogin');
@@ -107,6 +108,7 @@ module.exports = (app) => {
     app.post('/api/add_job', requireLogin, requireFields, async (req, res) => {
 
         const newId = uuidv4();
+        console.log(req.user);
 
         const newJob = await new Job({
             jobId: newId,

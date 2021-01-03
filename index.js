@@ -6,10 +6,14 @@ const keys = require('./config/keys');
 require('./models/User');
 require('./models/Jobs');
 require('./models/Jobstack');
+require('./models/Reminder');
 require('./services/passport');
 require('dotenv').config();
+var Cron = require('./cron/cronJob');
 
 mongoose.connect(keys.mongoURI);
+
+
 const app = express();
 
 app.use(
@@ -24,10 +28,10 @@ app.use(passport.session());
 require('./routes/authRoutes')(app);
 
 app.use(express.json());
-
+Cron.Cron();
 require('./routes/jobRoutes')(app);
 require('./routes/jobstackRoutes')(app);
-
+require('./routes/reminderRoutes')(app);
 if (process.env.NODE_ENV === 'production') {
     //Serve Production assets, main.js and main.css
     app.use(express.static('client/build'));
