@@ -28,20 +28,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
+import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import Checkbox from '@material-ui/core/Checkbox';
-import { Multiselect } from 'multiselect-react-dropdown';
-
-
-
-
-import NotificationModal from './NotificationModal';
-import JobstackModal from './JobstackModal';
 
 
 const useStyles1 = makeStyles((theme) => ({
@@ -133,20 +121,6 @@ const styles = (theme) => ({
     margin: theme.spacing(1),
     minWidth: 120,
   },
-  formControl2: {
-    margin: theme.spacing(3),
-  },
-  widthCell: {
-    width: "5%",
-  },
-  paper: {
-    position: 'absolute',
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
 });
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -155,7 +129,6 @@ class Jobstack extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      all_jobs: [],
       jobs: [],
       page: 0,
       rowsPerPage: 6,
@@ -165,10 +138,8 @@ class Jobstack extends Component {
       sortBy: "addTime",
       comparator: -1,
       filerOpen: false,
-      role: '',
+      role: [],
       status: [],
-      company_list: [],
-      selectedCompanies: [],
     }
   }
   handleChangeStatus = (row, event) => {
@@ -214,10 +185,19 @@ class Jobstack extends Component {
   }
   roleChangeHandler = (event) => {
     let val = event.target.value;
-    this.setState({ role: val });
+    console.log(val);
+    var new_role = this.state.role;
+    const index = this.state.role.indexOf(val);
+    if (index > -1) {
+      new_role.splice(index, 1);
+    }
+    else {
+      new_role.push(val);
+    }
+    this.setState({ role: new_role });
   }
   statusChangeHandler = (event) => {
-    let val = event.target.name;
+    let val = event.target.value;
     var new_status = this.state.status;
     const index = this.state.status.indexOf(val);
     if (index > -1) {
@@ -236,14 +216,14 @@ class Jobstack extends Component {
       followUp: this.state.jobs[i].followUp,
       comment: this.state.jobs[i].comment
     }
-    await axios.patch(`${process.env.PUBLIC_URL}/api/update_jobstack/` + this.state.jobs[i].jobId, job);
+    await axios.patch(`${process.env.PUBLIC_URL}/api/update_jobstack/` + this.state.jobs[i].job_id, job);
     this.setState({ open: true });
   }
   deleteHandler = async (row, event) => {
     event.preventDefault();
     const i = this.state.jobs.indexOf(row);
     var ch = this.state.jobs;
-    await axios.delete(`${process.env.PUBLIC_URL}/api/delete_jobstack/` + this.state.jobs[i].jobId);
+    await axios.delete(`${process.env.PUBLIC_URL}/api/delete_jobstack/` + this.state.jobs[i].job_id);
     ch.splice(i, 1);
     this.setState({ jobs: ch });
     this.setState({ deleteOpen: false });
@@ -252,112 +232,87 @@ class Jobstack extends Component {
     console.log(newPage);
     this.setState({ page: newPage });
   };
-  applyClickHandler = async () => {
-    this.filterJobstack();
-    this.setState({ filterOpen: false });
-  }
-  companyChangeHandler = async (event) => {
-    await this.setState({
-        selectedCompanies: event
-    })
-  }
-  clearFilter = async() => {
-    this.setState({
-      role: [],
-      status: [],
-      selectedCompanies: [],
-    });
-  }
-
-  async filterJobstack() {
-    const body = {
-      role: this.state.role,
-      status: this.state.status,
-      selectedCompanies: this.state.selectedCompanies,
-    }
-    if (body.role.length === 0)
-      body.role = ["Intern", "Full time"];
-
-    if (body.status.length === 0)
-      body.status = ["Not Applied", "Applied", "Asked for Referral", "Interview Scheduled"];
-
-    if (body.selectedCompanies.length === 0){
-    let companies = [];
-    this.state.all_jobs.map(company => {companies.push(company.companyName)})
-    body.selectedCompanies = companies;
-    }
-    var list_job =[];
-    var job = this.state.all_jobs;
-    job.map(j => {if( j.role.some(item => body.role.includes(item)) && body.status.includes(j.status) && 
-      body.selectedCompanies.includes(j.companyName))list_job.push(j);
-    })
-    
-    this.setState({
-      role: body.role,
-      status: body.status,
-      selectedCompanies: [],
-      jobs: list_job,
-    })
-  }
-  handleChangeSort = async (event) => {
-    const val = event.target.value;
-    if (val === "addTime") {
-      var job =this.state.jobs;
-      job.sort(function(a,b){
-        return new Date(b[val]) - new Date(a[val]);
-      });
-      await this.setState({
-        sortBy: val,
-        jobs: job,
-        all_jobs: job,
-      })
-    }
-    else if (val === "jobExpiry") {
-      var job =this.state.jobs;
-      job.sort(function(a,b){
-        return new Date(a[val]) - new Date(b[val]);
-      });
-      await this.setState({
-        sortBy: "jobExpiry",
-        jobs: job,
-      })
-    }
-  };
-
-
-  async componentDidMount() {
+  async fetchJobstack() {
     const body = {
       sortBy: this.state.sortBy,
-      comparator: this.state.comparator,
+      comparator: this.state.comparator
     }
     const st = await axios({
       method: 'get',
       url: `${process.env.PUBLIC_URL}/api/jobstack`,
       params: body
     });
-    const jobs = st.data;
-    await this.setState({
-      jobs: jobs,
-      all_jobs: jobs,
+    const stack = st.data;
+    var jobs = [];
+    for (var k = 0; k < stack.length; k++) {
+      var obj1 = stack[k];
+      var info = await axios.get(`${process.env.PUBLIC_URL}/api/jobidjob/` + obj1.jobId);
+      var obj2 = info.data;
+      // console.log(obj2);
+      // console.log(obj1);
+      var obj = {
+        companyName: obj2.companyName,
+        role: obj2.role,
+        jobTitle: obj2.jobTitle || "N/A",
+        jobLink: obj2.jobLink,
+        isReferral: obj2.isReferral || "N/A",
+        jobExpiry: obj2.jobExpiry,
+        salary: obj2.salary || "N/A",
+        status: obj1.status,
+        followUp: obj1.followUp,
+        comment: obj1.comment,
+        isDeleted: obj2.isDeleted,
+        job_id: obj1.jobId
+      }
+      jobs.push(obj);
+    }
+    this.setState({
+      jobs: jobs
     })
-    let companies = [];
-    this.state.jobs.map(company => {companies.push(company.companyName)})
-    this.setState({company_list: companies});
+  }
+  handleChangeSort = async (event) => {
+    const val = event.target.value;
+    if (val === "addTime") {
+      await this.setState({
+        sortBy: val,
+        comparator: -1,
+      })
+    }
+    else if (val === "jobExpiry") {
+      await this.setState({
+        sortBy: "jobExpiry",
+        comparator: 1,
+      })
+    }
+    this.fetchJobstack();
+  };
+
+
+  async componentDidMount() {
+    this.fetchJobstack();
+  }
+  testClick = () => {
+    console.log("Clicked");
   }
 
   render() {
     const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.jobs.length - this.state.page * this.state.rowsPerPage);
     const { classes } = this.props;
     return (
-      <div className='jobstack'>
+      <div>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell className="table-headd" align="center" ><b>Company</b></TableCell>
-                <TableCell align="center"><b>Status</b></TableCell>
-                <TableCell align="center"><b>Follow-up</b></TableCell>
-                <TableCell align="center"><b>Comment</b></TableCell>
+                <TableCell className="table-headd" align="center" >Company</TableCell>
+                <TableCell className="table-head" align="center">Role</TableCell>
+                <TableCell align="center">Job Title</TableCell>
+                <TableCell align="center">Referral applicable</TableCell>
+                <TableCell align="center">Job Expiry</TableCell>
+                <TableCell align="center">Salary</TableCell>
+                <TableCell align="center">Status</TableCell>
+                <TableCell align="center">Follow-up</TableCell>
+                <TableCell align="center">Comment</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -365,8 +320,13 @@ class Jobstack extends Component {
                 ? this.state.jobs.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                 : this.state.jobs
               ).map((row) => (
-                <TableRow>
+                <TableRow key={row.name}>
                   <TableCell align="center"><a href={row.jobLink}>{row.companyName}</a></TableCell>
+                  <TableCell align="center">{row.role}</TableCell>
+                  <TableCell align="center">{row.jobTitle}</TableCell>
+                  <TableCell align="center">{row.isReferral}</TableCell>
+                  <TableCell align="center">{row.jobExpiry}</TableCell>
+                  <TableCell align="center">{row.salary}</TableCell>
                   <TableCell align="center">
                     <Select
                       labelId="demo-simple-select-label"
@@ -375,8 +335,8 @@ class Jobstack extends Component {
                       onChange={this.handleChangeStatus.bind(this, row)}
                     >
                       <MenuItem value={"Not Applied"} > Not Applied</MenuItem>
-                      <MenuItem value={"Asked for Referral"} >Asked for Referral</MenuItem>
                       <MenuItem value={"Applied"} >Applied</MenuItem>
+                      <MenuItem value={"Asked for Referral"} >Asked for Referral</MenuItem>
                       <MenuItem value={"Interview Scheduled"} name="status">Interview Scheduled</MenuItem>
                     </Select>
                   </TableCell>
@@ -397,16 +357,16 @@ class Jobstack extends Component {
                     <TextField id="standard-basic" name="comment" value={row.comment} label="Add a comment" onChange={this.handleChange.bind(this, row)} />
                   </TableCell>
 
-                  <TableCell className={classes.widthCell} align="center">
-                    <input style={{ color: "red" }} type='submit' value="Upda" onClick={this.submitHandler.bind(this, row)} />
+                  <TableCell align="center">
+                    <input style={{ color: "red" }} type='submit' value="Update Changes" onClick={this.submitHandler.bind(this, row)} />
                     <Snackbar open={this.state.open} autoHideDuration={6000} onClose={this.handleClose} >
                       <Alert onClose={this.handleClose} severity="success">
                         Job details updated!
-                      </Alert>
+                </Alert>
                     </Snackbar>
                   </TableCell>
 
-                  <TableCell className={classes.widthCell}>
+                  <TableCell>
                     <IconButton aria-label="delete" className={classes.margin} onClick={this.handleClickOpen.bind(this, row)}>
                       <DeleteIcon fontSize="small" />
                     </IconButton>
@@ -427,11 +387,6 @@ class Jobstack extends Component {
                       </DialogActions>
                     </Dialog>
                   </TableCell>
-
-                  <TableCell className={classes.widthCell} align="center">
-                    <JobstackModal job={row} />
-                  </TableCell>
-
 
                 </TableRow>
               ))}
@@ -455,68 +410,69 @@ class Jobstack extends Component {
                 </TableCell>
 
                 <TableCell>
-                  <Button onClick={this.handleClickFilterOpen}>Filter</Button>
+                  <Button onClick={this.handleClickFilterOpen}>Open select dialog</Button>
                   <Dialog disableBackdropClick disableEscapeKeyDown open={this.state.filterOpen} onClose={this.handleFilterClose}>
                     <DialogTitle style={{ color: "black" }} >Select Filter</DialogTitle>
                     <DialogContent>
                       <form >
-                        <FormControl className={classes.margin} component="fieldset">
-                          <FormLabel component="legend">Role</FormLabel>
-                          <RadioGroup name="role" value={this.state.role} onChange={this.roleChangeHandler}>
-                            <FormControlLabel value="Intern" checked={this.state.role === "Intern"} control={<Radio />} label="Intern" />
-                            <FormControlLabel value="Full time" checked={this.state.role === "Full time"} control={<Radio />} label="Full time" />
-                          </RadioGroup>
-                        </FormControl>
-
-                        <FormControl component="fieldset" className={classes.margin}>
-                          <FormLabel component="legend">Status</FormLabel>
-                          <FormGroup>
-                            <FormControlLabel
-                              control={<Checkbox checked={this.state.status.includes("Not Applied")}
-                                onChange={this.statusChangeHandler} name="Not Applied" />}
-                              label="Not Applied"
-                            />
-                            <FormControlLabel
-                              control={<Checkbox checked={this.state.status.includes("Applied")}
-                                onChange={this.statusChangeHandler} name="Applied" />}
-                              label="Applied"
-                            />
-                            <FormControlLabel
-                              control={<Checkbox checked={this.state.status.includes("Asked for Referral")}
-                                onChange={this.statusChangeHandler} name="Asked for Referral" />}
-                              label="Asked for Referral"
-                            />
-                            <FormControlLabel
-                              control={<Checkbox checked={this.state.status.includes("Interview Scheduled")}
-                                onChange={this.statusChangeHandler} name="Interview Scheduled" />}
-                              label="Interview Scheduled"
-                            />
-                          </FormGroup>
-                        </FormControl>
-
-                        <FormControl component="fieldset" className={classes.margin}>
-                          <FormLabel component="legend">Companies (at most 5)</FormLabel>
-                          <Multiselect
-                            options={this.state.company_list}
-                            isObject={false}
-                            onSelect={this.companyChangeHandler}
-                            onRemove={this.companyChangeHandler}
-                            placeholder="Select Companies"
-                            // selectedValues={this.state.selectedCompanies}
-                            selectionLimit="5"
+                        <button onClick={this.testClick}>Click me</button>
+                        <InputLabel style={{ color: "black" }} htmlFor="demo-dialog-native">Job Role</InputLabel>
+                        &nbsp;
+                            <p><input type="checkbox" name='role' value="Intern"
+                          // checked={this.state.role.includes("Intern")}
+                          onClick={this.roleChangeHandler}
                         />
-                        </FormControl>
-                        <Button style={{ backgroundColor: "green" }} onClick={this.clearFilter} >
-                          Clear Filter
-                        </Button>
+                          <span style={{ color: "black" }}>Intern</span>
+                        </p>
+                        <p>
+                          <input type="checkbox" name='role' value="Full time"
+                            checked={this.state.role.includes("Full time")}
+                            onChange={this.roleChangeHandler}
+                          />
+                          <span style={{ color: "black" }}>Full time</span>
+                        </p>
+
+
+
+                        <InputLabel style={{ color: "black" }} htmlFor="demo-dialog-native">Status</InputLabel>
+                        &nbsp;
+                            <p><input type="checkbox" name='status' value="Not Applied"
+                          checked={this.state.status.includes("Not Applied")}
+                          onChange={this.statusChangeHandler}
+                        />
+                          <span style={{ color: "black" }}>Not Applied</span>
+                        </p>
+                        <p>
+                          <input type="checkbox" name='status' value="Applied"
+                            checked={this.state.status.includes("Applied")}
+                            onChange={this.statusChangeHandler}
+                          />
+                          <span style={{ color: "black" }}>Applied</span>
+                        </p>
+                        <p>
+                          <input type="checkbox" name='status' value="Asked for Referral"
+                            checked={this.state.status.includes("Asked for Referral")}
+                            onChange={this.statusChangeHandler}
+                          />
+                          <span style={{ color: "black" }}>Asked for Referral</span>
+                        </p>
+                        <p>
+                          <input type="checkbox" name='status' value="Interview Scheduled"
+                            checked={this.state.status.includes("Interview Scheduled")}
+                            onChange={this.statusChangeHandler}
+                          />
+                          <span style={{ color: "black" }}>Interview Scheduled</span>
+                        </p>
+
+
                       </form>
                     </DialogContent>
                     <DialogActions>
-                      <Button style={{ backgroundColor: "red" }} onClick={this.handleFilterClose} >
+                      <Button style={{ backgroundColor: "green" }} onClick={this.handleFilterClose} >
                         Cancel
                     </Button>
-                      <Button style={{ backgroundColor: "green" }} onClick={this.applyClickHandler} >
-                        Apply
+                      <Button style={{ backgroundColor: "red" }} onClick={this.handleFilterClose} >
+                        Ok
                     </Button>
                     </DialogActions>
                   </Dialog>

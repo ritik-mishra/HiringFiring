@@ -49,6 +49,8 @@ class Jobcard extends Component {
         this.setState({ redirect: true })
     }
     heartClick = async () => {
+
+
         if (!this.state.isLikeProcessing) {
             await this.setState({
                 isLikeProcessing: true

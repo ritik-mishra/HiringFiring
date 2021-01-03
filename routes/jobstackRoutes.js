@@ -64,7 +64,7 @@ module.exports = (app) => {
     })
 
     //edit job in my jobStack
-    app.patch("/api/update_jobstack/:jobId",requireLogin, async (req, res) => {
+    app.patch("/api/update_jobstack/:jobId", requireLogin, async (req, res) => {
         try {
             const updatedJob = await Jobstack.updateOne({ "jobId": req.params['jobId'], "googleId": req.user.googleId },
                 {
@@ -81,7 +81,7 @@ module.exports = (app) => {
             res.send(err);
         }
     });
-    app.delete("/api/delete_jobstack/:jobId",requireLogin, async (req, res) => {
+    app.delete("/api/delete_jobstack/:jobId", requireLogin, async (req, res) => {
         try {
             await Jobstack.deleteOne({ "jobId": req.params['jobId'], "googleId": req.user.googleId });
             res.send("Job deleted");
