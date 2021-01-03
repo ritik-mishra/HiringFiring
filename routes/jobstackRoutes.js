@@ -30,10 +30,7 @@ module.exports = (app) => {
     })
     //to get all jobs in jobstack of a user to show on jobstack page
     app.get("/api/jobstack", requireLogin, async (req, res) => {
-        const body_status = req.query.status;
-        const body_role = req.query.role;
-        const jobs = await Jobstack.find({
-            "$and": [{ "status": { "$in": body_status } }, { "googleId": req.user.googleId }]
+        const jobs = await Jobstack.find({ "googleId": req.user.googleId
         }).sort({ 
             [req.query.sortBy]: req.query.comparator 
             });
@@ -42,11 +39,11 @@ module.exports = (app) => {
         for( var i in jobs){
             jobid.push(jobs[i].jobId);
         }
-        const curr_jobs = await Job.find({ "$and":[{ "jobId": {"$in": jobid}}, {"role": { "$in": body_role }}]});
+        const curr_jobs = await Job.find({ "jobId": {"$in": jobid}});
         var finalList = [];
 
         for (var i in jobs) {
-            var obj = {jobId: jobs[i].jobId, status: jobs[i].status, comment: jobs[i].comment, followUp: jobs[i].followUp};
+            var obj = {jobId: jobs[i].jobId, status: jobs[i].status, comment: jobs[i].comment, followUp: jobs[i].followUp, addTime: jobs[i].addTime};
 
             for (var j in curr_jobs) {
                 if (jobs[i].jobId == curr_jobs[j].jobId) {

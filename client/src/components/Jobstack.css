@@ -1,5 +1,5 @@
 .jobstack{
-    overflow-x:auto;
+    position: absolute; left: 20%; top: 10%;right: 20%; bottom: 5%;
 }
 .table-headd{
     text-align: center;
