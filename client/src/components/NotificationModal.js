@@ -50,6 +50,7 @@ export default function NotificationModal(props) {
         var nDate = dt.substring(0, 14) + "00";
         var nd = new Date(nDate);
         var mlTime = nd.getTime();
+        mlTime += 55 * 6 * 60 * 1000;
         var note = {
             time: mlTime,
             message: msg,
