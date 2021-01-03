@@ -7,45 +7,63 @@ import './Header.css'
 
 
 class Header extends Component {
-    renderContent() {
-        switch (this.props.auth) {
-            case null:
-                return;
-            case false:
-                return (
-                    <li><a href={`${process.env.PUBLIC_URL}/auth/google`}>Login With Google</a></li>
-                );
-            default:
-                return (
-                    <div>
-                        <li><a href={`${process.env.PUBLIC_URL}/jobboard`}>Job Board</a></li>
-                        <li><a href={`${process.env.PUBLIC_URL}/addnewjob`}> Add New Job</a></li>
-                        <li><a href={`${process.env.PUBLIC_URL}/myjobstack`}>My Jobstack</a></li>
-                        <li><a href={`${process.env.PUBLIC_URL}/api/logout`}>Logout</a></li>
-                    </div>
-                );
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            navClass: "nav-links",
         }
     }
+    burgerClick = () => {
+        var cls = "";
+        if (this.state.navClass === "nav-links") {
+            cls = "nav-links nav-active";
+        }
+        else {
+            cls = "nav-links";
+        }
+        this.setState({
+            navClass: cls
+        })
+    }
+    getNavElement = () => {
+        const auth = this.props.auth;
+        if (auth === null)
+            return;
+        if (auth === false)
+            return (
+                <li><a href={`${process.env.PUBLIC_URL}/auth/google`}>Login With Google</a></li>
+            )
+        return (
+            <>
+                <li ><a href={`${process.env.PUBLIC_URL}/jobboard`}>Job Board</a></li>
+                <li ><a href={`${process.env.PUBLIC_URL}/addnewjob`}> Add New Job</a></li>
+                <li ><a href={`${process.env.PUBLIC_URL}/myjobstack`}>My Jobstack</a></li>
+                <li ><a href={`${process.env.PUBLIC_URL}/api/logout`}>Logout</a></li>
+            </>
+        )
 
+    }
     render() {
         return (
-            <nav>
-                <div className="nav-wrapper" data-observe-resizes >
+            <div className="head">
+                <div style={{ display: "inline" }} className="logo">
                     <Link
-                        // to={this.props.auth ? '/dashboard' : '/'}
                         to='/'
-                        className="left brand-logo"
                     >
-                        {/* Hiring-Firing */}
-                        <img src={logo} alt="Logo" style={{ width: "4rem", height: "3rem", marginLeft: "1rem", marginTop: "0.5rem" }} />
+                        <img src={logo} className="logo-image"></img>
                     </Link>
-                    <ul className="right">
-                        {this.renderContent()}
+                </div>
+
+                <div className="burger">
+                    <div onClick={this.burgerClick} className="icon">&#9776;</div>
+                </div>
+                <div className="nav-words">
+                    <ul style={{ display: "inline" }} className={this.state.navClass}>
+                        {this.getNavElement()}
                     </ul>
                 </div>
-            </nav >
-        );
+            </div>
+        )
     }
 }
 

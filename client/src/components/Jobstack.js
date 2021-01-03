@@ -19,8 +19,6 @@ class Jobstack extends Component {
             var obj1 = stack[k];
             var info = await axios.get(`${process.env.PUBLIC_URL}/api/jobidjob/` + obj1.jobId);
             var obj2 = info.data;
-            console.log(obj2);
-            console.log(obj1);
             var obj = {
                 companyName: obj2.companyName,
                 role: obj2.role,
@@ -39,8 +37,6 @@ class Jobstack extends Component {
         this.setState({
             jobs: jobs
         })
-
-        // console.log(jobs.data);
     }
     getJobsList = () => {
         var jobList = [];

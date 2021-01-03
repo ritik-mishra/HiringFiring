@@ -4,7 +4,6 @@ import axios from 'axios';
 import { Redirect } from 'react-router';
 
 import './Jobcard.css'
-
 class Jobcard extends Component {
     constructor(props) {
         super(props);
@@ -25,7 +24,7 @@ class Jobcard extends Component {
         };
     }
     componentDidMount() {
-        // console.log(this.state.job);
+        // cy;
     }
     deleteHandler = async (event) => {
         event.preventDefault();
@@ -77,7 +76,7 @@ class Jobcard extends Component {
         }
     }
     getHeart = () => {
-        return <i onClick={this.heartClick} className="fa fa-heart" style={{ fontSize: "1.7rem", color: this.state.heart ? "#e68a00" : "#bfbfbf", cursor: "pointer" }}></i>;
+        return <i onClick={this.heartClick} className="fa fa-heart" style={{ fontSize: "1.7rem", color: this.state.heart ? "rgb(253, 91, 91)" : "#bfbfbf", cursor: "pointer" }}></i>;
     }
     addJobstackHandler = async () => {
         this.setState({
@@ -107,13 +106,13 @@ class Jobcard extends Component {
     render() {
         const job = this.props.job;//this was previously accessed through state and constructor was not getting called again when the component's key attribute was not specified
         const auth = this.props.auth;
-        // console.log(auth.googleId);
 
         //delete and edit job link logic
         var del = null, edit = null;
+        var col1 = "rgb(25, 75, 90)";
         if (auth._id && (auth._id === job.postedById)) {
-            del = <a onClick={this.deleteHandler} href="#">Delete Job</a>;
-            edit = <a onClick={this.editHandler} href="#">Edit Job</a>;
+            del = <a style={{ color: col1 }} onClick={this.deleteHandler} href="#">Delete Job</a>;
+            edit = <a style={{ color: col1 }} onClick={this.editHandler} href="#">Edit Job</a>;
         }
         //delete popup text logic
         var deleteText = null;
@@ -141,41 +140,42 @@ class Jobcard extends Component {
                     state: { editJob: job }
                 }} />;
         }
-        // console.log(job);
         if (this.state.showCard) {
             return (
                 <div>
 
                     <div className="jobcard">
                         <div >
-                            <div className="col s12 m6">
-                                <div className="card blue-grey darken-1">
-                                    <div className="card-content white-text">
-                                        <span style={{ display: "inline" }} className="card-title"><b>{job.companyName}</b></span>
-                                        {this.getJobstackButton()}
-                                        <hr></hr>
-                                        <p>Role: {this.internFulltime()}</p>
-                                        <p>Job Title: {job.jobTitle}</p>
-                                        <p className="inline">Batch applicable:&nbsp;</p>
-                                        <div className="inline">{job.batch.map(each_batch => (
-                                            <p className="inline" key={each_batch}>
-                                                {each_batch}&nbsp;</p>))}
-                                        </div>
-                                        {default_date.getTime() !== jobExpiry_date.getTime() &&
-                                            <p>Apply Before: {date.toLocaleDateString()}</p>}
-                                        <p>Referral Applicable: {job.isReferral}</p>
-                                        <p>Posted by: {job.postedBy}</p>
+                            <div className="card">
+                                <div className="card-content">
+                                    <span style={{ display: "inline" }} className="card-title"><b>{job.companyName}</b></span>
+                                    {this.getJobstackButton()}
+                                    <hr></hr>
+                                    <div className="role">
+                                        <p style={{ display: "inline" }}><b>Role:</b> {this.internFulltime()}</p>
+                                        <p style={{ display: "inline" }}><b>&nbsp;&nbsp;&nbsp;&nbsp;Title:</b> {job.jobTitle}</p>
                                     </div>
-                                    <div className="card-action">
-                                        <a target="_blank" rel="noreferrer" href={url}>Apply here</a>
+                                    <p className="inline"><b>Batch applicable:</b>&nbsp;</p>
+                                    <div className="inline">{job.batch.map(each_batch => (
+                                        <p className="inline" key={each_batch}>
+                                            {each_batch}&nbsp;</p>))}
+                                    </div>
+                                    {default_date.getTime() !== jobExpiry_date.getTime() &&
+                                        <p><b>Apply Before:</b> {date.toLocaleDateString()}</p>}
+                                    <p><b>Referral Applicable:</b> {job.isReferral}</p>
+                                    <p><b>Posted by:</b> {job.postedBy}</p>
+                                </div>
+                                <div className="card-action">
+                                    <div className="card-lower">
+                                        <a style={{ color: col1 }} target="_blank" rel="noreferrer" href={url} > Apply here</a>
                                         {del}
                                         {edit}
                                         {this.getHeart()}
                                         {this.state.heartCount}
                                     </div>
-                                    <div>
-                                        {deleteText}
-                                    </div>
+                                </div>
+                                <div>
+                                    {deleteText}
                                 </div>
                             </div>
                         </div>
