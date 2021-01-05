@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Redirect } from 'react-router';
-
+import CommentBox from './CommentBox';
 import './Jobcard.css'
 class Jobcard extends Component {
     constructor(props) {
@@ -20,11 +20,22 @@ class Jobcard extends Component {
             heart: h,
             heartCount: hc,
             isLikeProcessing: false,
-            noAddJobstackButton: this.props.notButton
+            noAddJobstackButton: this.props.notButton, // This can create problem if constructor is not called again everytime the cards jobId changes
+                                                       // If using props to assign state it should be preferably done in the renderer only
+            showComments: true,
+            startCommentPage: this.props.job.commentCount > 1 ? this.props.job.previewComment._id : null,
+            processingComments: false,
+            comments:[]
         };
     }
     componentDidMount() {
-        // cy;
+        let loadPreviewComment = [];
+        if(this.props.job.previewComment && !this.props.job.previewComment.isDeleted){
+            loadPreviewComment.push(this.props.job.previewComment);
+        }
+        this.setState({
+            comments: loadPreviewComment
+        });
     }
     deleteHandler = async (event) => {
         event.preventDefault();
@@ -47,6 +58,8 @@ class Jobcard extends Component {
         this.props.setLocal();
         this.setState({ redirect: true })
     }
+
+    //Like button Handlers
     heartClick = async () => {
         if (!this.state.isLikeProcessing) {
             await this.setState({
@@ -78,6 +91,8 @@ class Jobcard extends Component {
     getHeart = () => {
         return <i onClick={this.heartClick} className="fa fa-heart" style={{ fontSize: "1.7rem", color: this.state.heart ? "rgb(253, 91, 91)" : "#bfbfbf", cursor: "pointer" }}></i>;
     }
+
+    //Jobstack Handlers
     addJobstackHandler = async () => {
         this.setState({
             noAddJobstackButton: true
@@ -103,6 +118,58 @@ class Jobcard extends Component {
             infl = "Full time";
         return infl;
     }
+    
+    //Logic for handling the comments section
+    fetchComments = async () => {
+        const getCommentsURL = `${process.env.PUBLIC_URL}/api/get_comments/` + this.props.job.jobId;
+        const comments = await axios({
+            method: 'get',
+            url: getCommentsURL,
+            params: { startCommentPage: this.state.startCommentPage}
+        });
+        let loadedNewComments = this.state.comments;
+        //obtain new offset
+        let offSet = comments.data.pop();
+        //add each new data
+        comments.data.forEach(comment => {
+            loadedNewComments.push(comment);
+        });
+        this.setState({
+            startCommentPage: offSet,
+            comments: loadedNewComments
+        });
+    }
+    showCommentsHandler = async (event) => {
+        event.preventDefault();
+        if(!this.state.processingComments){
+            this.setState({
+                processingComments: true
+            },async () => {
+                if(!this.state.showComments){
+                    await this.fetchComments();
+                    this.setState({
+                        showComments: true
+                    },()=>{
+                        this.setState({
+                            processingComments: false
+                        });
+                    });
+                }
+                else{
+                    this.setState({
+                        showComments: false,
+                        startCommentPage: 0,
+                        comments: []
+                    },() => {
+                        this.setState({
+                            processingComments: false
+                        })
+                    })
+                }
+            });
+            
+        }
+    }
     render() {
         const job = this.props.job;//this was previously accessed through state and constructor was not getting called again when the component's key attribute was not specified
         const auth = this.props.auth;
@@ -114,6 +181,7 @@ class Jobcard extends Component {
             del = <a style={{ color: col1 }} onClick={this.deleteHandler} href="#">Delete Job</a>;
             edit = <a style={{ color: col1 }} onClick={this.editHandler} href="#">Edit Job</a>;
         }
+
         //delete popup text logic
         var deleteText = null;
         if (this.state.showDelete) {
@@ -124,6 +192,19 @@ class Jobcard extends Component {
                     <button onClick={this.deleteHandler} style={{ display: "inline" }} class="button button1">No</button>
                     <button onClick={this.deleteJobHandler} style={{ display: "inline" }} className="button button3">Yes</button>
                 </div>
+            );
+        }
+
+        //Comment Section Logic
+        var comments = null;
+        if (auth._id) {
+            comments = <a onClick={this.showCommentsHandler} href="#">Comments</a>;
+        }
+        var commentText = null;
+        if(this.state.showComments){
+            const COMMENTS = this.state.comments;
+            commentText = (
+                <CommentBox comments={COMMENTS} jobId={this.props.job.jobId} fetchComments={this.fetchComments} offSet={this.state.startCommentPage}/>
             );
         }
 
@@ -170,12 +251,16 @@ class Jobcard extends Component {
                                         <a style={{ color: col1 }} target="_blank" rel="noreferrer" href={url} > Apply here</a>
                                         {del}
                                         {edit}
+                                        {comments}
                                         {this.getHeart()}
                                         {this.state.heartCount}
                                     </div>
-                                </div>
-                                <div>
-                                    {deleteText}
+                                    <div>
+                                        {deleteText}
+                                    </div>
+                                    <div>
+                                        {commentText}
+                                    </div>
                                 </div>
                             </div>
                         </div>

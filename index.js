@@ -4,6 +4,7 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const keys = require('./config/keys');
 require('./models/User');
+require('./models/Comments');
 require('./models/Jobs');
 require('./models/Jobstack');
 require('./services/passport');
@@ -27,6 +28,7 @@ app.use(express.json());
 
 require('./routes/jobRoutes')(app);
 require('./routes/jobstackRoutes')(app);
+require('./routes/commentRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
     //Serve Production assets, main.js and main.css
@@ -38,6 +40,6 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     })
 }
-const Port = process.env || 5000;
+const Port = process.env.Port || 5000;
 
-app.listen(5000);
+app.listen(Port);
