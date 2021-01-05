@@ -34,7 +34,6 @@ class Jobboard extends Component {
         this.fetchJobs();
         const userJobstack = await axios.get(`${process.env.PUBLIC_URL}/api/jobstack_userjobs`);
         this.setState({ userJobstack: userJobstack.data });
-        console.log(this.state.userJobstack);
     }
     setLocal = (x) => {
         localStorage.setItem("page", this.state.page);
@@ -120,7 +119,7 @@ class Jobboard extends Component {
             return (
                 <div className="content">
                     <ResponsiveDrawer filterHandler={this.filterHandler}></ResponsiveDrawer>
-                    <div className="jobboard"> 
+                    <div className="jobboard">
                         <div className="jobs" id="jobs" ref={this.refJobs}>
                             <div>
                                 {
