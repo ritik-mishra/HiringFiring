@@ -45,11 +45,12 @@ module.exports = (app) => {
             .sort({ [req.query.sortBy]: req.query.comparator })
             .skip(skip)
             .limit(PAGE_SIZE);
+
         res.send(page_jobs);
     })
     //Add liker
     app.post('/api/add_liker', requireLogin, async (req, res) => {
-        const user = req.user.googleId
+        const user = req.user.googleId;
         console.log(user);
         const jobId = req.body.jobId;
         var job = await Job.findOne({ jobId: jobId });

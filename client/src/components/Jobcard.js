@@ -85,8 +85,11 @@ class Jobcard extends Component {
         this.setState({
             noAddJobstackButton: true
         })
+        const body = {
+            jobExpiry: this.props.job.jobExpiry
+        }
         var add = `${process.env.PUBLIC_URL}/api/addto_jobstack/` + this.props.job.jobId;
-        const res = await axios.post(add);
+        const res = await axios.post(add, body);
     }
     getJobstackButton = () => {
         if (this.state.noAddJobstackButton)
