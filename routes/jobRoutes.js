@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const Job = mongoose.model('jobs');
+const Comment = mongoose.model('comments');
 const { v4: uuidv4 } = require('uuid');
 
 const requireLogin = require('../middlewares/requireLogin');
@@ -43,7 +44,9 @@ module.exports = (app) => {
         })
             .sort({ [req.query.sortBy]: req.query.comparator })
             .skip(skip)
-            .limit(PAGE_SIZE);
+            .limit(PAGE_SIZE)
+            .populate('previewComment');
+        
         res.send(page_jobs);
     })
     //Add liker
