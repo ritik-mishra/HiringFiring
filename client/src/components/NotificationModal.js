@@ -2,7 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import IconButton from '@material-ui/core/IconButton';
-import AddAlertIcon from '@material-ui/icons/AddAlert';
+import ScheduleIcon from '@material-ui/icons/Schedule';
+import CancelIcon from '@material-ui/icons/Cancel';
+import Tooltip from '@material-ui/core/Tooltip';
 import './Notification.css';
 import axios from 'axios';
 function rand() {
@@ -29,11 +31,17 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
     },
+    cross: {
+        position: 'absolute',
+        top: '0',
+        right: '0',
+    },
 }));
 
 export default function NotificationModal(props) {
 
     const classes = useStyles();
+    const hover = `Set reminder`;
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState(getModalStyle);
     const [open, setOpen] = React.useState(false);
@@ -92,14 +100,19 @@ export default function NotificationModal(props) {
                     <button type="submit" value="Set Reminder">Set Reminder</button>
                 </form>
             </div>
+            <IconButton aria-label="cancel" onClick={handleClose} className={classes.cross}>
+                <CancelIcon style={{color: "black"}} fontSize="small" />
+            </IconButton>
         </div>
     );
 
     return (
         <div>
-            <IconButton style={{ color: "black" }} className={classes.margin} type="button" onClick={handleOpen} color="primary">
-                <AddAlertIcon style={{ color: "black" }} fontSize="small" />
-            </IconButton>
+            <Tooltip title={hover}>
+                <IconButton type="button" onClick={handleOpen}>
+                    <ScheduleIcon style={{color: '#fc4c6f'}} fontSize="medium" />
+                </IconButton>
+            </Tooltip>
             <Modal
                 open={open}
                 onClose={handleClose}
