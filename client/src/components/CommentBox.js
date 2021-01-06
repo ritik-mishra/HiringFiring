@@ -19,8 +19,15 @@ import CommentCard from "./CommentCard";
 const { v4: uuidv4 } = require('uuid');
 const useStyles = makeStyles(theme => ({
   root: {
+    
+    borderRadius: "20px",
+    padding:"10px",
     width: "100%",
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: "hsl(45, 38%, 94%)"
+    // backgroundColor: theme.palette.background.paper
+  },
+  outer_block: {
+    padding:"5px",
   },
   fonts: {
     fontWeight: "bold"
@@ -96,7 +103,7 @@ const CommentBox = (props) => {
               <ListItemText
               secondary={
                   <a href = '#' onClick= {fetchPrevComments}>
-                  {`Load previous comments`}
+                  <b><div style={{fontSize:"15px", color:"#4682B4"}}>{`Load previous comments`}</div></b>
                   </a>
               }
               />
@@ -107,11 +114,14 @@ const CommentBox = (props) => {
   return (
     <div>
       <List className={classes.root}>
-        {loadPrevComments}
+      <div style={{paddingLeft:"5px"}}>
+        {loadPrevComments}</div>
+        <div style={{padding:"5px"}}>
         {renderCommentCard}
-        {renderNewAddedComments}
-        <form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit}>
-          <ListItem>
+        {/* <div style={{padding:"10px"}}> */}
+        {renderNewAddedComments}</div>
+        <form className={classes.formed} noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <ListItem className={classes.outer_block}>
             <ListItemAvatar>
               <Avatar alt="avatar" src={auth.picURL} />
             </ListItemAvatar>
@@ -134,7 +144,7 @@ const CommentBox = (props) => {
               <Button 
                 type="submit"
                 variant="contained"
-                color="primary"
+                color="#90EE90"
               >
                 Add
               </Button>

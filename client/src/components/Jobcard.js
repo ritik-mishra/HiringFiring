@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Redirect } from 'react-router';
+import moment from 'moment';
 import CommentBox from './CommentBox';
 import './Jobcard.css'
 class Jobcard extends Component {
@@ -89,7 +90,7 @@ class Jobcard extends Component {
         }
     }
     getHeart = () => {
-        return <i onClick={this.heartClick} className="fa fa-heart" style={{ fontSize: "1.7rem", color: this.state.heart ? "rgb(253, 91, 91)" : "#bfbfbf", cursor: "pointer" }}></i>;
+        return <i onClick={this.heartClick} className="fa fa-heart" style={{ fontSize: "1.8rem", color: this.state.heart ? "rgb(253, 91, 91)" : "#bfbfbf", cursor: "pointer" }}></i>;
     }
 
     //Jobstack Handlers
@@ -178,8 +179,11 @@ class Jobcard extends Component {
         var del = null, edit = null;
         var col1 = "rgb(25, 75, 90)";
         if (auth._id && (auth._id === job.postedById)) {
-            del = <a style={{ color: col1 }} onClick={this.deleteHandler} href="#">Delete Job</a>;
-            edit = <a style={{ color: col1 }} onClick={this.editHandler} href="#">Edit Job</a>;
+            del = <i onClick={this.deleteHandler} className="fa fa-trash" style={{ paddingRight:"10px", float: "right", fontSize: "2.0rem", color:"#DC143C", cursor: "pointer" }}></i>;
+            edit = <i onClick={this.editHandler} className="fa fa-pencil-square-o" style={{ float: "right", fontSize: "2.0rem", color:"#BA55D3", cursor: "pointer" }}></i>;
+           
+            // del = <a style={{ color: col1 }} onClick={this.deleteHandler} href="#">Delete Job</a>;
+            // edit = <a style={{ color: col1 }} onClick={this.editHandler} href="#">Edit Job</a>;
         }
 
         //delete popup text logic
@@ -224,48 +228,70 @@ class Jobcard extends Component {
         if (this.state.showCard) {
             return (
                 <div>
-
                     <div className="jobcard">
-                        <div >
-                            <div className="card">
-                                <div className="card-content">
-                                    <span style={{ display: "inline" }} className="card-title"><b>{job.companyName}</b></span>
-                                    {this.getJobstackButton()}
-                                    <hr></hr>
-                                    <div className="role">
-                                        <p style={{ display: "inline" }}><b>Role:</b> {this.internFulltime()}</p>
-                                        <p style={{ display: "inline" }}><b>&nbsp;&nbsp;&nbsp;&nbsp;Title:</b> {job.jobTitle}</p>
-                                    </div>
-                                    <p className="inline"><b>Batch applicable:</b>&nbsp;</p>
-                                    <div className="inline">{job.batch.map(each_batch => (
-                                        <p className="inline" key={each_batch}>
-                                            {each_batch}&nbsp;</p>))}
-                                    </div>
-                                    {default_date.getTime() !== jobExpiry_date.getTime() &&
-                                        <p><b>Apply Before:</b> {date.toLocaleDateString()}</p>}
-                                    <p><b>Referral Applicable:</b> {job.isReferral}</p>
-                                    <p><b>Posted by:</b> {job.postedBy}</p>
-                                </div>
-                                <div className="card-action">
-                                    <div className="card-lower">
-                                        <a style={{ color: col1 }} target="_blank" rel="noreferrer" href={url} > Apply here</a>
-                                        {del}
-                                        {edit}
-                                        {comments}
-                                        {this.getHeart()}
-                                        {this.state.heartCount}
-                                    </div>
-                                    <div>
-                                        {deleteText}
-                                    </div>
-                                    <div>
-                                        {commentText}
-                                    </div>
+                        <div className="card">
+                            <div className="card-header">
+                                <div style={{ display: "inline" }} className="card-header-content">
+                                    <b>
+                                    <div style={{display:"inline", color:"#FF0000"}}>{job.companyName}</div></b>
+                                    
+                                    
+                                    <div className="posted-date sm">&nbsp;&nbsp;&nbsp;&nbsp;{` ${moment(job.createdAt).calendar()}`}</div>
+                                   
+                                    <div className="posted-date lg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{` ${moment(job.createdAt).calendar()}`}</div>
+                                    {del}
+                                    <i onClick={this.getJobstackButton} className="fa fa-list-alt" style={{ paddingRight:"12px", paddingLeft:"12px", float: "right", fontSize: "2rem", color:"#228B22", cursor: "pointer" }}></i>
+                                    {edit}
+                                     
                                 </div>
                             </div>
+                            <div className="card-content">
+                                <div style={{paddingLeft: "5px", paddingRight: "5px", paddingBottom: "5px"}} className="title">
+                                    <p style={{ color:"rgb(51, 39, 112)", display: "inline" }}><b>Role:</b> {this.internFulltime()}</p>
+                                    <p style={{ color: "rgb(51, 39, 112)", display: "inline" }}><b>&nbsp;&nbsp;&nbsp;&nbsp;Title:</b> {job.jobTitle}</p>
+                                </div>
+                                <div style={{padding: "5px"}} classname="batch">
+                                    <p  className="inline"><b>Batch applicable:</b>&nbsp;</p>
+                                        <div className="inline">{job.batch.map(each_batch => (
+                                            <p style={{padding: "5px"}} className="inline" key={each_batch}>
+                                                {each_batch}&nbsp;</p>))}
+                                        </div>
+                                </div>
+                                <div style={{padding: "5px" }} classname="check">
+                                    {default_date.getTime() !== jobExpiry_date.getTime() &&
+                                        <p style={{ color: "rgb(51, 39, 112)"}}><b>Apply Before:</b> {date.toLocaleDateString()}</p>}
+                                </div>
+                                <div style={{padding: "5px" }} classname="referral">
+                                     <p style={{color: "rgb(51, 39, 112)"}}><b>Referral Applicable:</b> {job.isReferral}</p>
+                                </div>
+                                <div style={{padding: "5px" }} classname="posted">
+                                   <p style={{color: "rgb(51, 39, 112)"}}><b>Posted by:</b> {job.postedBy}</p>
+                                </div>
+                            </div>
+                            <div className="card-lower">
+                                <div style={{ display: "inline"}} className="card-lower-content">
+                                    {this.getHeart()}
+                                    {this.state.heartCount}&nbsp;&nbsp;
+                                    &nbsp;&nbsp;
+                                    <b><a className="apply_button" style={{ fontFamily: "'Trebuchet MS', sans-serif'", fontSize:"22px", color: "#2e1212" }} target="_blank" rel="noreferrer" href={url} > Apply Here!</a></b>
+                                    <strong><p style={{display:"inline", paddingRight:"5px", paddingLeft:"5px", float:"right", fontSize:"18px", color:"Black"}}>Comments ( {job.commentCount} )</p></strong>
+                                </div>  
+                            </div>
+
+                            <div>
+                                {deleteText}
+                            </div>
+                            <hr></hr>
+                            <div style={{padding:"20px"}}>
+                                {commentText}
+                            </div>
+
+                      
                         </div>
                     </div>
                 </div>
+                
             )
         }
         else {
