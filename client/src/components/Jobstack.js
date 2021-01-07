@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './Jobstack.css';
 import Table from '@material-ui/core/Table';
+import Modal from '@material-ui/core/Modal';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -39,11 +40,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import SaveIcon from '@material-ui/icons/Save';
 import { Multiselect } from 'multiselect-react-dropdown';
 
-
-
-
 import NotificationModal from './NotificationModal';
 import JobstackModal from './JobstackModal';
+import Giphy from './Giphy';
 
 
 const useStyles1 = makeStyles((theme) => ({
@@ -155,9 +154,11 @@ const styles = (theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
-  filterr: {
-    color: 'red',
-  },
+  cross: {
+    position: 'absolute',
+    bottom: '2%',
+    left: '1%',
+},
 });
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -181,14 +182,18 @@ class Jobstack extends Component {
       status: [],
       company_list: [],
       selectedCompanies: [],
+      giphy: false,
+      stat: 'Not Applied',
     }
   }
-  handleChangeStatus = (row, event) => {
+  handleChangeStatus = async(row, event) => {
     const i = this.state.jobs.indexOf(row);
     const val = event.target.value;
     var ch = this.state.jobs;
     ch[i].status = val;
     this.setState({ jobs: ch });
+    if(val === "Applied")
+      await this.setState({giphy: true, stat: val});
   };
   handleChangeFollowUp = (row, event) => {
     const i = this.state.jobs.indexOf(row);
@@ -229,6 +234,9 @@ class Jobstack extends Component {
   }
   handleFilterClose = () => {
     this.setState({ filterOpen: false });
+  }
+  handleGiphyClose = () => {
+    this.setState({ giphy: false });
   }
   roleChangeHandler = (event) => {
     let val = event.target.value;
@@ -377,6 +385,7 @@ class Jobstack extends Component {
     const { classes } = this.props;
     const save_hover = `Save changes`;
     return (
+  
       <div className='jobstack' style={{ marginTop: "0.5rem" }}>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">
@@ -407,6 +416,16 @@ class Jobstack extends Component {
                       <MenuItem value={"Applied"} >Applied</MenuItem>
                       <MenuItem value={"Interview Scheduled"} name="status">Interview Scheduled</MenuItem>
                     </Select>
+                    <div>
+                    {this.state.giphy && 
+                    <Modal
+                    open={this.state.giphy}
+                    onClose={this.handleGiphyClose}
+                  >
+                      <Giphy status={this.state.stat}/>
+                  </Modal>   
+                    }
+                    </div>
                   </TableCell>
 
                   <TableCell className={classes.midWidthCell} align="center">
@@ -461,7 +480,8 @@ class Jobstack extends Component {
                         <Button style={{ backgroundColor: "green" }} onClick={this.handleDeleteClose} >
                           No
                         </Button>
-                        <Button style={{ backgroundColor: "red" }} onClick={this.deleteHandler.bind(this, this.state.jobs[this.state.current_row])} color="primary" autoFocus>
+                        <Button style={{ backgroundColor: "red" }} onClick={this.deleteHandler.bind(this, this.state.jobs[this.state.current_row])} 
+                          color="primary" autoFocus>
                           Yes
                         </Button>
                       </DialogActions>
@@ -476,7 +496,7 @@ class Jobstack extends Component {
                   <TableCell className={classes.widthCell} align="center">
                     <JobstackModal job={row} />
                   </TableCell>
-
+                
 
                 </TableRow>
               ))}
@@ -551,16 +571,16 @@ class Jobstack extends Component {
                               selectionLimit="5"
                             />
                           </FormControl>
-                          <Button style={{ backgroundColor: "green" }} onClick={this.clearFilter} >
+                          <Button className={classes.cross} style={{ backgroundColor: "#fc4c6f" }} onClick={this.clearFilter} >
                             Clear Filter
                           </Button>
                         </form>
                       </DialogContent>
                       <DialogActions>
-                        <Button style={{ backgroundColor: "red" }} onClick={this.handleFilterClose} >
+                        <Button style={{ backgroundColor: "#dfe6e3" }} onClick={this.handleFilterClose} >
                           Cancel
                       </Button>
-                        <Button style={{ backgroundColor: "green" }} onClick={this.applyClickHandler} >
+                        <Button style={{ backgroundColor: "#f58840" }} onClick={this.applyClickHandler} >
                           Apply
                       </Button>
                       </DialogActions>
