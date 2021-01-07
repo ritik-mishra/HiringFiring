@@ -158,7 +158,7 @@ const styles = (theme) => ({
     position: 'absolute',
     bottom: '2%',
     left: '1%',
-},
+  },
 });
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -186,14 +186,14 @@ class Jobstack extends Component {
       stat: 'Not Applied',
     }
   }
-  handleChangeStatus = async(row, event) => {
+  handleChangeStatus = async (row, event) => {
     const i = this.state.jobs.indexOf(row);
     const val = event.target.value;
     var ch = this.state.jobs;
     ch[i].status = val;
     this.setState({ jobs: ch });
-    if(val === "Applied")
-      await this.setState({giphy: true, stat: val});
+    if (val === "Applied")
+      await this.setState({ giphy: true, stat: val });
   };
   handleChangeFollowUp = (row, event) => {
     const i = this.state.jobs.indexOf(row);
@@ -334,6 +334,9 @@ class Jobstack extends Component {
       jobs: list_job,
     })
   }
+  changeGiphy = () => {
+    this.setState({ giphy: false });
+  }
   handleChangeSort = async (event) => {
     const val = event.target.value;
     if (val === "addTime") {
@@ -385,7 +388,7 @@ class Jobstack extends Component {
     const { classes } = this.props;
     const save_hover = `Save changes`;
     return (
-  
+
       <div className='jobstack' style={{ marginTop: "0.5rem" }}>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">
@@ -416,16 +419,6 @@ class Jobstack extends Component {
                       <MenuItem value={"Applied"} >Applied</MenuItem>
                       <MenuItem value={"Interview Scheduled"} name="status">Interview Scheduled</MenuItem>
                     </Select>
-                    <div>
-                    {this.state.giphy && 
-                    <Modal
-                    open={this.state.giphy}
-                    onClose={this.handleGiphyClose}
-                  >
-                      <Giphy status={this.state.stat}/>
-                  </Modal>   
-                    }
-                    </div>
                   </TableCell>
 
                   <TableCell className={classes.midWidthCell} align="center">
@@ -480,7 +473,7 @@ class Jobstack extends Component {
                         <Button style={{ backgroundColor: "green" }} onClick={this.handleDeleteClose} >
                           No
                         </Button>
-                        <Button style={{ backgroundColor: "red" }} onClick={this.deleteHandler.bind(this, this.state.jobs[this.state.current_row])} 
+                        <Button style={{ backgroundColor: "red" }} onClick={this.deleteHandler.bind(this, this.state.jobs[this.state.current_row])}
                           color="primary" autoFocus>
                           Yes
                         </Button>
@@ -496,7 +489,7 @@ class Jobstack extends Component {
                   <TableCell className={classes.widthCell} align="center">
                     <JobstackModal job={row} />
                   </TableCell>
-                
+
 
                 </TableRow>
               ))}
@@ -605,6 +598,9 @@ class Jobstack extends Component {
             </TableFooter>
           </Table>
         </TableContainer>
+        <div>
+          <Giphy isOpen={this.state.giphy} status={this.state.stat} changeGiphyInJobstack={this.changeGiphy} />
+        </div>
       </div>
     );
   }
