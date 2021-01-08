@@ -51,7 +51,7 @@ class Jobcard extends Component {
             showCard: false
         });
         var del_link = `${process.env.PUBLIC_URL}/api/delete_job/` + this.props.job.jobId;
-        const res = await axios.patch(del_link);
+        await axios.patch(del_link);
     }
 
     editHandler = async (event) => {
@@ -99,7 +99,7 @@ class Jobcard extends Component {
             noAddJobstackButton: true
         })
         var add = `${process.env.PUBLIC_URL}/api/addto_jobstack/` + this.props.job.jobId;
-        const res = await axios.post(add);
+        await axios.post(add);
     }
     getJobstackButton = () => {
         if (this.state.noAddJobstackButton)
@@ -276,6 +276,7 @@ class Jobcard extends Component {
                                     &nbsp;&nbsp;
                                     <b><a className="apply_button" style={{ fontFamily: "'Trebuchet MS', sans-serif'", fontSize:"22px", color: "#2e1212" }} target="_blank" rel="noreferrer" href={url} > Apply Here!</a></b>
                                     <strong><p style={{display:"inline", paddingRight:"5px", paddingLeft:"5px", float:"right", fontSize:"18px", color:"Black"}}>Comments ( {job.commentCount} )</p></strong>
+                                    {/* showComment function missing here on Comment Click */}
                                 </div>  
                             </div>
 

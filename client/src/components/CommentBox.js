@@ -10,8 +10,10 @@ import {
   Button,
   ListItemAvatar,
   Avatar,
-  Grid
+  Grid,
+  Snackbar
 } from "@material-ui/core";
+import MuiAlert from '@material-ui/lab/Alert';
 import axios from "axios";
 import CommentCard from "./CommentCard";
 
@@ -45,17 +47,43 @@ const CommentBox = (props) => {
   const [comment, setComment] = useState("");
   const [addedNewComment, setAddedNewComment] = useState([]);
   const [processingPrevComments, setProcessingPrevComments] = useState(false);
+  const [sucessSnack, setSucessSnack] = useState(false);
+  const [failureSnack, setFailureSnack] = useState(false);
   const auth = useSelector(state => state.auth);
 
+  //Snackbar closing functions
+  const handleCloseSucessSnack = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSucessSnack(false);
+  };
+  const handleCloseFailureSnack = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setFailureSnack(false);
+  };
+  //Handling Alert
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
   //Submit function
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let tempAddedNewComment = [...addedNewComment];
-    setAddedNewComment(addedNewComment => [...addedNewComment,{_id: uuidv4(), jobId:props.jobId, createdAt:Date(Date.now),postedBy: auth.name, postedById: "", picURL: auth.picURL, comment: "Uploading..."}]);
+    let tempAddedNewComment = addedNewComment;
     setComment("");
-    const res = await axios.post(`${process.env.PUBLIC_URL}/api/add_comment/`,{jobId: props.jobId, comment: comment});
-    tempAddedNewComment.push(res.data);
-    setAddedNewComment(tempAddedNewComment);
+    try{
+      setAddedNewComment(addedNewComment => [...addedNewComment,{_id: uuidv4(), jobId:props.jobId, createdAt:(Date.now),postedBy: auth.name, postedById: "", picURL: auth.picURL, comment: "Uploading..."}]);
+      const res = await axios.post(`${process.env.PUBLIC_URL}/api/add_comment/`,{jobId: props.jobId, comment: comment});
+      setSucessSnack(true);
+      tempAddedNewComment.push(res.data);
+      setAddedNewComment(tempAddedNewComment);
+    }
+    catch(error){
+      setAddedNewComment(tempAddedNewComment);
+      setFailureSnack(true);
+    }
   }
   //Fetch previous section
   const fetchPrevComments = async(event) => {
@@ -115,42 +143,53 @@ const CommentBox = (props) => {
     <div>
       <List className={classes.root}>
       <div style={{paddingLeft:"5px"}}>
-        {loadPrevComments}</div>
-        <div style={{padding:"5px"}}>
+        {loadPrevComments}
+      </div>
+      <div style={{padding:"5px"}}>
         {renderCommentCard}
         {/* <div style={{padding:"10px"}}> */}
-        {renderNewAddedComments}</div>
-        <form className={classes.formed} noValidate autoComplete="off" onSubmit={handleSubmit}>
-          <ListItem className={classes.outer_block}>
-            <ListItemAvatar>
-              <Avatar alt="avatar" src={auth.picURL} />
-            </ListItemAvatar>
-            <ListItemText>
-              
-                <TextField
-                id= {props.jobId}
-                label="Comment"
-                multiline
-                rows={2}
-                variant="filled"
-                className= {classes.textField}
-                value={comment}
-                onChange={e => setComment(e.target.value)}
-                />
-            </ListItemText>
-          </ListItem>
-          <ListItem>
-            <Grid container justify="flex-end">
-              <Button 
-                type="submit"
-                variant="contained"
-                color="#90EE90"
-              >
-                Add
-              </Button>
-            </Grid>
-          </ListItem>
-        </form>
+        {renderNewAddedComments}
+      </div>
+      <form className={classes.formed} noValidate autoComplete="off" onSubmit={handleSubmit}>
+        <ListItem className={classes.outer_block}>
+          <ListItemAvatar>
+            <Avatar alt="avatar" src={auth.picURL} />
+          </ListItemAvatar>
+          <ListItemText>
+            <TextField
+            id= {props.jobId}
+            label="Comment"
+            multiline
+            rows={2}
+            variant="filled"
+            className= {classes.textField}
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+            />
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <Grid container justify="flex-end">
+            <Button 
+              type="submit"
+              variant="contained"
+              color="#90EE90"
+            >
+              Add
+            </Button>
+          </Grid>
+        </ListItem>
+      </form>
+        <Snackbar open={sucessSnack} autoHideDuration={6000} onClose={handleCloseSucessSnack} >
+          <Alert onClose={handleCloseSucessSnack} severity="success">
+            Your comment has been added
+          </Alert>
+        </Snackbar>
+        <Snackbar open={failureSnack} autoHideDuration={6000} onClose={handleCloseFailureSnack} >
+          <Alert onClose={handleCloseFailureSnack} severity="error">
+            Failed to add your comment
+          </Alert>
+        </Snackbar>
       </List>
       <Divider />
     </div>

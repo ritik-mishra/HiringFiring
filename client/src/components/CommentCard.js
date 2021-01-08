@@ -46,7 +46,8 @@ const useStyles = makeStyles(theme => ({
     color: "textPrimary",
     fill: "#3f51b5"
   }   
-}));
+})
+);
 
 const CommentCard = (props) => {
   const classes = useStyles();

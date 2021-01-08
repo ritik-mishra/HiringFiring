@@ -96,8 +96,7 @@ class Jobboard extends Component {
         this.fetchJobs();
     }
     showSorting = () => {
-        var cls = this.state.sortingClass;
-        var flBu = this.state.floatButton;
+        var cls = this.state.sortingClass
         if (cls === "sorting-filters") {
             cls = cls + " show-sorting";
         }
