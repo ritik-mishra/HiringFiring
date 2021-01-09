@@ -4,7 +4,9 @@
 .MuiTableCell-root{
     text-align: center;
     font-weight: 900;
-
+}
+.tableHead{
+    font-size: medium;
 }
 span{
     color:black;

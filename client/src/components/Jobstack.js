@@ -330,10 +330,10 @@ class Jobstack extends Component {
             <Table aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell align="center"><b>Company</b></TableCell>
-                  <TableCell align="center"><b>Status</b></TableCell>
-                  <TableCell align="center"><b>Follow-up</b></TableCell>
-                  <TableCell align="center"><b>Comment</b></TableCell>
+                  <TableCell className="tableHead">Company</TableCell>
+                  <TableCell className="tableHead">Status</TableCell>
+                  <TableCell className="tableHead">Follow-up</TableCell>
+                  <TableCell className="tableHead">Comment</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import './Notification.css';
-import giphy1 from '../media/giphy.gif';
+import giphy9 from '../media/giphy9.gif';
 import applied from '../media/applied.gif';
 import giphy3 from '../media/giphy3.gif';
 import giphy7 from '../media/giphy7.gif';
 import giphy5 from '../media/giphy5.gif';
+import giphy1 from '../media/giphy1.gif';
 import './Giphy.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -46,8 +47,8 @@ export default function NotificationModal(props) {
     });
     function gif() {
         if (props.status === 'Fod diya re!')
-            return giphy1;
-        else if (props.status === 'Applied')
+            return giphy9;
+        if (props.status === 'Applied')
             return applied;
         if (props.status === 'Hiring test done!')
             return giphy3;
@@ -55,6 +56,8 @@ export default function NotificationModal(props) {
             return giphy7;
         if (props.status === 'Interview Scheduled')
             return giphy5;
+        if (props.status === 'Asked for Referral')
+            return giphy1;
     }
     var body = (
         <div className="image-wraper" >
