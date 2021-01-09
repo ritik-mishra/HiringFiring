@@ -1,5 +1,5 @@
 .jobstack{
-    position: absolute; left: 20%; top: 10%;right: 20%; bottom: 5%;
+    position: absolute; left: 10%; top: 10%;right: 10%; bottom: 1%;
 }
 .table-headd{
     text-align: center;
@@ -14,4 +14,10 @@ svg{
 }
 .optionListContainer{
     color:black;
+}
+
+@media screen and (max-width:1000px){
+    .jobstack{
+        position: absolute; left: 0%; top: 10%;right: 0%; bottom: 1%;
+    }
 }

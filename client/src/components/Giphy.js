@@ -3,20 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import './Notification.css';
 import giphy1 from '../media/giphy.gif';
-function rand() {
-    return Math.round(Math.random() * 20) - 10;
-}
-
-// function getModalStyle() {
-//     const top = 50 + rand();
-//     const left = 50 + rand();
-
-//     return {
-//         top: `${top}%`,
-//         left: `${left}%`,
-//         transform: `translate(-${top}%, -${left}%)`,
-//     };
-// }
+import applied from '../media/applied.gif';
+import giphy3 from '../media/giphy3.gif';
+import giphy7 from '../media/giphy7.gif';
+import giphy5 from '../media/giphy5.gif';
+import './Giphy.css';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -37,24 +28,39 @@ const useStyles = makeStyles((theme) => ({
 export default function NotificationModal(props) {
 
     const classes = useStyles();
-    // getModalStyle is not a pure function, we roll the style only on the first render
-    // const [modalStyle] = React.useState(getModalStyle);
-    const [open, setOpen] = React.useState(props.isOpen);
-    useEffect(async () => {
-        // Your code here
-        await setOpen(props.isOpen);
-    }, [props.isOpen]);
-    console.log(open);
+    const [open, setOpen] = React.useState(false);
+
+    function sleep(time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+    }
     const handleClose = () => {
+        console.log("run close");
         props.changeGiphyInJobstack();
         setOpen(false);
     };
-    const body = (
-        <div style={{ marginTop: "10%", marginLeft: "33%" }} >
-            <img style={{ height: "30rem", width: "40rem", padding: "2px", opacity: "10%" }} className={classes.paper} src={giphy1} alt="description of gif" />
+    useEffect(async () => {
+        const op = open;
+        setOpen(props.isOpen);
+        await sleep(3000);
+        handleClose();
+    });
+    function gif() {
+        if (props.status === 'Fod diya re!')
+            return giphy1;
+        else if (props.status === 'Applied')
+            return applied;
+        if (props.status === 'Hiring test done!')
+            return giphy3;
+        if (props.status === 'Better luck next time!')
+            return giphy7;
+        if (props.status === 'Interview Scheduled')
+            return giphy5;
+    }
+    var body = (
+        <div className="image-wraper" >
+            <img id="image" className={classes.paper} src={gif()} alt="description of gif" />
         </div>
     );
-
     return (
         <div >
             <Modal

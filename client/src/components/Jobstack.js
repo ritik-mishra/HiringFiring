@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './Jobstack.css';
 import Table from '@material-ui/core/Table';
-import Modal from '@material-ui/core/Modal';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -192,7 +191,7 @@ class Jobstack extends Component {
     var ch = this.state.jobs;
     ch[i].status = val;
     this.setState({ jobs: ch });
-    if (val === "Applied")
+    if (val !== "Not Applied")
       await this.setState({ giphy: true, stat: val });
   };
   handleChangeFollowUp = (row, event) => {
@@ -313,7 +312,7 @@ class Jobstack extends Component {
       body.role = ["Intern", "Full time"];
 
     if (body.status.length === 0)
-      body.status = ["Not Applied", "Applied", "Asked for Referral", "Interview Scheduled"];
+      body.status = ["Not Applied", "Applied", "Asked for Referral", "Interview Scheduled", "Fod diya re!", "Hiring test done!", "Better luck next time!"];
 
     if (body.selectedCompanies.length === 0) {
       let companies = [];
@@ -417,7 +416,10 @@ class Jobstack extends Component {
                       <MenuItem value={"Not Applied"} > Not Applied</MenuItem>
                       <MenuItem value={"Asked for Referral"} >Asked for Referral</MenuItem>
                       <MenuItem value={"Applied"} >Applied</MenuItem>
+                      <MenuItem value={"Hiring test done!"} >Hiring test done!</MenuItem>
                       <MenuItem value={"Interview Scheduled"} name="status">Interview Scheduled</MenuItem>
+                      <MenuItem value={"Better luck next time!"} >Better luck next time!</MenuItem>
+                      <MenuItem value={"Fod diya re!"} >Fod diya re!</MenuItem>
                     </Select>
                   </TableCell>
 
@@ -545,9 +547,24 @@ class Jobstack extends Component {
                                 label="Applied"
                               />
                               <FormControlLabel
+                                control={<Checkbox checked={this.state.status.includes("Hiring test done!")}
+                                  onChange={this.statusChangeHandler} name="Hiring test done!" />}
+                                label="Hiring test done!"
+                              />
+                              <FormControlLabel
                                 control={<Checkbox checked={this.state.status.includes("Interview Scheduled")}
                                   onChange={this.statusChangeHandler} name="Interview Scheduled" />}
                                 label="Interview Scheduled"
+                              />
+                              <FormControlLabel
+                                control={<Checkbox checked={this.state.status.includes("Better luck next time!")}
+                                  onChange={this.statusChangeHandler} name="Better luck next time!" />}
+                                label="Better luck next time!"
+                              />
+                              <FormControlLabel
+                                control={<Checkbox checked={this.state.status.includes("Fod diya re!")}
+                                  onChange={this.statusChangeHandler} name="Fod diya re!" />}
+                                label="Fod diya re!"
                               />
                             </FormGroup>
                           </FormControl>
@@ -599,7 +616,8 @@ class Jobstack extends Component {
           </Table>
         </TableContainer>
         <div>
-          <Giphy isOpen={this.state.giphy} status={this.state.stat} changeGiphyInJobstack={this.changeGiphy} />
+
+          {this.state.giphy ? <Giphy isOpen={this.state.giphy} status={this.state.stat} changeGiphyInJobstack={this.changeGiphy} /> : null}
         </div>
       </div>
     );
