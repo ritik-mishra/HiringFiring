@@ -96,16 +96,13 @@ class Jobcard extends Component {
 
     //Jobstack Handlers
     addJobstackHandler = async () => {
-        this.setState({
-            noAddJobstackButton: true
-        })
-        var add = `${process.env.PUBLIC_URL}/api/addto_jobstack/` + this.props.job.jobId;
-        await axios.post(add);
-    }
-    getJobstackButton = () => {
-        if (this.state.noAddJobstackButton)
-            return <button disabled style={{ display: "inline", float: "right" }} >Added in Jobstack</button>
-        return <button onClick={this.addJobstackHandler} style={{ display: "inline", float: "right" }} >Add to Jobstack</button>
+        if (!this.state.noAddJobstackButton) {
+            this.setState({
+                noAddJobstackButton: true
+            })
+            var add = `${process.env.PUBLIC_URL}/api/addto_jobstack/` + this.props.job.jobId;
+            await axios.post(add);
+        }
     }
     internFulltime = () => {
         var infl = null;
@@ -242,7 +239,7 @@ class Jobcard extends Component {
                                     <div className="posted-date lg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{` ${moment(job.createdAt).calendar()}`}</div>
                                     {del}
-                                    <i onClick={this.getJobstackButton} className="fa fa-list-alt" style={{ paddingRight: "12px", paddingLeft: "12px", float: "right", fontSize: "2rem", color: "#228B22", cursor: "pointer" }}></i>
+                                    <i onClick={this.addJobstackHandler} className="fa fa-list-alt" style={{ paddingRight: "12px", paddingLeft: "12px", float: "right", fontSize: "2rem", color: "#228B22", cursor: "pointer" }}></i>
                                     {edit}
 
                                 </div>
