@@ -32,12 +32,9 @@ app.use(express.json());
 Cron.Cron();
 require('./routes/jobRoutes')(app);
 require('./routes/jobstackRoutes')(app);
-<<<<<<< HEAD
 require('./routes/reminderRoutes')(app);
-=======
 require('./routes/commentRoutes')(app);
 
->>>>>>> main
 if (process.env.NODE_ENV === 'production') {
     //Serve Production assets, main.js and main.css
     app.use(express.static('client/build'));

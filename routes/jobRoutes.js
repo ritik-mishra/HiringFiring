@@ -1,11 +1,7 @@
 const mongoose = require('mongoose');
 
 const Job = mongoose.model('jobs');
-<<<<<<< HEAD
-
-=======
 const Comment = mongoose.model('comments');
->>>>>>> main
 const { v4: uuidv4 } = require('uuid');
 
 const requireLogin = require('../middlewares/requireLogin');
@@ -56,17 +52,6 @@ module.exports = (app) => {
             
         // var page_jobs = job
             .sort({ [req.query.sortBy]: req.query.comparator })
-<<<<<<< HEAD
-            .skip(skip)
-            .limit(PAGE_SIZE);
-
-        res.send(page_jobs);
-    })
-    //Add liker
-    app.post('/api/add_liker', requireLogin, async (req, res) => {
-        const user = req.user.googleId;
-        console.log(user);
-=======
             .skip(skip) 
             .limit(PAGE_SIZE)
             .populate('previewComment');
@@ -80,7 +65,6 @@ module.exports = (app) => {
     //Add liker
     app.post('/api/add_liker', requireLogin, async (req, res) => {
         const user = req.user.googleId
->>>>>>> main
         const jobId = req.body.jobId;
         var job = await Job.findOne({ jobId: jobId });
         var isPresent = job.likers.includes(user);
