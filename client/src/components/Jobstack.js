@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import './Jobstack.css';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,7 +17,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import PropTypes from 'prop-types';
-import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -37,22 +36,14 @@ import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import SaveIcon from '@material-ui/icons/Save';
+import { StylesProvider } from "@material-ui/core/styles";
 import { Multiselect } from 'multiselect-react-dropdown';
 
 import NotificationModal from './NotificationModal';
 import JobstackModal from './JobstackModal';
 import Giphy from './Giphy';
-
-
-const useStyles1 = makeStyles((theme) => ({
-  root: {
-    flexShrink: 0,
-    marginLeft: theme.spacing(2.5),
-  },
-}));
-
+import './Jobstack.css';
 function TablePaginationActions(props) {
-  const classes = useStyles1();
   const theme = useTheme();
   const { count, page, rowsPerPage, onChangePage } = props;
 
@@ -74,7 +65,7 @@ function TablePaginationActions(props) {
   };
 
   return (
-    <div className={classes.root}>
+    <div>
       <IconButton
         onClick={handleFirstPageButtonClick}
         disabled={page === 0}
@@ -108,57 +99,6 @@ TablePaginationActions.propTypes = {
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
 };
-
-const styles = (theme) => ({
-  root: {
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-    border: 0,
-    borderRadius: 3,
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-    color: 'white',
-    height: 48,
-    padding: '0 30px',
-  },
-  margin: {
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-  },
-  table: {
-    minWidth: 500,
-  },
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  formControl2: {
-    margin: theme.spacing(3),
-  },
-  widthCell: {
-    width: "1%",
-  },
-  midWidthCell: {
-    width: "13%",
-  },
-  broadWidthCell: {
-    width: "30%",
-  },
-  paper: {
-    position: 'absolute',
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-  cross: {
-    position: 'absolute',
-    bottom: '2%',
-    left: '1%',
-  },
-});
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -382,245 +322,245 @@ class Jobstack extends Component {
   }
 
   render() {
-    const { classes } = this.props;
     const save_hover = `Save changes`;
     return (
-
-      <div className='jobstack' style={{ marginTop: "0.5rem" }}>
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell className={classes.midWidthCell} align="center"><b>Company</b></TableCell>
-                <TableCell className={classes.midWidthCell} align="center"><b>Status</b></TableCell>
-                <TableCell className={classes.midWidthCell} align="center"><b>Follow-up</b></TableCell>
-                <TableCell className={classes.broadWidthCell} align="center"><b>Comment</b></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {(this.state.rowsPerPage > 0
-                ? this.state.jobs.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
-                : this.state.jobs
-              ).map((row) => (
+      <StylesProvider injectFirst>
+        <div className='jobstack' style={{ marginTop: "0.5rem" }}>
+          <TableContainer component={Paper}>
+            <Table aria-label="simple table">
+              <TableHead>
                 <TableRow>
-                  <TableCell align="center"><a href={row.jobLink}>{row.companyName}</a></TableCell>
-                  <TableCell align="center">
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={row.status}
-                      onChange={this.handleChangeStatus.bind(this, row)}
-                    >
-                      <MenuItem value={"Not Applied"} > Not Applied</MenuItem>
-                      <MenuItem value={"Asked for Referral"} >Asked for Referral</MenuItem>
-                      <MenuItem value={"Applied"} >Applied</MenuItem>
-                      <MenuItem value={"Hiring test done!"} >Hiring test done!</MenuItem>
-                      <MenuItem value={"Interview Scheduled"} name="status">Interview Scheduled</MenuItem>
-                      <MenuItem value={"Better luck next time!"} >Better luck next time!</MenuItem>
-                      <MenuItem value={"Fod diya re!"} >Fod diya re!</MenuItem>
-                    </Select>
-                  </TableCell>
-
-                  <TableCell className={classes.midWidthCell} align="center">
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={row.followUp}
-                      onChange={this.handleChangeFollowUp.bind(this, row)}
-                    >
-                      <MenuItem value={"No"} > No</MenuItem>
-                      <MenuItem value={"Yes"} >Yes</MenuItem>
-                    </Select>
-                  </TableCell>
-
-                  <TableCell className={classes.broadWidthCell} align="center">
-                    <TextField id="standard-multiline-flexible" fullWidth label="Add a comment" multiline rowsMax={3} name="comment" value={row.comment}
-                      onChange={this.handleChange.bind(this, row)} />
-                  </TableCell>
-
-                  <TableCell className={classes.widthCell} align="center">
-                    <Tooltip title={save_hover}>
-                      <IconButton aria-label="save" onClick={this.submitHandler.bind(this, row)} >
-                        <SaveIcon style={{ color: '#fc4c6f' }} fontSize="default" />
-                      </IconButton>
-                    </Tooltip>
-                    <Snackbar open={this.state.snackOpen} autoHideDuration={6000} onClose={this.handleClose} >
-                      <Alert onClose={this.handleClose} severity="success">
-                        Job details updated!
-                      </Alert>
-                    </Snackbar>
-                    <Snackbar open={this.state.failSnack} autoHideDuration={6000} onClose={this.handleFailSnackClose} >
-                      <Alert onClose={this.handleFailSnackClose} severity="error">
-                        Job update failed!
-                      </Alert>
-                    </Snackbar>
-                  </TableCell>
-
-                  <TableCell className={classes.widthCell}>
-                    <Tooltip title="Delete">
-                      <IconButton aria-label="delete" onClick={this.handleClickOpen.bind(this, row)}>
-                        <DeleteIcon style={{ color: '#fc4c6f' }} fontSize="default" />
-                      </IconButton>
-                    </Tooltip>
-                    <Dialog
-                      open={this.state.deleteOpen}
-                      onClose={this.handleDeleteClose}
-                      aria-labelledby="alert-dialog-title"
-                      aria-describedby="alert-dialog-description"
-                    >
-                      <DialogTitle style={{ color: "black" }} id="alert-dialog-title">{"Are you sure you want to delete?"}</DialogTitle>
-                      <DialogActions>
-                        <Button style={{ backgroundColor: "green" }} onClick={this.handleDeleteClose} >
-                          No
-                        </Button>
-                        <Button style={{ backgroundColor: "red" }} onClick={this.deleteHandler.bind(this, this.state.jobs[this.state.current_row])}
-                          color="primary" autoFocus>
-                          Yes
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                  </TableCell>
-
-                  <TableCell className={classes.widthCell} align="center">
-                    <NotificationModal job={row} />
-                  </TableCell>
-
-
-                  <TableCell className={classes.widthCell} align="center">
-                    <JobstackModal job={row} />
-                  </TableCell>
-
-
+                  <TableCell align="center"><b>Company</b></TableCell>
+                  <TableCell align="center"><b>Status</b></TableCell>
+                  <TableCell align="center"><b>Follow-up</b></TableCell>
+                  <TableCell align="center"><b>Comment</b></TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="custom pagination table">
-            <TableFooter className={classes.root}>
-              <TableRow>
-                <TableCell> Sort By: &nbsp;
+              </TableHead>
+              <TableBody>
+                {(this.state.rowsPerPage > 0
+                  ? this.state.jobs.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
+                  : this.state.jobs
+                ).map((row) => (
+                  <TableRow>
+                    <TableCell align="center"><a href={row.jobLink}>{row.companyName}</a></TableCell>
+                    <TableCell align="center">
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={row.status}
+                        onChange={this.handleChangeStatus.bind(this, row)}
+                      >
+                        <MenuItem value={"Not Applied"} > Not Applied</MenuItem>
+                        <MenuItem value={"Asked for Referral"} >Asked for Referral</MenuItem>
+                        <MenuItem value={"Applied"} >Applied</MenuItem>
+                        <MenuItem value={"Hiring test done!"} >Hiring test done!</MenuItem>
+                        <MenuItem value={"Interview Scheduled"} name="status">Interview Scheduled</MenuItem>
+                        <MenuItem value={"Better luck next time!"} >Better luck next time!</MenuItem>
+                        <MenuItem value={"Fod diya re!"} >Fod diya re!</MenuItem>
+                      </Select>
+                    </TableCell>
+
+                    <TableCell align="center">
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={row.followUp}
+                        onChange={this.handleChangeFollowUp.bind(this, row)}
+                      >
+                        <MenuItem value={"No"} > No</MenuItem>
+                        <MenuItem value={"Yes"} >Yes</MenuItem>
+                      </Select>
+                    </TableCell>
+
+                    <TableCell align="center">
+                      <TextField id="standard-multiline-flexible" fullWidth label="Add a comment" multiline rowsMax={3} name="comment" value={row.comment}
+                        onChange={this.handleChange.bind(this, row)} />
+                    </TableCell>
+
+                    <TableCell align="center">
+                      <Tooltip title={save_hover}>
+                        <IconButton aria-label="save" onClick={this.submitHandler.bind(this, row)} >
+                          <SaveIcon style={{ color: '#fc4c6f' }} fontSize="default" />
+                        </IconButton>
+                      </Tooltip>
+                      <Snackbar open={this.state.snackOpen} autoHideDuration={6000} onClose={this.handleClose} >
+                        <Alert onClose={this.handleClose} severity="success">
+                          Job details updated!
+                      </Alert>
+                      </Snackbar>
+                      <Snackbar open={this.state.failSnack} autoHideDuration={6000} onClose={this.handleFailSnackClose} >
+                        <Alert onClose={this.handleFailSnackClose} severity="error">
+                          Job update failed!
+                      </Alert>
+                      </Snackbar>
+                    </TableCell>
+
+                    <TableCell >
+                      <Tooltip title="Delete">
+                        <IconButton aria-label="delete" onClick={this.handleClickOpen.bind(this, row)}>
+                          <DeleteIcon style={{ color: '#fc4c6f' }} fontSize="default" />
+                        </IconButton>
+                      </Tooltip>
+                      <Dialog
+                        open={this.state.deleteOpen}
+                        onClose={this.handleDeleteClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                      >
+                        <DialogTitle style={{ color: "black" }} id="alert-dialog-title">{"Are you sure you want to delete?"}</DialogTitle>
+                        <DialogActions>
+                          <Button style={{ backgroundColor: "green" }} onClick={this.handleDeleteClose} >
+                            No
+                        </Button>
+                          <Button style={{ backgroundColor: "red" }} onClick={this.deleteHandler.bind(this, this.state.jobs[this.state.current_row])}
+                            color="primary" autoFocus>
+                            Yes
+                        </Button>
+                        </DialogActions>
+                      </Dialog>
+                    </TableCell>
+
+                    <TableCell align="center">
+                      <NotificationModal job={row} />
+                    </TableCell>
+
+
+                    <TableCell align="center">
+                      <JobstackModal job={row} />
+                    </TableCell>
+
+
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TableContainer component={Paper}>
+            <Table aria-label="custom pagination table">
+              <TableFooter>
+                <TableRow>
+                  <TableCell> Sort By: &nbsp;
                   <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={this.state.sortBy}
-                    onChange={this.handleChangeSort}
-                  >
-                    <MenuItem value={"addTime"} > Recent Added</MenuItem>
-                    <MenuItem value={"jobExpiry"} >Job Expiry</MenuItem>
-                  </Select>
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={this.state.sortBy}
+                      onChange={this.handleChangeSort}
+                    >
+                      <MenuItem value={"addTime"} > Recent Added</MenuItem>
+                      <MenuItem value={"jobExpiry"} >Job Expiry</MenuItem>
+                    </Select>
 
                   &nbsp;
-                  <div style={{ display: "inline" }} className={classes.filterr}>
-                    <Button onClick={this.handleClickFilterOpen}>Filter</Button>
-                    <Dialog disableBackdropClick disableEscapeKeyDown open={this.state.filterOpen} onClose={this.handleFilterClose}>
-                      <DialogTitle style={{ color: "black" }} >Select Filter</DialogTitle>
-                      <DialogContent>
-                        <form >
-                          <FormControl style={{ color: "black" }} component="fieldset">
-                            <FormLabel component="legend">Role</FormLabel>
-                            <RadioGroup name="role" value={this.state.role} onChange={this.roleChangeHandler}>
-                              <FormControlLabel style={{ color: "black" }} value="Intern" checked={this.state.role === "Intern"} control={<Radio />} label="Intern" />
-                              <FormControlLabel value="Full time" checked={this.state.role === "Full time"} control={<Radio />} label="Full time" />
-                            </RadioGroup>
-                          </FormControl>
+                  <div style={{ display: "inline" }}>
+                      <Button onClick={this.handleClickFilterOpen}>Filter</Button>
+                      <Dialog disableBackdropClick disableEscapeKeyDown open={this.state.filterOpen} onClose={this.handleFilterClose}>
+                        <DialogTitle style={{ color: "black" }} >Select Filter</DialogTitle>
+                        <DialogContent>
+                          <form >
+                            <FormControl style={{ color: "black" }} component="fieldset">
+                              <FormLabel component="legend">Role</FormLabel>
+                              <RadioGroup name="role" value={this.state.role} onChange={this.roleChangeHandler}>
+                                <FormControlLabel style={{ color: "black" }} value="Intern" checked={this.state.role === "Intern"} control={<Radio />} label="Intern" />
+                                <FormControlLabel value="Full time" checked={this.state.role === "Full time"} control={<Radio />} label="Full time" />
+                              </RadioGroup>
+                            </FormControl>
 
-                          <FormControl component="fieldset">
-                            <FormLabel component="legend">Status</FormLabel>
-                            <FormGroup>
-                              <FormControlLabel
-                                control={<Checkbox checked={this.state.status.includes("Not Applied")}
-                                  onChange={this.statusChangeHandler} name="Not Applied" />}
-                                label="Not Applied"
-                              />
-                              <FormControlLabel
-                                control={<Checkbox checked={this.state.status.includes("Asked for Referral")}
-                                  onChange={this.statusChangeHandler} name="Asked for Referral" />}
-                                label="Asked for Referral"
-                              />
-                              <FormControlLabel
-                                control={<Checkbox checked={this.state.status.includes("Applied")}
-                                  onChange={this.statusChangeHandler} name="Applied" />}
-                                label="Applied"
-                              />
-                              <FormControlLabel
-                                control={<Checkbox checked={this.state.status.includes("Hiring test done!")}
-                                  onChange={this.statusChangeHandler} name="Hiring test done!" />}
-                                label="Hiring test done!"
-                              />
-                              <FormControlLabel
-                                control={<Checkbox checked={this.state.status.includes("Interview Scheduled")}
-                                  onChange={this.statusChangeHandler} name="Interview Scheduled" />}
-                                label="Interview Scheduled"
-                              />
-                              <FormControlLabel
-                                control={<Checkbox checked={this.state.status.includes("Better luck next time!")}
-                                  onChange={this.statusChangeHandler} name="Better luck next time!" />}
-                                label="Better luck next time!"
-                              />
-                              <FormControlLabel
-                                control={<Checkbox checked={this.state.status.includes("Fod diya re!")}
-                                  onChange={this.statusChangeHandler} name="Fod diya re!" />}
-                                label="Fod diya re!"
-                              />
-                            </FormGroup>
-                          </FormControl>
+                            <FormControl component="fieldset">
+                              <FormLabel component="legend">Status</FormLabel>
+                              <FormGroup>
+                                <FormControlLabel
+                                  control={<Checkbox checked={this.state.status.includes("Not Applied")}
+                                    onChange={this.statusChangeHandler} name="Not Applied" />}
+                                  label="Not Applied"
+                                />
+                                <FormControlLabel
+                                  control={<Checkbox checked={this.state.status.includes("Asked for Referral")}
+                                    onChange={this.statusChangeHandler} name="Asked for Referral" />}
+                                  label="Asked for Referral"
+                                />
+                                <FormControlLabel
+                                  control={<Checkbox checked={this.state.status.includes("Applied")}
+                                    onChange={this.statusChangeHandler} name="Applied" />}
+                                  label="Applied"
+                                />
+                                <FormControlLabel
+                                  control={<Checkbox checked={this.state.status.includes("Hiring test done!")}
+                                    onChange={this.statusChangeHandler} name="Hiring test done!" />}
+                                  label="Hiring test done!"
+                                />
+                                <FormControlLabel
+                                  control={<Checkbox checked={this.state.status.includes("Interview Scheduled")}
+                                    onChange={this.statusChangeHandler} name="Interview Scheduled" />}
+                                  label="Interview Scheduled"
+                                />
+                                <FormControlLabel
+                                  control={<Checkbox checked={this.state.status.includes("Better luck next time!")}
+                                    onChange={this.statusChangeHandler} name="Better luck next time!" />}
+                                  label="Better luck next time!"
+                                />
+                                <FormControlLabel
+                                  control={<Checkbox checked={this.state.status.includes("Fod diya re!")}
+                                    onChange={this.statusChangeHandler} name="Fod diya re!" />}
+                                  label="Fod diya re!"
+                                />
+                              </FormGroup>
+                            </FormControl>
 
-                          <FormControl component="fieldset">
-                            <FormLabel component="legend">Companies (at most 5)</FormLabel>
-                            <Multiselect
-                              options={this.state.company_list}
-                              isObject={false}
-                              onSelect={this.companyChangeHandler}
-                              onRemove={this.companyChangeHandler}
-                              placeholder="Select Companies"
-                              // selectedValues={this.state.selectedCompanies}
-                              selectionLimit="5"
-                            />
-                          </FormControl>
-                          <Button className={classes.cross} style={{ backgroundColor: "#fc4c6f" }} onClick={this.clearFilter} >
-                            Clear Filter
+                            <FormControl component="fieldset">
+                              <FormLabel component="legend">Companies (at most 5)</FormLabel>
+                              <Multiselect
+                                options={this.state.company_list}
+                                isObject={false}
+                                onSelect={this.companyChangeHandler}
+                                onRemove={this.companyChangeHandler}
+                                placeholder="Select Companies"
+                                // selectedValues={this.state.selectedCompanies}
+                                selectionLimit="5"
+                              />
+                            </FormControl>
+                            <Button style={{ backgroundColor: "#fc4c6f" }} onClick={this.clearFilter} >
+                              Clear Filter
                           </Button>
-                        </form>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button style={{ backgroundColor: "#dfe6e3" }} onClick={this.handleFilterClose} >
-                          Cancel
+                          </form>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button style={{ backgroundColor: "#dfe6e3" }} onClick={this.handleFilterClose} >
+                            Cancel
                       </Button>
-                        <Button style={{ backgroundColor: "#f58840" }} onClick={this.applyClickHandler} >
-                          Apply
+                          <Button style={{ backgroundColor: "#f58840" }} onClick={this.applyClickHandler} >
+                            Apply
                       </Button>
-                      </DialogActions>
-                    </Dialog>
-                  </div>
-                </TableCell>
+                        </DialogActions>
+                      </Dialog>
+                    </div>
+                  </TableCell>
 
-                <TablePagination
-                  rowsPerPageOptions={[6]}
-                  colSpan={3}
-                  count={this.state.jobs.length}
-                  rowsPerPage={6}
-                  page={this.state.page}
-                  SelectProps={{
-                    inputProps: { 'aria-label': 'rows per page' },
-                    native: true,
-                  }}
-                  onChangePage={this.handleChangePage}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
-        <div>
+                  <TablePagination
+                    rowsPerPageOptions={[6]}
+                    colSpan={3}
+                    count={this.state.jobs.length}
+                    rowsPerPage={6}
+                    page={this.state.page}
+                    SelectProps={{
+                      inputProps: { 'aria-label': 'rows per page' },
+                      native: true,
+                    }}
+                    onChangePage={this.handleChangePage}
+                    ActionsComponent={TablePaginationActions}
+                  />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </TableContainer>
+          <div>
 
-          {this.state.giphy ? <Giphy isOpen={this.state.giphy} status={this.state.stat} changeGiphyInJobstack={this.changeGiphy} /> : null}
+            {this.state.giphy ? <Giphy isOpen={this.state.giphy} status={this.state.stat} changeGiphyInJobstack={this.changeGiphy} /> : null}
+          </div>
         </div>
-      </div>
+      </StylesProvider>
     );
   }
 }
 
 
-export default withStyles(styles)(Jobstack);
+export default Jobstack;

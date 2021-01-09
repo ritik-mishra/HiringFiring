@@ -16,9 +16,32 @@ svg{
     color:black;
 }
 .MuiTableCell-root{
-    padding: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
-
+.MuiFormControl-fullWidth{
+    min-width:8rem;
+    max-width: 20rem;
+    /* min-width: 20px; */
+}
+.MuiFormControl-root{
+    min-width:8rem;
+    max-width: 20rem;
+    /* min-width: 20px; */
+}
+.MuiIconButton-root{
+    padding: 2px;
+}
+.MuiTypography-colorInherit{
+    color:black;
+    margin-right: 1rem;
+}
+.MuiTablePagination-spacer{
+    flex:0;
+}
+button{
+    display:inline;
+}
 @media screen and (max-width:1000px){
     .jobstack{
         position: absolute; left: 0%; top: 10%;right: 0%; bottom: 1%;
