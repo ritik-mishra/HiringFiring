@@ -6,6 +6,7 @@ import Sortingfilters from './SortingFilters';
 
 
 class Jobboard extends Component {
+    
     constructor(props) {
         var pg = 1, x = localStorage.getItem("page");
         if (x) {
@@ -13,9 +14,10 @@ class Jobboard extends Component {
             localStorage.removeItem("page");
         }
         super(props);
+
         this.myRef = React.createRef();
         this.state = {
-            jobs: [],
+                jobs: [],
             page: pg,
             selectedCompanies: [],
             role: [],
@@ -25,16 +27,20 @@ class Jobboard extends Component {
             jobcount: 1,
             userJobstack: [],
             floatButton: 0,
-            sortingClass: "sorting-filters"
+            sortingClass: "sorting-filters",
+            listofcompanies: []
         }
         this.refJobs = React.createRef();
         // this.userJobstack = [];
     }
     async componentDidMount() {
-        this.fetchJobs();
         const userJobstack = await axios.get(`${process.env.PUBLIC_URL}/api/jobstack_userjobs`);
-        this.setState({ userJobstack: userJobstack.data });
+        const comp = await axios.get(`${process.env.PUBLIC_URL}/api/company_list`); 
+        this.setState({ userJobstack: userJobstack.data,
+                        listofcompanies: comp.data});
+        this.fetchJobs();
     }
+
     setLocal = (x) => {
         localStorage.setItem("page", this.state.page);
     }
@@ -54,28 +60,27 @@ class Jobboard extends Component {
             body.role = ["Intern", "Full time"];
         }
         if (body.companies.length === 0) {
-            var comp = await axios.get(`${process.env.PUBLIC_URL}/api/company_list`);
-            body.companies = comp.data;
+            body.companies = this.state.listofcompanies;
         }
 
-        const page_jobs = await axios({
+        var job = await axios({
             method: 'get',
             url: `${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`,
             params: body
         });
-        const jc = await axios(
-            {
-                method: 'get',
-                url: `${process.env.PUBLIC_URL}/api/count_job`,
-                params: body
-            });
-        const jobcount = parseInt(jc.data);
+
+        const page_jobs = job.data.page;
+        const jc = job.data.count;
+
+        const jobcount = parseInt(jc);
+
         this.setState({
             jobs: page_jobs,
             jobcount: jobcount
         })
         this.refJobs.current.scrollTop = 0;
     }
+
     async clickHandler(p) {
         const newp = parseInt(p);
         this.setState({
@@ -115,6 +120,7 @@ class Jobboard extends Component {
         let items = [];
         const PAGE_SIZE = 5;
         const jc = this.state.jobcount;//change this accordingly
+        
         let pagec = jc / PAGE_SIZE + ((jc % PAGE_SIZE) ? 1 : 0);
         for (let num = 1; num <= pagec; num++) {
             var col = "white";
@@ -126,8 +132,7 @@ class Jobboard extends Component {
             );
         }
 
-
-        const JOBS = this.state.jobs.data;
+        const JOBS = this.state.jobs;
 
         if (JOBS)
             return (
@@ -152,9 +157,9 @@ class Jobboard extends Component {
                                 {items}
                             </div>
 
-                        </div>
+                        </div> 
                         <div className={this.state.sortingClass}>
-                            <Sortingfilters filterHandler={this.filterHandler} />
+                            <Sortingfilters companylist={this.state.listofcompanies } filterHandler={this.filterHandler} />
                         </div>
                     </div>
                 </div>
@@ -164,3 +169,4 @@ class Jobboard extends Component {
     }
 }
 export default Jobboard;
+//company-list = {this.state.companyList}

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Multiselect } from 'multiselect-react-dropdown';
 import './SortingFilters.css';
 import './style.css'
+import { List } from '@material-ui/core';
 
 
 class Sortingfilters extends Component {
@@ -35,11 +36,23 @@ class Sortingfilters extends Component {
         };
     }
     async componentDidMount() {
-        var companyList = await axios.get(`${process.env.PUBLIC_URL}/api/company_list`);
+        // var companyList = await axios.get(`${process.env.PUBLIC_URL}/api/company_list`);
+        var companyList = this.props.companylist;
         await this.setState({
-            company_list: companyList.data
+            company_list: companyList
         });
     }
+
+    async componentDidUpdate(prevProp, prevState, SnapShot) {
+        if (this.props.companylist.length !== 0) {
+            if(this.state.company_list.length === 0) {
+        var ans = this.props.companylist;   
+        await this.setState({
+            company_list: ans
+        });
+    }}
+}
+
     sortByHandler = (event) => {
         var val = event.target.value;
         if (val === "recentpost") {

@@ -38,16 +38,29 @@ module.exports = (app) => {
         const body_role = req.query.role;
         const sortBy = req.query.sortBy;
 
+        var job = await Job.find({
+            "$and": [{ "batch": { "$in": body_batch } }, { isDeleted: false }, { "companyName": { "$in": body_companyName } },
+            { "role": { "$in": body_role } }]
+        });
+        const jobcount = job.length;
+        var jobc = '' + jobcount
+
         var page_jobs = await Job.find({
             "$and": [{ "batch": { "$in": body_batch } }, { isDeleted: false }, { "companyName": { "$in": body_companyName } },
             { "role": { "$in": body_role } }]
         })
+            
+        // var page_jobs = job
             .sort({ [req.query.sortBy]: req.query.comparator })
-            .skip(skip)
+            .skip(skip) 
             .limit(PAGE_SIZE)
             .populate('previewComment');
         
-        res.send(page_jobs);
+        var arr = {
+            page: page_jobs, 
+            count: jobc
+        }
+        res.send(arr);
     })
     //Add liker
     app.post('/api/add_liker', requireLogin, async (req, res) => {
@@ -77,20 +90,20 @@ module.exports = (app) => {
         res.send("true");
     })
     //count jobs
-    app.get('/api/count_job', requireLogin, async (req, res) => {
-        const body_batch = req.query.batch;
-        const body_companyName = req.query.companies;
-        const body_role = req.query.role;
+    // app.get('/api/count_job', requireLogin, async (req, res) => {
+    //     const body_batch = req.query.batch;
+    //     const body_companyName = req.query.companies;
+    //     const body_role = req.query.role;
 
-        var job = await Job.find({
-            "$and": [{ "batch": { "$in": body_batch } }, { isDeleted: false }, { "companyName": { "$in": body_companyName } },
-            { "role": { "$in": body_role } }]
-        });
-        const jobcount = job.length;
-        var jobc = '' + jobcount
+    //     var job = await Job.find({
+    //         "$and": [{ "batch": { "$in": body_batch } }, { isDeleted: false }, { "companyName": { "$in": body_companyName } },
+    //         { "role": { "$in": body_role } }]
+    //     });
+    //     const jobcount = job.length;
+    //     var jobc = '' + jobcount
 
-        res.send(jobc);
-    })
+    //     res.send(jobc);
+    // })
 
     //  Delete Job
     app.patch('/api/delete_job/:jobId', requireLogin, requireAuthor, async (req, res) => {
