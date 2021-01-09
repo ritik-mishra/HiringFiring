@@ -22,16 +22,17 @@ class Jobcard extends Component {
             heartCount: hc,
             isLikeProcessing: false,
             noAddJobstackButton: this.props.notButton, // This can create problem if constructor is not called again everytime the cards jobId changes
-                                                       // If using props to assign state it should be preferably done in the renderer only
+            // If using props to assign state it should be preferably done in the renderer only
             showComments: true,
             startCommentPage: this.props.job.commentCount > 1 ? this.props.job.previewComment._id : null,
             processingComments: false,
-            comments:[]
+            comments: []
         };
     }
     componentDidMount() {
+        console.log(this.props.job);
         let loadPreviewComment = [];
-        if(this.props.job.previewComment && !this.props.job.previewComment.isDeleted){
+        if (this.props.job.previewComment && !this.props.job.previewComment.isDeleted) {
             loadPreviewComment.push(this.props.job.previewComment);
         }
         this.setState({
@@ -119,14 +120,14 @@ class Jobcard extends Component {
             infl = "Full time";
         return infl;
     }
-    
+
     //Logic for handling the comments section
     fetchComments = async () => {
         const getCommentsURL = `${process.env.PUBLIC_URL}/api/get_comments/` + this.props.job.jobId;
         const comments = await axios({
             method: 'get',
             url: getCommentsURL,
-            params: { startCommentPage: this.state.startCommentPage}
+            params: { startCommentPage: this.state.startCommentPage }
         });
         let loadedNewComments = this.state.comments;
         //obtain new offset
@@ -142,33 +143,33 @@ class Jobcard extends Component {
     }
     showCommentsHandler = async (event) => {
         event.preventDefault();
-        if(!this.state.processingComments){
+        if (!this.state.processingComments) {
             this.setState({
                 processingComments: true
-            },async () => {
-                if(!this.state.showComments){
+            }, async () => {
+                if (!this.state.showComments) {
                     await this.fetchComments();
                     this.setState({
                         showComments: true
-                    },()=>{
+                    }, () => {
                         this.setState({
                             processingComments: false
                         });
                     });
                 }
-                else{
+                else {
                     this.setState({
                         showComments: false,
                         startCommentPage: 0,
                         comments: []
-                    },() => {
+                    }, () => {
                         this.setState({
                             processingComments: false
                         })
                     })
                 }
             });
-            
+
         }
     }
     render() {
@@ -179,9 +180,9 @@ class Jobcard extends Component {
         var del = null, edit = null;
         var col1 = "rgb(25, 75, 90)";
         if (auth._id && (auth._id === job.postedById)) {
-            del = <i onClick={this.deleteHandler} className="fa fa-trash" style={{ paddingRight:"10px", float: "right", fontSize: "2.0rem", color:"#DC143C", cursor: "pointer" }}></i>;
-            edit = <i onClick={this.editHandler} className="fa fa-pencil-square-o" style={{ float: "right", fontSize: "2.0rem", color:"#BA55D3", cursor: "pointer" }}></i>;
-           
+            del = <i onClick={this.deleteHandler} className="fa fa-trash" style={{ paddingRight: "10px", float: "right", fontSize: "2.0rem", color: "#DC143C", cursor: "pointer" }}></i>;
+            edit = <i onClick={this.editHandler} className="fa fa-pencil-square-o" style={{ float: "right", fontSize: "2.0rem", color: "#BA55D3", cursor: "pointer" }}></i>;
+
             // del = <a style={{ color: col1 }} onClick={this.deleteHandler} href="#">Delete Job</a>;
             // edit = <a style={{ color: col1 }} onClick={this.editHandler} href="#">Edit Job</a>;
         }
@@ -205,10 +206,10 @@ class Jobcard extends Component {
             comments = <a onClick={this.showCommentsHandler} href="#">Comments</a>;
         }
         var commentText = null;
-        if(this.state.showComments){
+        if (this.state.showComments) {
             const COMMENTS = this.state.comments;
             commentText = (
-                <CommentBox comments={COMMENTS} jobId={this.props.job.jobId} fetchComments={this.fetchComments} offSet={this.state.startCommentPage}/>
+                <CommentBox comments={COMMENTS} jobId={this.props.job.jobId} fetchComments={this.fetchComments} offSet={this.state.startCommentPage} />
             );
         }
 
@@ -233,66 +234,69 @@ class Jobcard extends Component {
                             <div className="card-header">
                                 <div style={{ display: "inline" }} className="card-header-content">
                                     <b>
-                                    <div style={{display:"inline", color:"#FF0000"}}>{job.companyName}</div></b>
-                                    
-                                    
+                                        <div style={{ display: "inline", color: "#FF0000" }}>{job.companyName}</div></b>
+
+
                                     <div className="posted-date sm">&nbsp;&nbsp;&nbsp;&nbsp;{` ${moment(job.createdAt).calendar()}`}</div>
-                                   
+
                                     <div className="posted-date lg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{` ${moment(job.createdAt).calendar()}`}</div>
                                     {del}
-                                    <i onClick={this.getJobstackButton} className="fa fa-list-alt" style={{ paddingRight:"12px", paddingLeft:"12px", float: "right", fontSize: "2rem", color:"#228B22", cursor: "pointer" }}></i>
+                                    <i onClick={this.getJobstackButton} className="fa fa-list-alt" style={{ paddingRight: "12px", paddingLeft: "12px", float: "right", fontSize: "2rem", color: "#228B22", cursor: "pointer" }}></i>
                                     {edit}
-                                     
+
                                 </div>
                             </div>
                             <div className="card-content">
-                                <div style={{paddingLeft: "5px", paddingRight: "5px", paddingBottom: "5px"}} className="title">
-                                    <p style={{ color:"rgb(51, 39, 112)", display: "inline" }}><b>Role:</b> {this.internFulltime()}</p>
+                                <div style={{ paddingLeft: "5px", paddingRight: "5px", paddingBottom: "5px" }} className="title">
+                                    <p style={{ color: "rgb(51, 39, 112)", display: "inline" }}><b>Role:</b> {this.internFulltime()}</p>
                                     <p style={{ color: "rgb(51, 39, 112)", display: "inline" }}><b>&nbsp;&nbsp;&nbsp;&nbsp;Title:</b> {job.jobTitle}</p>
                                 </div>
-                                <div style={{padding: "5px"}} classname="batch">
-                                    <p  className="inline"><b>Batch applicable:</b>&nbsp;</p>
-                                        <div className="inline">{job.batch.map(each_batch => (
-                                            <p style={{padding: "5px"}} className="inline" key={each_batch}>
-                                                {each_batch}&nbsp;</p>))}
-                                        </div>
+                                <div style={{ padding: "5px" }} classname="batch">
+                                    <p className="inline"><b>Batch applicable:</b>&nbsp;</p>
+                                    <div className="inline">{job.batch.map(each_batch => (
+                                        <p style={{ padding: "5px" }} className="inline" key={each_batch}>
+                                            {each_batch}&nbsp;</p>))}
+                                    </div>
                                 </div>
-                                <div style={{padding: "5px" }} classname="check">
+                                <div style={{ padding: "5px" }} classname="check">
                                     {default_date.getTime() !== jobExpiry_date.getTime() &&
-                                        <p style={{ color: "rgb(51, 39, 112)"}}><b>Apply Before:</b> {date.toLocaleDateString()}</p>}
+                                        <p style={{ color: "rgb(51, 39, 112)" }}><b>Apply Before:</b> {date.toLocaleDateString()}</p>}
                                 </div>
-                                <div style={{padding: "5px" }} classname="referral">
-                                     <p style={{color: "rgb(51, 39, 112)"}}><b>Referral Applicable:</b> {job.isReferral}</p>
+                                <div style={{ padding: "5px" }} classname="referral">
+                                    <p style={{ color: "rgb(51, 39, 112)" }}><b>Referral Applicable:</b> {job.isReferral}</p>
                                 </div>
-                                <div style={{padding: "5px" }} classname="posted">
-                                   <p style={{color: "rgb(51, 39, 112)"}}><b>Posted by:</b> {job.postedBy}</p>
+                                <div style={{ padding: "5px" }} classname="salary">
+                                    <p style={{ color: "rgb(51, 39, 112)" }}><b>Expected Salary:</b> {job.salary ? job.salary : "NA"}</p>
+                                </div>
+                                <div style={{ padding: "5px" }} classname="posted">
+                                    <p style={{ color: "rgb(51, 39, 112)" }}><b>Posted by:</b> {job.postedBy}</p>
                                 </div>
                             </div>
                             <div className="card-lower">
-                                <div style={{ display: "inline"}} className="card-lower-content">
+                                <div style={{ display: "inline" }} className="card-lower-content">
                                     {this.getHeart()}
                                     {this.state.heartCount}&nbsp;&nbsp;
                                     &nbsp;&nbsp;
-                                    <b><a className="apply_button" style={{ fontFamily: "'Trebuchet MS', sans-serif'", fontSize:"22px", color: "#2e1212" }} target="_blank" rel="noreferrer" href={url} > Apply Here!</a></b>
-                                    <strong><p style={{display:"inline", paddingRight:"5px", paddingLeft:"5px", float:"right", fontSize:"18px", color:"Black"}}>Comments ( {job.commentCount} )</p></strong>
+                                    <b><a className="apply_button" style={{ fontFamily: "'Trebuchet MS', sans-serif'", fontSize: "22px", color: "#2e1212" }} target="_blank" rel="noreferrer" href={url} > Apply Here!</a></b>
+                                    <strong><p style={{ display: "inline", paddingRight: "5px", paddingLeft: "5px", float: "right", fontSize: "18px", color: "Black" }}>Comments ( {job.commentCount} )</p></strong>
                                     {/* showComment function missing here on Comment Click */}
-                                </div>  
+                                </div>
                             </div>
 
                             <div>
                                 {deleteText}
                             </div>
                             <hr></hr>
-                            <div style={{padding:"20px"}}>
+                            <div style={{ padding: "20px" }}>
                                 {commentText}
                             </div>
 
-                      
+
                         </div>
                     </div>
                 </div>
-                
+
             )
         }
         else {

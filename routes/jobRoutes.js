@@ -46,7 +46,7 @@ module.exports = (app) => {
             .skip(skip)
             .limit(PAGE_SIZE)
             .populate('previewComment');
-        
+
         res.send(page_jobs);
     })
     //Add liker
@@ -119,7 +119,8 @@ module.exports = (app) => {
             jobExpiry: req.body.jobExpiry,
             postedBy: req.user.name,
             postedById: req.user.id,
-            role: req.body.role
+            role: req.body.role,
+            salary: req.body.salary,
         }).save();
         res.send(true);
     });
