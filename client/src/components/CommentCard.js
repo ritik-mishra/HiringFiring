@@ -20,9 +20,18 @@ import axios from "axios";
 import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
+  check_outer: {
+    backgroundColor: "#F2FFE6",
+    border: "2px solid black",
+    borderRadius: "20px",
+    padding:"15px"
+  },
   root: {
     width: "100%",
-    backgroundColor: theme.palette.background.paper
+    padding: "10px",
+    backgroundColor: "#F2FFE6",
+    borderRadius:"10px"
+    // backgroundColor: theme.palette.background.paper
   },
   fonts: {
     fontWeight: "bold"
@@ -37,7 +46,8 @@ const useStyles = makeStyles(theme => ({
     color: "textPrimary",
     fill: "#3f51b5"
   }   
-}));
+})
+);
 
 const CommentCard = (props) => {
   const classes = useStyles();
@@ -86,12 +96,12 @@ const CommentCard = (props) => {
         return (
             <ListItem>
           <form className={classes.root} noValidate autoComplete="off" onSubmit={updateHandler}>
-            <TextField
+            <TextField style={{padding:"10px"}}
             id="standard-multiline-flexible"
-            label="Comment"
+            label="update"
             multiline
             rows={2}
-            variant="outlined"
+            variant="filled"
             className= {classes.textField}
             value={comment}
             onChange={e => setComment(e.target.value)}
@@ -101,14 +111,14 @@ const CommentCard = (props) => {
             <Button 
               type="submit"
               variant="contained"
-              color="primary"
+              color="#FFF0F5"
             >
               update
             </Button>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Button 
               variant="contained"
-              color="primary"
+              color="#FFF0F5"
               onClick={discardChangesHandler}
             >
               Discard
@@ -124,7 +134,7 @@ const CommentCard = (props) => {
         var delDialogBox = null; 
         if(auth._id && (auth._id === props.comment.postedById)){
             delButton = (
-              <IconButton aria-label="delete" color="primary" onClick={handleDeleteDialogOpen}>
+              <IconButton style={{float:"right", ariaLabel:"delete", color:"primary"}} onClick={handleDeleteDialogOpen }>
               <DeleteIcon className={classes.iconButton}/>
               </IconButton>
             );
@@ -151,14 +161,15 @@ const CommentCard = (props) => {
         var editButton=null;
         if(auth._id && (auth._id === props.comment.postedById)){
             editButton = (
-            <IconButton aria-label="edit" color="primary" onClick={editHandler}>
+            <IconButton style={{float:"right"}} aria-label="edit" color="primary" onClick={editHandler}>
             <EditIcon className={classes.iconButton}/>
             </IconButton>
             );
         }
         return (
             <React.Fragment key={props.comment._id}>
-            <ListItem key={props.comment.id} alignItems="flex-start">
+              <div style={{padding:"5px"}}>
+            <ListItem className={classes.check_outer} key={props.comment.id} alignItems="flex-start">
                 <ListItemAvatar>
                 <Avatar alt="avatar" src={props.comment.picURL} />
                 </ListItemAvatar>
@@ -170,6 +181,7 @@ const CommentCard = (props) => {
                     color="textPrimary"
                     >
                         {props.comment.postedBy}
+                        <div style={{ color: "rgb(51, 39, 112)", display: "inline", float:"right", fontSize:"14px" }}>{` ${moment(props.comment.createdAt).calendar()}`}</div> 
                     </Typography>
                     </div>
                 }
@@ -182,16 +194,19 @@ const CommentCard = (props) => {
                         color="textPrimary"
                     >
                         {comment}
-                    </Typography>
+                    </Typography >
                     &nbsp;&nbsp;
-                    {` - ${moment(props.comment.createdAt).calendar()}`}
+                    
+                    {/* {` - ${moment(props.comment.createdAt).calendar()}`} */}
                     {delButton}
                     {editButton}
                     {delDialogBox}
                     </>
                 }
                 />
-            </ListItem>
+              </ListItem>
+              </div>
+              {/* <br></br> */}
             </React.Fragment>
         );
     }
