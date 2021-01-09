@@ -6,6 +6,26 @@ import { Redirect } from "react-router-dom";
 import './EditJobForm.css'
 
 class EditJobForm extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            redirect: false,
+            jobId: '',
+            companyName: '',
+            jobTitle: '',
+            jobLink: '',
+            batch: '',
+            isReferral: '',
+            jobExpiry: '',
+            role: [],
+            salary: '',
+        };
+        //In JavaScript, class methods are not bound by default. 
+        //If you forget to bind this.myChangeHandler and pass it to onChange, this will be undefined when the function is actually called.
+        //But it works as the syntax we are using namely "Public Class Field Syntax" allows class fields to correctly bind callbacks.
+
+    }
     async componentDidMount() {
         //console.log(this.props.location.state.editJob);
         var editJob;
@@ -26,27 +46,9 @@ class EditJobForm extends Component {
             batch: editJob.batch,
             isReferral: editJob.isReferral,
             jobExpiry: editJob.jobExpiry.toString().substr(0, 10),
-            role: editJob.role
+            role: editJob.role,
+            salary: editJob.salary,
         })
-    }
-    constructor(props) {
-        super(props);
-        // console.log(this.props);
-        this.state = {
-            redirect: false,
-            jobId: '',
-            companyName: '',
-            jobTitle: '',
-            jobLink: '',
-            batch: '',
-            isReferral: '',
-            jobExpiry: '',
-            role: []
-        };
-        //In JavaScript, class methods are not bound by default. 
-        //If you forget to bind this.myChangeHandler and pass it to onChange, this will be undefined when the function is actually called.
-        //But it works as the syntax we are using namely "Public Class Field Syntax" allows class fields to correctly bind callbacks.
-
     }
     // This syntax ensures `this` is bound within myChangeHandler and submitHandler.
     // We are using the experimental public class fields syntax, We can use class fields to correctly bind callbacks
@@ -107,7 +109,7 @@ class EditJobForm extends Component {
             return <Redirect push to="/jobboard" />
         }
         let allowSubmit = '';
-        if (this.state.companyName && this.state.jobLink && this.state.batch.length && this.state.role.length) {
+        if (this.state.companyName && this.state.jobLink && this.state.batch.length && this.state.role.length && this.state.isReferral) {
             allowSubmit = <input
                 style={{ color: "red" }}
                 type='submit'
@@ -148,21 +150,21 @@ class EditJobForm extends Component {
                                     <span>Full time</span>
                                 </label>&nbsp;&nbsp;&nbsp;
                         </p>
-                            <p><b>Job Title:</b> (e.g. Frontend dev, SDE-1, Tester)</p>
+                            <p style={{ marginTop: "1rem" }}><b>Job Title:</b> (e.g. Frontend dev, SDE-1, Tester)</p>
                             <input
                                 type='text'
                                 name='jobTitle'
                                 onChange={this.myChangeHandler}
                                 value={this.state.jobTitle}
                             />
-                            <p><b>Job Link* :</b></p>
+                            <p style={{ marginTop: "1rem" }}><b>Job Link* :</b></p>
                             <input
                                 type='text'
                                 name='jobLink'
                                 onChange={this.myChangeHandler}
                                 value={this.state.jobLink}
                             />
-                            <p><b>Batch* :</b></p>
+                            <p style={{ marginTop: "1rem" }}><b>Batch* :</b></p>
                             <p>
                                 <label>
                                     <input type="checkbox" name='batch' value="2020"
@@ -200,7 +202,7 @@ class EditJobForm extends Component {
                                     <span>2024</span>
                                 </label>
                             </p>
-                            <p><b>Referral Applicable :</b></p>
+                            <p style={{ marginTop: "1rem" }}><b>Referral Applicable* :</b></p>
                             <p>
                                 <label>
                                     <input className="with-gap" type="radio"
@@ -228,15 +230,22 @@ class EditJobForm extends Component {
                                     <span>Maybe</span>
                                 </label>
                             </p>
+                            <p style={{ marginTop: "1rem" }}><b>Expected Salary :</b></p>
+                            <input
+                                type='text'
+                                name='salary'
+                                onChange={this.myChangeHandler}
+                                value={this.state.salary}
+                            />
 
-                            <p><b>Job Expiry Date</b> (if known):</p>
+                            <p style={{ marginTop: "1rem" }}><b>Job Expiry Date</b> (if known):</p>
                             <input
                                 type='date'
                                 name='jobExpiry'
                                 onChange={this.myChangeHandler}
                                 value={this.state.jobExpiry}
                             />
-                            <div>
+                            <div style={{ marginTop: "1rem" }}>
                                 {allowSubmit}
                             </div>
                         </form>

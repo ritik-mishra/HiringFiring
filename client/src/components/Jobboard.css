@@ -29,6 +29,10 @@
   width:2rem;
   height: 2rem;
 }
+/* .Loading{
+  height: 10rem;
+  width: 10rem;
+} */
 @media screen and (max-width:1000px){
   .jobs{
     z-index: 300;

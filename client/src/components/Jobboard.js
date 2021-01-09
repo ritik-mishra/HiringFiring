@@ -6,7 +6,7 @@ import Sortingfilters from './SortingFilters';
 
 
 class Jobboard extends Component {
-    
+
     constructor(props) {
         var pg = 1, x = localStorage.getItem("page");
         if (x) {
@@ -17,7 +17,7 @@ class Jobboard extends Component {
 
         this.myRef = React.createRef();
         this.state = {
-                jobs: [],
+            jobs: [],
             page: pg,
             selectedCompanies: [],
             role: [],
@@ -35,9 +35,11 @@ class Jobboard extends Component {
     }
     async componentDidMount() {
         const userJobstack = await axios.get(`${process.env.PUBLIC_URL}/api/jobstack_userjobs`);
-        const comp = await axios.get(`${process.env.PUBLIC_URL}/api/company_list`); 
-        this.setState({ userJobstack: userJobstack.data,
-                        listofcompanies: comp.data});
+        const comp = await axios.get(`${process.env.PUBLIC_URL}/api/company_list`);
+        this.setState({
+            userJobstack: userJobstack.data,
+            listofcompanies: comp.data
+        });
         this.fetchJobs();
     }
 
@@ -78,7 +80,7 @@ class Jobboard extends Component {
             jobs: page_jobs,
             jobcount: jobcount
         })
-        this.refJobs.current.scrollTop = 0;
+        // this.refJobs.current.scrollTop = 0;
     }
 
     async clickHandler(p) {
@@ -118,9 +120,9 @@ class Jobboard extends Component {
 
         //Pagination Logic
         let items = [];
-        const PAGE_SIZE = 5;
+        const PAGE_SIZE = 10;
         const jc = this.state.jobcount;//change this accordingly
-        
+
         let pagec = jc / PAGE_SIZE + ((jc % PAGE_SIZE) ? 1 : 0);
         for (let num = 1; num <= pagec; num++) {
             var col = "white";
@@ -132,9 +134,8 @@ class Jobboard extends Component {
             );
         }
 
-        const JOBS = this.state.jobs;
-
-        if (JOBS)
+        var JOBS = this.state.jobs;
+        if (JOBS.length)
             return (
                 <div className="content">
                     <div className="filter-button">
@@ -157,16 +158,15 @@ class Jobboard extends Component {
                                 {items}
                             </div>
 
-                        </div> 
+                        </div>
                         <div className={this.state.sortingClass}>
-                            <Sortingfilters companylist={this.state.listofcompanies } filterHandler={this.filterHandler} />
+                            <Sortingfilters companylist={this.state.listofcompanies} filterHandler={this.filterHandler} />
                         </div>
                     </div>
                 </div>
             )
         else
-            return (<h1 style={{ alignContent: "center" }}>Loading...</h1>);
+            return (<div className="Loading"> <h1>Loading...</h1></div>);
     }
 }
 export default Jobboard;
-//company-list = {this.state.companyList}
