@@ -18,7 +18,9 @@ const jobSchema = new Schema({
     role: Array,
     isDeleted: { type: Boolean, default: false },
     lastModified: { type: Date, default: Date.now },
-    salary: String
+    salary: String,
+    commentCount: { type: Number, default: 0 },
+    previewComment: { type: Schema.Types.ObjectId, ref: 'comments', default: null}
 });
 
 mongoose.model('jobs', jobSchema);

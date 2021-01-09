@@ -1,29 +1,133 @@
 .button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 2px 4px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-  }
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 2px 4px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
 .button1 {
-    background-color: white; 
-    color: black; 
-    border: 2px solid #4CAF50;
-  }
+  background-color: white; 
+  color: black; 
+  border: 2px solid #4CAF50;
+}
 .button3 {
-    background-color: white; 
-    color: black; 
-    border: 2px solid #f44336;
-  }
+  background-color: white; 
+  color: black; 
+  border: 2px solid #f44336;
+}
 
-  /* .jobcard{
-    width: 65rem;
-  } */
+/* .jobcard{
+  width: 65rem;
+} */
+
+.card-header {
+padding-left: 20px;
+padding-right: 20px;
+padding-top: 20px;
+font-family: 'Trebuchet MS', sans-serif;
+}
+
+.card-header-content {
+color: Black;
+font-size: 30px;
+padding-left: 10px;
+padding-right: 10px;
+padding-top: 10px;
+}
+
+.posted-date{
+color:rgb(38, 150, 81);
+font-size:20px;
+font-family: 'Brush Script MT', cursive;
+/* display:inline; */
+align-items: center;
+padding-right:"100px";
+padding-left:"30px";
+vertical-align: super;
+display:none;
+/* float:right; */
+}
+
+.card-lower {
+padding-left: 20px;
+padding-right: 20px;
+padding-bottom: 20px;
+}
+
+.card-lower-content {
+color: Black;
+font-size: 15px;
+padding-left: 10px;
+padding-right: 10px;
+padding-bottom: 10px;
+}
 .inline{
-  display:inline;
+display:inline;
+color:rgb(51, 39, 112);
+}
+/* .role{
+color:black;
+} */
+.card{
+color:grey;
+margin-left: 1rem;
+background-color: hsl(45, 38%, 94%);
+width: 100%;
+border-radius: 30px;
+}
+
+ul {
+list-style-type: square;
+}
+.card-content{
+  font-size: 18px;
+  font-family: Georgia, serif;
+color:black;
+}
+.Comment-block {
+padding: 60px;
+}
+
+/* .apply_button {
+  border-radius: 10px;
+  padding:5px; */
+  /* animation: mymove 5s infinite; */
+/* } */
+/* 
+@keyframes mymove {
+  from {background-color:rgb(23, 161, 23);}
+  to {background-color: #af167c;}
+} */
+
+
+.table {
+color: rgb(19, 1, 19);
+padding: 10px;
+border: 2px solid rgb(240, 247, 206);
+border-radius: 10px;
+}
+
+@media screen and (max-width:1000px){
+
+  .card{
+    width: 92vw;
+  }
+}
+  
+@media screen and (min-width:600px){
+  .lg {
+    display:inline;
+  }
+}
+
+
+@media screen and (min-width:0px) and (max-width:599px){
+  .sm {
+    display:inline;
+  }
 }

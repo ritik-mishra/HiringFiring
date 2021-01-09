@@ -1,33 +1,84 @@
-.button3 {
-    background-color: white; /* Green */
-    border: none;
-    color: black;
-    padding: 5px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-  }
-
-  .button5 {border-radius: 50%;}
   .jobs{
     height: 88.5vh;
-    width: 72.5%;
+    width: 74%;
     float: left;
     overflow: auto;
   }
   .sorting-filters{
-    background-color: #19414b;
+    /* z-index:400; */
+    border-radius: 1%;
+    background-color: #BAB2B5;
     height: 88.5vh;
     width: 25%;
+    /* overflow-y: hidden; */
     /* float: left; */
-    overflow: auto;
+    /* overflow: auto; */
   margin-top: 0.6rem;
   margin-left: 10px;
   float: right;
   }
   ::-webkit-scrollbar {
     display: none;
+}
+.filter-button{
+  display: none;
+}
+.pagination{
+  margin-left: 0.5rem;
+  border-radius: 50%;
+  width:2rem;
+  height: 2rem;
+}
+@media screen and (max-width:1000px){
+  .jobs{
+    z-index: 300;
+    height: 88.5vh;
+    width: 100%;
+    float: left;
+    overflow: auto;
+    z-index: 300;
+    display: inline;
+    position: fixed;
+  }
+  .filter-button{
+    display: block;
+    right: 1rem;
+    margin-top:1rem;
+    position: fixed;
+    z-index: 500;
+  }
+  .sorting-filters{
+    z-index: 400;
+    display: inline;
+    border-radius: 1%;
+    /* background-color: #ce8758; */
+    height: 88.5vh;
+    width: 50%;
+    /* float: left; */
+    overflow: auto;
+    margin-top: 0.6rem;
+    margin-left: 10px;
+    float: right;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in; 
+    
+  }
+  .show-sorting{
+    position: fixed;
+    transform: translateX(0%);
+    z-index: 400;
+    display: inline;
+    float: right;
+    right:0;
+    width:50%;
+  }
+}
+.filterbtn {
+  background-color: #ff8000;
+  border: none;
+  color: white;
+  /* padding: 12px 16px; */
+  font-size: 10px;
+  cursor: pointer;
+  border-radius:20%;
 }

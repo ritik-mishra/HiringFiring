@@ -1,9 +1,13 @@
 
 body {
-  background-image: url('../media/land-back.png');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
+  background-image: url('../media/back6.jpg');
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+	
+  /* Preserve aspet ratio */
+  min-width: 60%;
+  min-height: 100%;
   }
 
   h1 {
@@ -25,8 +29,28 @@ body {
 }
 
 .GOTtext{
+  display: flex;
+  justify-content: center;
   font-family: 'GameofThrones';
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: rgb(28, 55, 59);
+}
+.GOTone{
+  font-size: 50px;
+  margin-top: 50px;
+}
+.GOTtwo{
+  font-size: 40px;
+  margin-top: 30px;
+}
+@media screen and (max-width:640px){
+  .GOTone{
+    font-size: 30px;
+    margin-top: 40px;
+  }
+  .GOTtwo{
+    font-size: 25px;
+    margin-top: 20px;
+  }
 }
 

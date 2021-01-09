@@ -1,12 +1,22 @@
+.addform {
+  /* overflow-y: hidden; */
+  height: 35rem;
+  color: black;
+}
 input{
-    color:white;
+    color:black;
 
 }
+
+
 .form{
     /* width: 320px; */
   padding: 20px;
   border: 5px solid gray;
   margin: 0;
+  overflow: scroll;
+  height: auto;
+  color: black;
 }
 
 .button {
@@ -25,3 +35,7 @@ input{
     opacity: 0.6;
     cursor: not-allowed;
   }
+ 
+span{
+  color:black;
+}

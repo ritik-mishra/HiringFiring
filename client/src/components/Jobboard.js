@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-//import localStorage from 'local-storage';
 import Jobcard from './Jobcard';
 import './Jobboard.css';
-import Loading from './Loading';
-import ResponsiveDrawer from './ResponsiveDrawer';
+import Sortingfilters from './SortingFilters';
 
 
 class Jobboard extends Component {
+    
     constructor(props) {
         var pg = 1, x = localStorage.getItem("page");
         if (x) {
@@ -15,9 +14,10 @@ class Jobboard extends Component {
             localStorage.removeItem("page");
         }
         super(props);
+
         this.myRef = React.createRef();
         this.state = {
-            jobs: [],
+                jobs: [],
             page: pg,
             selectedCompanies: [],
             role: [],
@@ -25,16 +25,22 @@ class Jobboard extends Component {
             comparator: -1,
             batch: [],
             jobcount: 1,
-            userJobstack: []
+            userJobstack: [],
+            floatButton: 0,
+            sortingClass: "sorting-filters",
+            listofcompanies: []
         }
         this.refJobs = React.createRef();
         // this.userJobstack = [];
     }
     async componentDidMount() {
-        this.fetchJobs();
         const userJobstack = await axios.get(`${process.env.PUBLIC_URL}/api/jobstack_userjobs`);
-        this.setState({ userJobstack: userJobstack.data });
+        const comp = await axios.get(`${process.env.PUBLIC_URL}/api/company_list`); 
+        this.setState({ userJobstack: userJobstack.data,
+                        listofcompanies: comp.data});
+        this.fetchJobs();
     }
+
     setLocal = (x) => {
         localStorage.setItem("page", this.state.page);
     }
@@ -54,28 +60,27 @@ class Jobboard extends Component {
             body.role = ["Intern", "Full time"];
         }
         if (body.companies.length === 0) {
-            var comp = await axios.get(`${process.env.PUBLIC_URL}/api/company_list`);
-            body.companies = comp.data;
+            body.companies = this.state.listofcompanies;
         }
 
-        const page_jobs = await axios({
+        var job = await axios({
             method: 'get',
             url: `${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`,
             params: body
         });
-        const jc = await axios(
-            {
-                method: 'get',
-                url: `${process.env.PUBLIC_URL}/api/count_job`,
-                params: body
-            });
-        const jobcount = parseInt(jc.data);
+
+        const page_jobs = job.data.page;
+        const jc = job.data.count;
+
+        const jobcount = parseInt(jc);
+
         this.setState({
             jobs: page_jobs,
             jobcount: jobcount
         })
         this.refJobs.current.scrollTop = 0;
     }
+
     async clickHandler(p) {
         const newp = parseInt(p);
         this.setState({
@@ -95,30 +100,46 @@ class Jobboard extends Component {
         })
         this.fetchJobs();
     }
+    showSorting = () => {
+        var cls = this.state.sortingClass
+        if (cls === "sorting-filters") {
+            cls = cls + " show-sorting";
+        }
+        else {
+            cls = "sorting-filters";
+        }
+        this.setState({
+            sortingClass: cls,
+            floatButton: !this.state.floatButton
+        });
+
+    }
     render() {
 
         //Pagination Logic
         let items = [];
         const PAGE_SIZE = 5;
         const jc = this.state.jobcount;//change this accordingly
+        
         let pagec = jc / PAGE_SIZE + ((jc % PAGE_SIZE) ? 1 : 0);
         for (let num = 1; num <= pagec; num++) {
             var col = "white";
             if (num === this.state.page)
-                col = "rgb(248, 114, 3)";
+                col = "rgb(85, 185, 144)";
             items.push(
                 <button onClick={() => this.clickHandler(num)} key={num} style={{ backgroundColor: col }
-                } className="button3 button5" > {num}</button>
+                } className="pagination" > {num}</button>
             );
         }
 
-
-        const JOBS = this.state.jobs.data;
+        const JOBS = this.state.jobs;
 
         if (JOBS)
             return (
                 <div className="content">
-                    <ResponsiveDrawer filterHandler={this.filterHandler}></ResponsiveDrawer>
+                    <div className="filter-button">
+                        <button className="filterbtn" onClick={this.showSorting}>{this.state.floatButton ? <i className="fa fa-close"></i> : <i className="fa fa-bars"></i>}Filters</button>
+                    </div>
                     <div className="jobboard">
                         <div className="jobs" id="jobs" ref={this.refJobs}>
                             <div>
@@ -131,19 +152,21 @@ class Jobboard extends Component {
                                     )
                                 }
                             </div>
+
                             <div className="center">
                                 {items}
                             </div>
 
+                        </div> 
+                        <div className={this.state.sortingClass}>
+                            <Sortingfilters companylist={this.state.listofcompanies } filterHandler={this.filterHandler} />
                         </div>
-                        {/* <div className="sorting-filters">
-                            <Sortingfilters filterHandler={this.filterHandler} />
-                        </div> */}
                     </div>
                 </div>
             )
         else
-            return <Loading />
+            return (<h1 style={{ alignContent: "center" }}>Loading...</h1>);
     }
 }
 export default Jobboard;
+//company-list = {this.state.companyList}

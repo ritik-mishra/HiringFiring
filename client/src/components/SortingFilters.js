@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Multiselect } from 'multiselect-react-dropdown';
 import './SortingFilters.css';
 import './style.css'
+import { List } from '@material-ui/core';
+
 
 class Sortingfilters extends Component {
     constructor(props) {
@@ -23,6 +25,7 @@ class Sortingfilters extends Component {
                 background: "#0099cc"
             },
             searchBox: {
+                height: "4rem",
                 border: "none",
                 "borderBottom": "1px solid blue",
                 "borderRadius": "0px"
@@ -33,11 +36,23 @@ class Sortingfilters extends Component {
         };
     }
     async componentDidMount() {
-        var companyList = await axios.get(`${process.env.PUBLIC_URL}/api/company_list`);
+        // var companyList = await axios.get(`${process.env.PUBLIC_URL}/api/company_list`);
+        var companyList = this.props.companylist;
         await this.setState({
-            company_list: companyList.data
+            company_list: companyList
         });
     }
+
+    async componentDidUpdate(prevProp, prevState, SnapShot) {
+        if (this.props.companylist.length !== 0) {
+            if(this.state.company_list.length === 0) {
+        var ans = this.props.companylist;   
+        await this.setState({
+            company_list: ans
+        });
+    }}
+}
+
     sortByHandler = (event) => {
         var val = event.target.value;
         if (val === "recentpost") {
@@ -104,11 +119,12 @@ class Sortingfilters extends Component {
             selectedCompanies: event
         })
     }
-    applyClickHandler = async() => {
+    applyClickHandler = async () => {
         if (!this.state.isFilterProcessing) {
             await this.setState({
                 isFilterProcessing: true
-            })}
+            })
+        }
         var body = {
             sortBy: this.state.sortBy,
             comparator: this.state.comparator,
@@ -255,10 +271,10 @@ class Sortingfilters extends Component {
                     <div style={{ textAlign: "center" }} >
                         <p><b>Companies</b> (atmost 5)</p>
                     </div>
-                    <div style={{ color: "black" }}>
+                    <div className="multiselect">
                         <Multiselect
                             options={this.state.company_list}
-                            style={this.style}
+                            // style={{ zIndex: 450, height: "10rem" }}
                             isObject={false}
                             onSelect={this.companyChangeHandler}
                             onRemove={this.companyChangeHandler}
