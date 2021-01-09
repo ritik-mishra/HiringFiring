@@ -4,11 +4,16 @@
     box-sizing:border-box;
     overflow-x: hidden;
 }
+#root{
+    height:100vh;
+}
 .head{
     background-color: rgb(77, 76, 76);
     height:10vh;
-    width:100%;
+    width:100vw;
     min-height: 7vh;
+    /* position: fixed; */
+    z-index: 1000;
 }
 .logo-image{
     float: left;

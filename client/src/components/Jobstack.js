@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './Jobstack.css';
-import Loading from './Loading';
+// import Loading from './Loading';
 
 
 class Jobstack extends Component {
@@ -114,7 +114,7 @@ class Jobstack extends Component {
                 </div>
             );
         else {
-            return <Loading />
+            return <h2>Loading...</h2>;
         }
     }
 }

@@ -31,7 +31,7 @@ module.exports = (app) => {
     //Get job by page number
     app.get('/api/page_job', requireLogin, async (req, res) => {
         const page = parseInt(req.query.page);
-        const PAGE_SIZE = 5;//change this accordingly
+        const PAGE_SIZE = 10;//change this accordingly
         const skip = (page - 1) * PAGE_SIZE;
         const body_batch = req.query.batch;
         const body_companyName = req.query.companies;
@@ -49,15 +49,15 @@ module.exports = (app) => {
             "$and": [{ "batch": { "$in": body_batch } }, { isDeleted: false }, { "companyName": { "$in": body_companyName } },
             { "role": { "$in": body_role } }]
         })
-            
-        // var page_jobs = job
+
+            // var page_jobs = job
             .sort({ [req.query.sortBy]: req.query.comparator })
-            .skip(skip) 
+            .skip(skip)
             .limit(PAGE_SIZE)
             .populate('previewComment');
-        
+
         var arr = {
-            page: page_jobs, 
+            page: page_jobs,
             count: jobc
         }
         res.send(arr);
@@ -89,22 +89,6 @@ module.exports = (app) => {
         await job.save();
         res.send("true");
     })
-    //count jobs
-    // app.get('/api/count_job', requireLogin, async (req, res) => {
-    //     const body_batch = req.query.batch;
-    //     const body_companyName = req.query.companies;
-    //     const body_role = req.query.role;
-
-    //     var job = await Job.find({
-    //         "$and": [{ "batch": { "$in": body_batch } }, { isDeleted: false }, { "companyName": { "$in": body_companyName } },
-    //         { "role": { "$in": body_role } }]
-    //     });
-    //     const jobcount = job.length;
-    //     var jobc = '' + jobcount
-
-    //     res.send(jobc);
-    // })
-
     //  Delete Job
     app.patch('/api/delete_job/:jobId', requireLogin, requireAuthor, async (req, res) => {
         const jobId = req.params['jobId'];
@@ -132,7 +116,8 @@ module.exports = (app) => {
             jobExpiry: req.body.jobExpiry,
             postedBy: req.user.name,
             postedById: req.user.id,
-            role: req.body.role
+            role: req.body.role,
+            salary: req.body.salary,
         }).save();
         res.send(true);
     });
