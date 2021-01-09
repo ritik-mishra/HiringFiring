@@ -170,13 +170,13 @@ class Jobstack extends Component {
       jobs: [],
       page: 0,
       rowsPerPage: 6,
-      open: false,
+      snackOpen: false,
       deleteOpen: false,
       failSnack: false,
       current_row: 0,
       sortBy: "addTime",
       comparator: -1,
-      filerOpen: false,
+      filterOpen: false,
       role: '',
       status: [],
       company_list: [],
@@ -220,7 +220,7 @@ class Jobstack extends Component {
     if (reason === 'clickaway') {
       return;
     }
-    this.setState({ open: false });
+    this.setState({ snackOpen: false });
   };
   handleFailSnackClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -262,8 +262,8 @@ class Jobstack extends Component {
       comment: this.state.jobs[i].comment
     }
     const res = await axios.patch(`${process.env.PUBLIC_URL}/api/update_jobstack/` + this.state.jobs[i].jobId, job);
-    if (res.status == 200)
-      this.setState({ open: true });
+    if (res.status === 200)
+      this.setState({ snackOpen: true });
     else
       this.setState({ failSnack: true });
   }
@@ -282,7 +282,6 @@ class Jobstack extends Component {
     this.setState({ deleteOpen: false });
   }
   handleChangePage = async (event, newPage) => {
-    console.log(newPage);
     this.setState({ page: newPage });
   };
   applyClickHandler = async () => {
@@ -350,13 +349,13 @@ class Jobstack extends Component {
       })
     }
     else if (val === "jobExpiry") {
-      var job = this.state.jobs;
-      job.sort(function (a, b) {
+      var jobb = this.state.jobs;
+      jobb.sort(function (a, b) {
         return new Date(a[val]) - new Date(b[val]);
       });
       await this.setState({
         sortBy: "jobExpiry",
-        jobs: job,
+        jobs: jobb,
       })
     }
   };
@@ -383,7 +382,6 @@ class Jobstack extends Component {
   }
 
   render() {
-    const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.jobs.length - this.state.page * this.state.rowsPerPage);
     const { classes } = this.props;
     const save_hover = `Save changes`;
     return (
@@ -393,8 +391,8 @@ class Jobstack extends Component {
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell className="table-headd" align="center" ><b>Company</b></TableCell>
-                <TableCell align="center"><b>Status</b></TableCell>
+                <TableCell className={classes.midWidthCell} align="center"><b>Company</b></TableCell>
+                <TableCell className={classes.midWidthCell} align="center"><b>Status</b></TableCell>
                 <TableCell className={classes.midWidthCell} align="center"><b>Follow-up</b></TableCell>
                 <TableCell className={classes.broadWidthCell} align="center"><b>Comment</b></TableCell>
               </TableRow>
@@ -436,17 +434,17 @@ class Jobstack extends Component {
                   </TableCell>
 
                   <TableCell className={classes.broadWidthCell} align="center">
-                    <TextField id="standard-multiline-flexible" fullWidth label="Multiline" multiline rowsMax={3} name="comment" value={row.comment}
+                    <TextField id="standard-multiline-flexible" fullWidth label="Add a comment" multiline rowsMax={3} name="comment" value={row.comment}
                       onChange={this.handleChange.bind(this, row)} />
                   </TableCell>
 
                   <TableCell className={classes.widthCell} align="center">
                     <Tooltip title={save_hover}>
                       <IconButton aria-label="save" onClick={this.submitHandler.bind(this, row)} >
-                        <SaveIcon style={{ color: '#fc4c6f' }} fontSize="medium" />
+                        <SaveIcon style={{ color: '#fc4c6f' }} fontSize="default" />
                       </IconButton>
                     </Tooltip>
-                    <Snackbar open={this.state.open} autoHideDuration={6000} onClose={this.handleClose} >
+                    <Snackbar open={this.state.snackOpen} autoHideDuration={6000} onClose={this.handleClose} >
                       <Alert onClose={this.handleClose} severity="success">
                         Job details updated!
                       </Alert>
@@ -461,7 +459,7 @@ class Jobstack extends Component {
                   <TableCell className={classes.widthCell}>
                     <Tooltip title="Delete">
                       <IconButton aria-label="delete" onClick={this.handleClickOpen.bind(this, row)}>
-                        <DeleteIcon style={{ color: '#fc4c6f' }} fontSize="medium" />
+                        <DeleteIcon style={{ color: '#fc4c6f' }} fontSize="default" />
                       </IconButton>
                     </Tooltip>
                     <Dialog

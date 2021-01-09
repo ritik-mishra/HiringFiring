@@ -74,7 +74,7 @@ export default function JobstackModal(props) {
         <div>
             <Tooltip title={hover}>
                 <IconButton aria-label="info" onClick={handleOpen} >
-                    <MoreHorizIcon style={{color: '#fc4c6f'}} fontSize="medium" />
+                    <MoreHorizIcon style={{color: '#fc4c6f'}} fontSize="default" />
                 </IconButton>
             </Tooltip>
             <Modal

@@ -1,7 +1,7 @@
 .jobstack{
     position: absolute; left: 10%; top: 10%;right: 10%; bottom: 1%;
 }
-.table-headd{
+.MuiTableCell-root{
     text-align: center;
     font-weight: 900;
 
@@ -14,6 +14,9 @@ svg{
 }
 .optionListContainer{
     color:black;
+}
+.MuiTableCell-root{
+    padding: 0px;
 }
 
 @media screen and (max-width:1000px){
