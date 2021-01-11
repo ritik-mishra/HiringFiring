@@ -148,10 +148,10 @@ const CommentCard = (props) => {
                 >
                   <DialogTitle style={{ color: "black" }} id="alert-dialog-title">{"Are you sure you want to delete the comment?"}</DialogTitle>
                     <DialogActions>
-                      <Button style={{ backgroundColor: "green" }} onClick={handleDeleteDialogClose} >
+                      <Button style={{ backgroundColor: "#dfe6e3" }} onClick={handleDeleteDialogClose} >
                         No
                       </Button>
-                      <Button style={{ backgroundColor: "red" }} onClick={deleteHandler} color="primary" autoFocus>
+                      <Button style={{ backgroundColor: "#92C7BE" }} onClick={deleteHandler} color="primary" autoFocus>
                         Yes
                       </Button>
                     </DialogActions>
