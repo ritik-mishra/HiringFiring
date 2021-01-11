@@ -30,7 +30,6 @@ class Jobcard extends Component {
         };
     }
     componentDidMount() {
-        console.log(this.props.job);
         let loadPreviewComment = [];
         if (this.props.job.previewComment && !this.props.job.previewComment.isDeleted) {
             loadPreviewComment.push(this.props.job.previewComment);

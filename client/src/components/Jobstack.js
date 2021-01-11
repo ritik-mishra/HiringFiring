@@ -518,7 +518,7 @@ class Jobstack extends Component {
                                 selectionLimit="5"
                               />
                             </FormControl>
-                            <Button style={{ backgroundColor: "#fc4c6f" }} onClick={this.clearFilter} >
+                            <Button className='clear-filter' style={{ backgroundColor: "#fc4c6f" }} onClick={this.clearFilter} >
                               Clear Filter
                           </Button>
                           </form>
