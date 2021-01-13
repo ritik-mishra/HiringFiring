@@ -137,38 +137,6 @@ const CommentCard = (props) => {
           >
             Discard
             </Button>
-<<<<<<< HEAD
-          </form>
-        </ListItem>
-        )
-    }
-    
-    if(!props.comment.isDeleted && showComment){
-        //Delete Button
-        var delButton = null;
-        var delDialogBox = null; 
-        if(auth._id && (auth._id === props.comment.postedById)){
-            delButton = (
-              <IconButton style={{float:"right", ariaLabel:"delete", color:"primary"}} onClick={handleDeleteDialogOpen }>
-              <DeleteIcon className={classes.iconButton}/>
-              </IconButton>
-            );
-          //Delete Dialog box
-            delDialogBox = (
-                <Dialog
-                open={deleteDailog}
-                onClose={handleDeleteDialogClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                >
-                  <DialogTitle style={{ color: "black" }} id="alert-dialog-title">{"Are you sure you want to delete the comment?"}</DialogTitle>
-                    <DialogActions>
-                      <Button style={{ backgroundColor: "#dfe6e3" }} onClick={handleDeleteDialogClose} >
-                        No
-                      </Button>
-                      <Button style={{ backgroundColor: "#92C7BE" }} onClick={deleteHandler} color="primary" autoFocus>
-                        Yes
-=======
         </form>
       </ListItem>
     )
@@ -199,7 +167,6 @@ const CommentCard = (props) => {
                       </Button>
             <Button style={{ backgroundColor: "#e6e6e6" }} onClick={deleteHandler} color="primary" autoFocus>
               Yes
->>>>>>> main
                       </Button>
           </DialogActions>
         </Dialog>
