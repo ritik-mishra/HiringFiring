@@ -6,7 +6,7 @@ import Sortingfilters from './SortingFilters';
 
 
 class Jobboard extends Component {
-
+    
     constructor(props) {
         var pg = 1, x = localStorage.getItem("page");
         if (x) {
@@ -16,22 +16,29 @@ class Jobboard extends Component {
         super(props);
 
         this.myRef = React.createRef();
+
+        let filterLocalStore;
+        if (localStorage.getItem('filterLocalStore')) {
+            const filterString = localStorage.getItem('filterLocalStore');
+            filterLocalStore = JSON.parse(filterString);
+        }
+
         this.state = {
             jobs: [],
             page: pg,
-            selectedCompanies: [],
-            role: [],
-            sortBy: "postedOn",
-            comparator: -1,
-            batch: [],
+            selectedCompanies: filterLocalStore?filterLocalStore.selectedCompanies:[],
+            role: filterLocalStore?filterLocalStore.role:[],
+            sortBy: filterLocalStore?filterLocalStore.sortBy:"postedOn",
+            comparator: filterLocalStore?filterLocalStore.comparator:-1,
+            batch: filterLocalStore?filterLocalStore.batch:[],
             jobcount: 1,
             userJobstack: [],
             floatButton: 0,
             sortingClass: "sorting-filters",
             listofcompanies: []
         }
+        
         this.refJobs = React.createRef();
-        // this.userJobstack = [];
     }
     async componentDidMount() {
         const userJobstack = await axios.get(`${process.env.PUBLIC_URL}/api/jobstack_userjobs`);
@@ -92,15 +99,16 @@ class Jobboard extends Component {
         })
     }
     filterHandler = async (body) => {
-        await this.setState({
+        this.setState({
             page: 1,
             sortBy: body.sortBy,
             comparator: body.comparator,
             batch: body.batch,
             role: body.role,
             selectedCompanies: body.selectedCompanies
+        }, () =>{
+            this.fetchJobs();
         })
-        this.fetchJobs();
     }
     showSorting = () => {
         var cls = this.state.sortingClass
@@ -117,12 +125,10 @@ class Jobboard extends Component {
 
     }
     render() {
-
         //Pagination Logic
         let items = [];
         const PAGE_SIZE = 10;
         const jc = this.state.jobcount;//change this accordingly
-
         let pagec = jc / PAGE_SIZE + ((jc % PAGE_SIZE) ? 1 : 0);
         for (let num = 1; num <= pagec; num++) {
             var col = "white";
@@ -158,7 +164,7 @@ class Jobboard extends Component {
                                 {items}
                             </div>
 
-                        </div>
+                        </div> 
                         <div className={this.state.sortingClass}>
                             <Sortingfilters companylist={this.state.listofcompanies} filterHandler={this.filterHandler} />
                         </div>

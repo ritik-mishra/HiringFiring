@@ -250,25 +250,25 @@ class Jobcard extends Component {
                                     <p style={{ color: "rgb(51, 39, 112)", display: "inline" }}><b>Role:</b> {this.internFulltime()}</p>
                                     <p style={{ color: "rgb(51, 39, 112)", display: "inline" }}><b>&nbsp;&nbsp;&nbsp;&nbsp;Title:</b> {job.jobTitle}</p>
                                 </div>
-                                <div style={{ padding: "5px" }} classname="batch">
-                                    <p className="inline"><b>Batch applicable:</b>&nbsp;</p>
-                                    <div className="inline">{job.batch.map(each_batch => (
-                                        <p style={{ padding: "5px" }} className="inline" key={each_batch}>
-                                            {each_batch}&nbsp;</p>))}
-                                    </div>
+                                <div style={{padding: "5px"}} className="batch">
+                                    <p  className="inline"><b>Batch applicable:</b>&nbsp;</p>
+                                        <div className="inline">{job.batch.map(each_batch => (
+                                            <p style={{padding: "5px"}} className="inline" key={each_batch}>
+                                                {each_batch}&nbsp;</p>))}
+                                        </div>
                                 </div>
-                                <div style={{ padding: "5px" }} classname="check">
+                                <div style={{padding: "5px" }} className="check">
                                     {default_date.getTime() !== jobExpiry_date.getTime() &&
                                         <p style={{ color: "rgb(51, 39, 112)" }}><b>Apply Before:</b> {date.toLocaleDateString()}</p>}
                                 </div>
-                                <div style={{ padding: "5px" }} classname="referral">
-                                    <p style={{ color: "rgb(51, 39, 112)" }}><b>Referral Applicable:</b> {job.isReferral}</p>
+                                <div style={{padding: "5px" }} className="referral">
+                                     <p style={{color: "rgb(51, 39, 112)"}}><b>Referral Applicable:</b> {job.isReferral}</p>
                                 </div>
                                 <div style={{ padding: "5px" }} classname="salary">
                                     <p style={{ color: "rgb(51, 39, 112)" }}><b>Expected Salary:</b> {job.salary ? job.salary : "NA"}</p>
                                 </div>
-                                <div style={{ padding: "5px" }} classname="posted">
-                                    <p style={{ color: "rgb(51, 39, 112)" }}><b>Posted by:</b> {job.postedBy}</p>
+                                <div style={{padding: "5px" }} className="posted">
+                                   <p style={{color: "rgb(51, 39, 112)"}}><b>Posted by:</b> {job.postedBy}</p>
                                 </div>
                             </div>
                             <div className="card-lower">

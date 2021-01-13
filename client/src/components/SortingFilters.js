@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-
 import { Multiselect } from 'multiselect-react-dropdown';
 import './SortingFilters.css';
 import './style.css'
@@ -10,13 +8,18 @@ import { List } from '@material-ui/core';
 class Sortingfilters extends Component {
     constructor(props) {
         super(props);
+        let filterLocalStore;
+        if (localStorage.getItem('filterLocalStore')) {
+            const filterString = localStorage.getItem('filterLocalStore');
+            filterLocalStore = JSON.parse(filterString);
+        }
         this.state = {
-            sortBy: "postedOn",
-            comparator: -1,
-            checkSort: "recentpost",
-            batch: [],
-            role: [],
-            selectedCompanies: [],
+            sortBy: filterLocalStore?filterLocalStore.sortBy:"postedOn",
+            comparator: filterLocalStore?filterLocalStore.comparator:-1,
+            checkSort: filterLocalStore?filterLocalStore.checkSort:"recentpost",
+            batch: filterLocalStore?filterLocalStore.batch:[],
+            role: filterLocalStore?filterLocalStore.role:[],
+            selectedCompanies: filterLocalStore?filterLocalStore.selectedCompanies:[],
             company_list: [],
             isFilterProcessing: false
         }
@@ -121,30 +124,35 @@ class Sortingfilters extends Component {
     }
     applyClickHandler = async () => {
         if (!this.state.isFilterProcessing) {
-            await this.setState({
+            this.setState({
                 isFilterProcessing: true
-            })
+            },() => {
+                console.log("applyClickHandler is fired");
+                var body = {
+                    sortBy: this.state.sortBy,
+                    comparator: this.state.comparator,
+                    batch: this.state.batch,
+                    role: this.state.role,
+                    selectedCompanies: this.state.selectedCompanies,
+                    checkSort: this.state.checkSort
+                }
+                if (body.selectedCompanies.length === 0) {
+                    body.selectedCompanies = this.state.company_list;
+                }
+                if (body.batch.length === 0) {
+                    body.batch = ["2020", "2021", "2022", "2023", "2024"];
+                }
+                if (body.role.length === 0) {
+                    body.role = ["Intern", "Full time"];
+                }
+                let filterLocalStore = body;
+                localStorage.setItem('filterLocalStore', JSON.stringify(filterLocalStore));
+                this.props.filterHandler(body);
+                this.setState({
+                    isFilterProcessing: false
+                });
+            });
         }
-        var body = {
-            sortBy: this.state.sortBy,
-            comparator: this.state.comparator,
-            batch: this.state.batch,
-            role: this.state.role,
-            selectedCompanies: this.state.selectedCompanies
-        }
-        if (body.selectedCompanies.length === 0) {
-            body.selectedCompanies = this.state.company_list;
-        }
-        if (body.batch.length === 0) {
-            body.batch = ["2020", "2021", "2022", "2023", "2024"];
-        }
-        if (body.role.length === 0) {
-            body.role = ["Intern", "Full time"];
-        }
-        this.props.filterHandler(body);
-        await this.setState({
-            isFilterProcessing: false
-        });
     }
     render() {
 
@@ -279,7 +287,7 @@ class Sortingfilters extends Component {
                             onSelect={this.companyChangeHandler}
                             onRemove={this.companyChangeHandler}
                             placeholder="Select Companies"
-                            // selectedValues={this.state.selectedCompanies}
+                            selectedValues={this.state.selectedCompanies}
                             selectionLimit="5"
                         />
                     </div>

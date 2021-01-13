@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const Job = mongoose.model('jobs');
-const Comment = mongoose.model('comments');
 const { v4: uuidv4 } = require('uuid');
 
 const requireLogin = require('../middlewares/requireLogin');
@@ -25,7 +24,7 @@ module.exports = (app) => {
     });
     //company list to be used to populate in dropdown
     app.get('/api/company_list', requireLogin, async (req, res) => {
-        var list = await Job.find().distinct('companyName');
+        var list = await Job.find({isDeleted: false}).distinct('companyName');
         res.send(list);
     });
     //Get job by page number
@@ -52,7 +51,7 @@ module.exports = (app) => {
 
             // var page_jobs = job
             .sort({ [req.query.sortBy]: req.query.comparator })
-            .skip(skip)
+            .skip(skip) 
             .limit(PAGE_SIZE)
             .populate('previewComment');
 

@@ -38,7 +38,7 @@ class EditJobForm extends Component {
             const editJobString = ls.get('editJob');
             editJob = JSON.parse(editJobString);
         }
-        await this.setState({
+        this.setState({
             jobId: editJob.jobId,
             companyName: editJob.companyName,
             jobTitle: editJob.jobTitle,
