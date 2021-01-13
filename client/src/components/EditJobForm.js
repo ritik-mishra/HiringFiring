@@ -27,7 +27,6 @@ class EditJobForm extends Component {
 
     }
     async componentDidMount() {
-        //console.log(this.props.location.state.editJob);
         var editJob;
         if (this.props.location.state) {
 
@@ -38,7 +37,7 @@ class EditJobForm extends Component {
             const editJobString = ls.get('editJob');
             editJob = JSON.parse(editJobString);
         }
-        await this.setState({
+        this.setState({
             jobId: editJob.jobId,
             companyName: editJob.companyName,
             jobTitle: editJob.jobTitle,
@@ -111,7 +110,7 @@ class EditJobForm extends Component {
         let allowSubmit = '';
         if (this.state.companyName && this.state.jobLink && this.state.batch.length && this.state.role.length && this.state.isReferral) {
             allowSubmit = <input
-                style={{ color: "red" }}
+                style={{ color: "#33b579", width: "6rem", height: "3rem", fontWeight: "900" }}
                 type='submit'
             />;
         }
@@ -121,8 +120,8 @@ class EditJobForm extends Component {
         return (
             <div className="editform">
                 <div className="container">
-                    <div style={{ color: "black" }}>
-                        <h3>Edit Job</h3>
+                    <div style={{ color: "grey" }}>
+                        <span style={{ color: "grey", fontSize: "2rem", fontWeight: "500" }}>Edit Job</span>
                     </div>
                     <div style={{ color: "black" }} className="form">
                         <form onSubmit={this.submitHandler}>

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const Job = mongoose.model('jobs');
-const Comment = mongoose.model('comments');
 const { v4: uuidv4 } = require('uuid');
 
 const requireLogin = require('../middlewares/requireLogin');
@@ -11,13 +10,22 @@ const requireFields = require('../middlewares/requireFields');
 const keys = require('../config/keys');
 
 module.exports = (app) => {
-    //Get Job
-    app.get('/api/all_jobs', requireLogin, (req, res) => {
-        Job.find({}).exec(function (err, all_jobs) {
-            if (err) throw err;
-            res.send(all_jobs);
-        });
-    });
+    //Landing page
+    app.get('/api/jobs_landingpage', requireLogin, async (req, res) => {
+        var d = new Date();
+        const curdate = d.toISOString();
+        const mostLikedJob = await Job.find({ jobExpiry: { $gt: curdate } }, { isDeleted: false },)
+            .sort({ likersCount: -1, postedOn: -1 })
+            .limit(1);
+        const recentJob = await Job.find({ jobExpiry: { $gt: curdate } }, { isDeleted: false },)
+            .sort({ postedOn: -1 })
+            .limit(1);
+        const resp = {
+            mostLikedJob: mostLikedJob[0],
+            recentJob: recentJob[0]
+        };
+        res.send(resp);
+    })
     //get single Job by,to be used in jobstack
     app.get('/api/jobidjob/:jobId', requireLogin, async (req, res) => {
         const job = await Job.findOne({ "jobId": req.params['jobId'] });
@@ -25,7 +33,9 @@ module.exports = (app) => {
     });
     //company list to be used to populate in dropdown
     app.get('/api/company_list', requireLogin, async (req, res) => {
-        var list = await Job.find().distinct('companyName');
+        var d = new Date();
+        const curdate = d.toISOString();
+        var list = await Job.find({ isDeleted: false }, { jobExpiry: { $gt: curdate } }).distinct('companyName');
         res.send(list);
     });
     //Get job by page number
@@ -38,8 +48,11 @@ module.exports = (app) => {
         const body_role = req.query.role;
         const sortBy = req.query.sortBy;
 
+        var d = new Date();
+        const curdate = d.toISOString();
+
         var job = await Job.find({
-            "$and": [{ "batch": { "$in": body_batch } }, { isDeleted: false }, { "companyName": { "$in": body_companyName } },
+            "$and": [{ "batch": { "$in": body_batch } }, { isDeleted: false }, { jobExpiry: { $gt: curdate } }, { "companyName": { "$in": body_companyName } },
             { "role": { "$in": body_role } }]
         });
         const jobcount = job.length;
@@ -49,13 +62,10 @@ module.exports = (app) => {
             "$and": [{ "batch": { "$in": body_batch } }, { isDeleted: false }, { "companyName": { "$in": body_companyName } },
             { "role": { "$in": body_role } }]
         })
-
-            // var page_jobs = job
             .sort({ [req.query.sortBy]: req.query.comparator })
             .skip(skip)
             .limit(PAGE_SIZE)
             .populate('previewComment');
-
         var arr = {
             page: page_jobs,
             count: jobc
@@ -105,7 +115,6 @@ module.exports = (app) => {
     app.post('/api/add_job', requireLogin, requireFields, async (req, res) => {
 
         const newId = uuidv4();
-        console.log(req.user);
 
         const newJob = await new Job({
             jobId: newId,
@@ -126,6 +135,8 @@ module.exports = (app) => {
     //update jobs
     app.patch('/api/update/:jobId', requireLogin, requireAuthor, requireFields, async (req, res) => {
         try {
+            var d = new Date();
+            const curdate = d.toISOString();
             const updatedJob = await Job.updateOne({ jobId: req.params.jobId },
                 {
                     $set: {
@@ -135,7 +146,8 @@ module.exports = (app) => {
                         jobLink: req.body.jobLink,
                         batch: req.body.batch,
                         isReferral: req.body.isReferral,
-                        jobExpiry: req.body.jobExpiry
+                        jobExpiry: req.body.jobExpiry,
+                        lastModified: curdate
                     },
                 });
             res.send("Job updated");

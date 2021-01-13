@@ -1,0 +1,19 @@
+.main-header{
+    position: fixed;
+    z-index: 1000;
+}
+.lower-content-all-page{
+    margin-top: 4.9rem;
+    width: 100vw;
+}
+
+
+@media screen and (max-width:1000px){
+    .main-header{
+        position: inherit;
+    }
+    .lower-content-all-page{
+        margin-top: 0rem;
+        width: 100vw;
+    }
+}
