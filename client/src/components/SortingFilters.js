@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Multiselect } from 'multiselect-react-dropdown';
 import './SortingFilters.css';
-import './style.css'
-import { List } from '@material-ui/core';
+// import './style.css'
+import Button from '@material-ui/core/Button'
 
 
 class Sortingfilters extends Component {
@@ -14,12 +14,12 @@ class Sortingfilters extends Component {
             filterLocalStore = JSON.parse(filterString);
         }
         this.state = {
-            sortBy: filterLocalStore?filterLocalStore.sortBy:"postedOn",
-            comparator: filterLocalStore?filterLocalStore.comparator:-1,
-            checkSort: filterLocalStore?filterLocalStore.checkSort:"recentpost",
-            batch: filterLocalStore?filterLocalStore.batch:[],
-            role: filterLocalStore?filterLocalStore.role:[],
-            selectedCompanies: filterLocalStore?filterLocalStore.selectedCompanies:[],
+            sortBy: filterLocalStore ? filterLocalStore.sortBy : "postedOn",
+            comparator: filterLocalStore ? filterLocalStore.comparator : -1,
+            checkSort: filterLocalStore ? filterLocalStore.checkSort : "recentpost",
+            batch: filterLocalStore ? filterLocalStore.batch : [],
+            role: filterLocalStore ? filterLocalStore.role : [],
+            selectedCompanies: filterLocalStore ? filterLocalStore.selectedCompanies : [],
             company_list: [],
             isFilterProcessing: false
         }
@@ -48,13 +48,14 @@ class Sortingfilters extends Component {
 
     async componentDidUpdate(prevProp, prevState, SnapShot) {
         if (this.props.companylist.length !== 0) {
-            if(this.state.company_list.length === 0) {
-        var ans = this.props.companylist;   
-        await this.setState({
-            company_list: ans
-        });
-    }}
-}
+            if (this.state.company_list.length === 0) {
+                var ans = this.props.companylist;
+                await this.setState({
+                    company_list: ans
+                });
+            }
+        }
+    }
 
     sortByHandler = (event) => {
         var val = event.target.value;
@@ -126,7 +127,7 @@ class Sortingfilters extends Component {
         if (!this.state.isFilterProcessing) {
             this.setState({
                 isFilterProcessing: true
-            },() => {
+            }, () => {
                 console.log("applyClickHandler is fired");
                 var body = {
                     sortBy: this.state.sortBy,
@@ -157,10 +158,10 @@ class Sortingfilters extends Component {
     render() {
 
         return (
-            <div className="container">
+            <div style={{ padding: "1rem" }}>
                 <div style={{ marginTop: "1rem" }} className="sorting">
-                    <div style={{ textAlign: 'center' }}><b>Sort By</b></div>
-                    <hr />
+                    <div style={{ textAlign: 'center', color: "rgb(90, 90, 90)" }}><b>Sort By</b></div>
+                    <hr style={{ borderTop: "1px solid #33b579", marginTop: "0.3rem", marginBottom: "0.6rem" }} />
                     <br />
                     <label>
                         <input className="with-gap" type="radio"
@@ -211,12 +212,12 @@ class Sortingfilters extends Component {
 
 
                 <div style={{ marginTop: "2rem" }} className="filters">
-                    <div style={{ textAlign: "center" }} ><b>Filters</b></div>
-                    <hr />
+                    <div style={{ textAlign: "center", color: "rgb(90, 90, 90)" }} ><b>Filters</b></div>
+                    <hr style={{ borderTop: "1px solid #33b579", marginTop: "0.3rem", marginBottom: "0.6rem" }} />
 
 
 
-                    <div style={{ textAlign: "center" }} >Batch</div>
+                    <div style={{ textAlign: "center", color: "black", marginTop: "0.5rem", marginBottom: "0.5rem" }} >Batch</div>
                     <p>
                         <label>
                             <input type="checkbox" name='batch' value="2020"
@@ -259,7 +260,7 @@ class Sortingfilters extends Component {
 
 
 
-                    <div style={{ textAlign: "center" }} >Role</div>
+                    <div style={{ textAlign: "center", color: "black", marginTop: "0.5rem", marginBottom: "0.5rem" }} >Role</div>
                     <p>
                         <label>
                             <input type="checkbox" name='role' value="Intern"
@@ -276,13 +277,17 @@ class Sortingfilters extends Component {
                             <span>Full time</span>
                         </label>&nbsp;&nbsp;&nbsp;
                         </p>
-                    <div style={{ textAlign: "center" }} >
+                    <div style={{ textAlign: "center", color: "black", marginTop: "0.5rem", marginBottom: "0.5rem" }} >
                         <p><b>Companies</b> (atmost 5)</p>
                     </div>
                     <div className="multiselect">
                         <Multiselect
                             options={this.state.company_list}
-                            // style={{ zIndex: 450, height: "10rem" }}
+                            style={{
+                                multiselectContainer: { "overflow": "hidden" }, searchBox: { "overflow": "hidden" },
+                                optionListContainer: { "height": "10rem", "z-index": "1000", "position": "relative" },
+                                optionContainer: { "height": "14rem", "z-index": "1000", "position": "absolute" }
+                            }}
                             isObject={false}
                             onSelect={this.companyChangeHandler}
                             onRemove={this.companyChangeHandler}
@@ -292,8 +297,7 @@ class Sortingfilters extends Component {
                         />
                     </div>
 
-
-                    <button style={{ marginLeft: "4rem" }} onClick={this.applyClickHandler} className="button"><b>Apply</b></button>
+                    <Button style={{ marginTop: "1.5rem", marginLeft: "4rem", marginBottom: "1rem", backgroundColor: "#33b579" }} onClick={this.applyClickHandler} variant="contained"><b><span style={{ color: "white" }}>Apply</span></b></Button>
                 </div>
             </div >
         )

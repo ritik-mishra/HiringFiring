@@ -78,7 +78,7 @@ class AddJobForm extends Component {
     render() {
         //button logic
         var x = this.state.companyName && this.state.jobLink && this.state.batch.length && this.state.role.length && this.state.isReferral;
-        let pp = x ? <input style={{ color: "red" }} type='submit' /> : <p style={{ color: "red" }}>fill the mandatory * fields first</p>;
+        let pp = x ? <input style={{ color: "red" }} type='submit' /> : <p style={{ color: "#33b579" }}>fill the mandatory * fields first</p>;
 
 
         const { redirect } = this.state;
@@ -91,8 +91,8 @@ class AddJobForm extends Component {
             <div className="addform">
                 <div className="container">
                     <div className="addfo">
-                        <div style={{ color: "black" }}>
-                            <h3>Add new Job</h3>
+                        <div style={{ color: "grey" }}>
+                            <span style={{ color: "grey", fontSize: "2rem", fontWeight: "500" }}>Add a Job</span>
                         </div>
                         <div style={{ overflow: "scroll" }} className="form">
                             <form onSubmit={this.submitHandler}>

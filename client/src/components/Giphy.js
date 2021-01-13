@@ -35,7 +35,6 @@ export default function NotificationModal(props) {
         return new Promise((resolve) => setTimeout(resolve, time));
     }
     const handleClose = () => {
-        console.log("run close");
         props.changeGiphyInJobstack();
         setOpen(false);
     };
