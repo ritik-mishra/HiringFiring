@@ -120,7 +120,7 @@ class EditJobForm extends Component {
         return (
             <div className="editform">
                 <div className="container">
-                    <div style={{ color: "grey" }}>
+                    <div style={{ color: "grey", marginTop: '2rem' }}>
                         <span style={{ color: "grey", fontSize: "2rem", fontWeight: "500" }}>Edit Job</span>
                     </div>
                     <div style={{ color: "black" }} className="form">

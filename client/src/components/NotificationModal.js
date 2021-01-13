@@ -110,7 +110,7 @@ export default function NotificationModal(props) {
         <div>
             <Tooltip title={hover}>
                 <IconButton type="button" onClick={handleOpen}>
-                    <AlarmAddIcon style={{ color: '#92C7BE' }} fontSize="default" />
+                    <AlarmAddIcon style={{ color: '#33b579' }} fontSize="default" />
                 </IconButton>
             </Tooltip>
             <Modal

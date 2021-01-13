@@ -5,6 +5,9 @@ import Box from '@material-ui/core/Box';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import EcoIcon from '@material-ui/icons/Eco';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
+import IconButton from '@material-ui/core/IconButton';
+import FeedbackIcon from '@material-ui/icons/Feedback';
+import Tooltip from '@material-ui/core/Tooltip';
 import logo from '../media/logo2.0.png';
 import image1 from '../media/img1.png';
 import image2 from '../media/img2.png';
@@ -51,6 +54,7 @@ class Landing extends Component {
         this.getJob();
         const ml = this.state.mostLikedJob;
         const rc = this.state.recentJob;
+        const hover = `Send feedback`;
         return (
             <div>
                 <div style={{ textAlign: 'center' }}>
@@ -148,6 +152,11 @@ class Landing extends Component {
 
                     </div>
                 }
+                <Tooltip title={hover}>
+                <IconButton type="button" style={{position: 'absolute', right: '1rem    ', bottom: '1rem'}} onClick={() => window.open('https://forms.gle/hKkcD9UG15FZ6C7KA')}>
+                    <FeedbackIcon style={{ color: '#33B579' }} fontSize="large" />
+                </IconButton>
+                </Tooltip>
             </div>
         );
     }
