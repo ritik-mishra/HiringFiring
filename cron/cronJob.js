@@ -72,28 +72,37 @@ var Cron = function Cron() {
         myOAuth2Client.setCredentials({
             refresh_token: mailKeys.refreshToken
         });
-        const myAccessToken = await myOAuth2Client.getAccessToken();
-        //creating mail transporter
-        const transport = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                type: "OAuth2",
-                user: "jofi.hiringfiring@gmail.com", //your gmail account you used to set the project up in google cloud console"
-                clientId: mailKeys.googleClientID,
-                clientSecret: mailKeys.googleClientSecret,
-                refreshToken: mailKeys.refreshToken,
-                accessToken: myAccessToken //access token variable we defined earlier
+        var myAccessToken = null;
+        try {
+            // myAccessToken = await myOAuth2Client.getAccessToken();
+
+            //creating mail transporter
+            const transport = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                    type: "OAuth2",
+                    user: "jofi.hiringfiring@gmail.com", //your gmail account you used to set the project up in google cloud console"
+                    clientId: mailKeys.googleClientID,
+                    clientSecret: mailKeys.googleClientSecret,
+                    refreshToken: mailKeys.refreshToken,
+                    // accessToken: myAccessToken //access token variable we defined earlier
+                }
+            });
+            var arr = await Reminder.find({ time: { $lte: d } }, { isSent: false }, { nTries: { $lte: 3 } });
+            for (let i = 0; i < arr.length; i++) {
+                sendmail(arr[i], transport);
             }
-        });
-        var arr = await Reminder.find({ time: { $lte: d } }, { isSent: false }, { nTries: { $lte: 3 } });
-        for (let i = 0; i < arr.length; i++) {
-            sendmail(arr[i], transport);
+        }
+        catch (error) {
+            console.log(error);
         }
     }
 
 
     //Setting the Cron job
+
     cron.schedule('0 0 * * * *', () => {
+        console.log("in cron");
         utilFun();
     },
         {
