@@ -64,16 +64,6 @@ class Jobboard extends Component {
             role: this.state.role,
             companies: this.state.selectedCompanies
         }
-        if (body.batch.length === 0) {
-            body.batch = ["2020", "2021", "2022", "2023", "2024"];
-        }
-        if (body.role.length === 0) {
-            body.role = ["Intern", "Full time"];
-        }
-        if (body.companies.length === 0) {
-            body.companies = this.state.listofcompanies;
-        }
-
         var job = await axios({
             method: 'get',
             url: `${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`,

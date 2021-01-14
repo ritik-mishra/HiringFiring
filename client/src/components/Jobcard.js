@@ -35,7 +35,8 @@ class Jobcard extends Component {
             showComments: true,
             startCommentPage: this.props.job.commentCount > 1 ? this.props.job.previewComment._id : null,
             processingComments: false,
-            comments: []
+            comments:[],
+            commentCount: this.props.job.commentCount
         };
     }
     componentDidMount() {
@@ -195,6 +196,13 @@ class Jobcard extends Component {
         }
         return res;
     }
+    //Handle Displayed CommentCount
+    commentCountHandler = (diff) => {
+        let commentCount = this.state.commentCount;
+        this.setState({
+            commentCount: commentCount+diff
+        });
+    }
     render() {
         const job = this.props.job;//this was previously accessed through state and constructor was not getting called again when the component's key attribute was not specified
         const auth = this.props.auth;
@@ -204,24 +212,21 @@ class Jobcard extends Component {
 
         //delete andCompanies (atmost 5) edit job link logic
         var del = null, edit = null;
-        var col1 = "rgb(25, 75, 90)";
         if (auth._id && (auth._id === job.postedById)) {
             del = <JobcardDelete deleteJobHandler={this.deleteJobHandler} />;
             edit = <Tooltip title="Edit"><i onClick={this.editHandler} className="fa fa-pencil-square-o" style={{ fontSize: "2.0rem", cursor: "pointer", color: "#33b579", marginRight: "1rem" }}></i></Tooltip>;
-
-            // del = <a style={{ color: col1 }} onClick={this.deleteHandler} href="#">Delete Job</a>;
-            // edit = <a style={{ color: col1 }} onClick={this.editHandler} href="#">Edit Job</a>;
         }
         //Comment Section Logic
-        var comments = null;
-        if (auth._id) {
-            comments = <a onClick={this.showCommentsHandler} href="#">Comments</a>;
-        }
         var commentText = null;
         if (this.state.showComments) {
             const COMMENTS = this.state.comments;
             commentText = (
-                <CommentBox comments={COMMENTS} jobId={this.props.job.jobId} fetchComments={this.fetchComments} offSet={this.state.startCommentPage} />
+                <CommentBox comments={COMMENTS} 
+                jobId={this.props.job.jobId} 
+                fetchComments={this.fetchComments} 
+                offSet={this.state.startCommentPage}
+                commentCountHandler={this.commentCountHandler}
+                />
             );
         }
         const url = job.jobLink;
@@ -282,7 +287,7 @@ class Jobcard extends Component {
                                             {this.getHeart()}
                                             <p style={{ color: "black" }}>&nbsp;&nbsp;{this.state.heartCount}&nbsp;&nbsp;</p>
                                             <b><a id="lowcard" className="apply_button" target="_blank" rel="noreferrer" href={url} > Apply Here!</a></b>
-                                            <p style={{ cursor: "default", justifyContent: "flex-end" }} id="lowcard"><b>Comments ({job.commentCount})</b></p>
+                                            <p style={{ cursor: "default", justifyContent: "flex-end" }} id="lowcard" onClick = {this.showCommentsHandler}><b>Comments ({job.commentCount})</b></p>
                                         </div>
                                     </div>
                                     <div style={{ marginBottom: "1rem" }}>

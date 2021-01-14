@@ -52,15 +52,15 @@ module.exports = (app) => {
         const curdate = d.toISOString();
 
         var job = await Job.find({
-            "$and": [{ "batch": { "$in": body_batch } }, { isDeleted: false }, { jobExpiry: { $gt: curdate } }, { "companyName": { "$in": body_companyName } },
-            { "role": { "$in": body_role } }]
+            "$and": [body_batch?{ "batch": { "$in": body_batch } }:{}, { isDeleted: false }, body_companyName?{ "companyName": { "$in": body_companyName } }:{},
+            body_role?{ "role": { "$in": body_role } }:{}]
         });
         const jobcount = job.length;
         var jobc = '' + jobcount
 
         var page_jobs = await Job.find({
-            "$and": [{ "batch": { "$in": body_batch } }, { isDeleted: false }, { "companyName": { "$in": body_companyName } },
-            { "role": { "$in": body_role } }]
+            "$and": [body_batch?{ "batch": { "$in": body_batch } }:{}, { isDeleted: false }, body_companyName?{ "companyName": { "$in": body_companyName }}:{} ,
+            body_role?{ "role": { "$in": body_role } }:{}]
         })
             .sort({ [req.query.sortBy]: req.query.comparator })
             .skip(skip)
@@ -76,14 +76,19 @@ module.exports = (app) => {
     app.post('/api/add_liker', requireLogin, async (req, res) => {
         const user = req.user.googleId
         const jobId = req.body.jobId;
-        var job = await Job.findOne({ jobId: jobId });
-        var isPresent = job.likers.includes(user);
-        if (!isPresent) {
-            job.likers.push(user);
-            job.likersCount += 1;
+        try{
+            var job = await Job.findOne({ jobId: jobId });
+            var isPresent = job.likers.includes(user);
+            if (!isPresent) {
+                job.likers.push(user);
+                job.likersCount += 1;
+            }
+            await job.save();
+            res.send("true");
         }
-        await job.save();
-        res.send("true");
+        catch (err) {
+            res.send(err);
+        }   
     })
     //remove liker
     app.post('/api/remove_liker', requireLogin, async (req, res) => {
@@ -113,23 +118,26 @@ module.exports = (app) => {
 
     //  Add Job 
     app.post('/api/add_job', requireLogin, requireFields, async (req, res) => {
-
-        const newId = uuidv4();
-
-        const newJob = await new Job({
-            jobId: newId,
-            companyName: req.body.companyName,
-            jobTitle: req.body.jobTitle,
-            jobLink: req.body.jobLink,
-            batch: req.body.batch,
-            isReferral: req.body.isReferral,
-            jobExpiry: req.body.jobExpiry,
-            postedBy: req.user.name,
-            postedById: req.user.id,
-            role: req.body.role,
-            salary: req.body.salary,
-        }).save();
-        res.send(true);
+        
+        try{
+            const newId = uuidv4();
+            const newJob = await new Job({
+                jobId: newId,
+                companyName: req.body.companyName,
+                jobTitle: req.body.jobTitle,
+                jobLink: req.body.jobLink,
+                batch: req.body.batch,
+                isReferral: req.body.isReferral,
+                jobExpiry: req.body.jobExpiry,
+                postedBy: req.user.name,
+                postedById: req.user.id,
+                role: req.body.role
+            }).save();
+            res.send(true);
+        }
+        catch (err) {
+            res.send(err);
+        }
     });
 
     //update jobs

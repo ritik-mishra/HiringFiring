@@ -111,14 +111,20 @@ module.exports = (app) => {
     //updateComment
     app.patch('/api/update_comment/:_id', requireLogin, requireCommentAuth, async (req, res) => {
         try {
-            const updatedComment = await Comment.updateOne({ _id: req.params._id },
-                {
-                    $set: {
-                        comment: req.body.comment
-                    },
-                })
-                .exec();
-            res.send('comment updated');
+            req.body.comment.trim();
+            if(!req.body.comment){
+                res.status(400).send("Kindly don't send an empty comment");
+            }
+            else{
+                const updatedComment = await Comment.updateOne({ _id: req.params._id },
+                    {
+                        $set: {
+                            comment: req.body.comment
+                        },
+                    })
+                    .exec();
+                res.send('comment updated');
+            }
         }
         catch (err) {
             res.send(err);
