@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
+import {Snackbar} from '@material-ui/core';
+import { Alert} from '@material-ui/lab';
 import './AddJobForm.css';
 import ls from 'local-storage';
 import { Redirect } from "react-router-dom";
@@ -20,6 +22,7 @@ class EditJobForm extends Component {
             jobExpiry: '',
             role: [],
             salary: '',
+            failureSnack: false
         };
         //In JavaScript, class methods are not bound by default. 
         //If you forget to bind this.myChangeHandler and pass it to onChange, this will be undefined when the function is actually called.
@@ -96,13 +99,28 @@ class EditJobForm extends Component {
         }
 
         var updateLink = `${process.env.PUBLIC_URL}/api/update/` + this.state.jobId;
-
-        await axios.patch(updateLink, newJob);
-        await this.setState({
-            redirect: true
-        });
-        ls.clear();
+        try{
+            await axios.patch(updateLink, newJob);
+            this.setState({
+                redirect: true
+            },()=>{
+                ls.remove('editJob');//Instead of clearing the whole local storage we need to clear only the info related to editable job
+            });
+        }  
+        catch(error){
+            this.setState({
+                failureSnack: true
+            });
+        }    
     }
+    handleCloseFailureSnack = (reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        this.setState({
+            failureSnack: false
+        });
+    };  
     render() {
         if (this.state.redirect) {
             return <Redirect push to="/jobboard" />
@@ -247,6 +265,11 @@ class EditJobForm extends Component {
                             <div style={{ marginTop: "1rem" }}>
                                 {allowSubmit}
                             </div>
+                            <Snackbar open={this.state.failureSnack} autoHideDuration={6000} onClose={this.handleCloseFailureSnack} >
+                                <Alert onClose={this.handleCloseFailureSnack} severity="error" elevation={6} variant="filled">
+                                    Failed to add your job.
+                                </Alert>
+                            </Snackbar>
                         </form>
                     </div>
                 </div>

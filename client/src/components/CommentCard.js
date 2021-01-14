@@ -12,8 +12,10 @@ import {
   Button,
   Dialog,
   DialogActions,
-  DialogTitle
+  DialogTitle,
+  Snackbar
 } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import axios from "axios";
@@ -55,9 +57,11 @@ const CommentCard = (props) => {
   const [comment, setComment] = useState(props.comment.comment);
   const [prevComment, setPrevComment] = useState(props.comment.comment);
   const [deleteDailog, setDeleteDialog] = useState(false);
+  const [failureSnack, setFailureSnack] = useState(false);
+  const [snackText, setSnackText] = useState("");
   const auth = useSelector(state => state.auth);
 
-  //Handling Delete Dialog
+  
   const getPostedbyName = (name) => {
     var r1 = name.split(" ");
     // console.log(r1);
@@ -73,6 +77,7 @@ const CommentCard = (props) => {
     }
     return res;
   }
+  //Handling Delete Dialog
   const handleDeleteDialogOpen = (event) => {
     event.preventDefault();
     setDeleteDialog(true);
@@ -83,9 +88,17 @@ const CommentCard = (props) => {
   //Delete function
   const deleteHandler = async (event) => {
     event.preventDefault();
-    setshowComment(false);
-    await axios.patch(`${process.env.PUBLIC_URL}/api/delete_comment/${props.comment._id}`);
-    setDeleteDialog(false);
+    try{
+      setshowComment(false);
+      await axios.patch(`${process.env.PUBLIC_URL}/api/delete_comment/${props.comment._id}`);
+      props.commentCountHandler(-1);
+      setDeleteDialog(false);
+    }
+    catch{
+      setSnackText("Failed to delete your comment");
+      setFailureSnack(true);
+      setshowComment(true);
+    }
   }
 
   //Edit function
@@ -95,11 +108,28 @@ const CommentCard = (props) => {
   }
   //Update function
   const updateHandler = async (event) => {
-    event.preventDefault();
-    setEditMode(false);
-    await axios.patch(`${process.env.PUBLIC_URL}/api/update_comment/${props.comment._id}`, { comment: comment });
-    setPrevComment(comment);
+      event.preventDefault();
+      try{
+        setEditMode(false);
+        let editedComment = comment;
+        setComment("Uploading Edits...");
+        await axios.patch(`${process.env.PUBLIC_URL}/api/update_comment/${props.comment._id}`, {comment: editedComment});
+        setComment(editedComment);
+        setPrevComment(editedComment);
+      }
+      catch{
+        setSnackText("Failed to update your comment");
+        setFailureSnack(true);
+        setComment(prevComment);
+      }
   }
+  //Failure Snack
+  const handleCloseFailureSnack = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setFailureSnack(false);
+  };
   //go back without keeping edits
   const discardChangesHandler = async (event) => {
     event.preventDefault();
@@ -196,6 +226,8 @@ const CommentCard = (props) => {
                 <div>
                   <Typography
                     className={classes.fonts}
+                    component = "div"
+                    variant = "body2"
                     color="textPrimary"
                   >
                     {getPostedbyName(props.comment.postedBy)}
@@ -214,11 +246,14 @@ const CommentCard = (props) => {
                     {comment}
                   </Typography >
                     &nbsp;&nbsp;
-
-                    {/* {` - ${moment(props.comment.createdAt).calendar()}`} */}
                   {delButton}
                   {editButton}
                   {delDialogBox}
+                  <Snackbar open={failureSnack} autoHideDuration={6000} onClose={handleCloseFailureSnack} >
+                    <Alert onClose={handleCloseFailureSnack} severity="error">
+                      {snackText}
+                    </Alert>
+                  </Snackbar>
                 </>
               }
             />

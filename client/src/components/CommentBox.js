@@ -13,7 +13,7 @@ import {
   Grid,
   Snackbar
 } from "@material-ui/core";
-import MuiAlert from '@material-ui/lab/Alert';
+import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
 import CommentCard from "./CommentCard";
 import './CommentBox.css';
@@ -64,19 +64,16 @@ const CommentBox = (props) => {
     }
     setFailureSnack(false);
   };
-  //Handling Alert
-  function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
   //Submit function
   const handleSubmit = async (event) => {
     event.preventDefault();
     let tempAddedNewComment = addedNewComment;
     setComment("");
-    try {
-      setAddedNewComment(addedNewComment => [...addedNewComment, { _id: uuidv4(), jobId: props.jobId, createdAt: (Date.now), postedBy: auth.name, postedById: "", picURL: auth.picURL, comment: "Uploading..." }]);
-      const res = await axios.post(`${process.env.PUBLIC_URL}/api/add_comment/`, { jobId: props.jobId, comment: comment });
+    try{
+      setAddedNewComment(addedNewComment => [...addedNewComment,{_id: uuidv4(), jobId:props.jobId, createdAt:"",postedBy: auth.name, postedById: "", picURL: auth.picURL, comment: "Uploading..."}]);
+      const res = await axios.post(`${process.env.PUBLIC_URL}/api/add_comment/`,{jobId: props.jobId, comment: comment});
       setSucessSnack(true);
+      props.commentCountHandler(1);
       tempAddedNewComment.push(res.data);
       setAddedNewComment(tempAddedNewComment);
     }
@@ -100,7 +97,7 @@ const CommentBox = (props) => {
     renderCommentCard = props.comments.slice().reverse().map(comment => {
       if (!comment.isDeleted) {
         return (
-          <CommentCard key={comment._id} comment={comment} />
+          <CommentCard key={comment._id} comment={comment} commentCountHandler={props.commentCountHandler}/>
         );
       }
       else {
@@ -114,7 +111,7 @@ const CommentBox = (props) => {
     renderNewAddedComments = addedNewComment.map(comment => {
       if (!comment.isDeleted) {
         return (
-          <CommentCard key={comment._id} comment={comment} />
+          <CommentCard key = {comment._id} comment={comment} commentCountHandler={props.commentCountHandler}/>
         )
       }
       else {
@@ -131,7 +128,7 @@ const CommentBox = (props) => {
           <ListItemText
             secondary={
               <a href='#' onClick={fetchPrevComments}>
-                <i><b><div style={{ fontSize: "15px", color: "#a6a6a6" }}>{`Load previous comments`}</div></b></i>
+                <i><b><span style={{ fontSize: "15px", color: "#a6a6a6" }}>{`Load previous comments`}</span></b></i>
               </a>
             }
           />
@@ -148,7 +145,6 @@ const CommentBox = (props) => {
         </div>
         <div>
           {renderCommentCard}
-          {/* <div style={{padding:"10px"}}> */}
           {renderNewAddedComments}
         </div>
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>

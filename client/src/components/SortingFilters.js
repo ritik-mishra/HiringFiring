@@ -137,15 +137,6 @@ class Sortingfilters extends Component {
                     selectedCompanies: this.state.selectedCompanies,
                     checkSort: this.state.checkSort
                 }
-                if (body.selectedCompanies.length === 0) {
-                    body.selectedCompanies = this.state.company_list;
-                }
-                if (body.batch.length === 0) {
-                    body.batch = ["2020", "2021", "2022", "2023", "2024"];
-                }
-                if (body.role.length === 0) {
-                    body.role = ["Intern", "Full time"];
-                }
                 let filterLocalStore = body;
                 localStorage.setItem('filterLocalStore', JSON.stringify(filterLocalStore));
                 this.props.filterHandler(body);
