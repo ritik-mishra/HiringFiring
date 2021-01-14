@@ -39,9 +39,19 @@ var Cron = function Cron() {
         };
         transport.sendMail(mailOptions, function (err, result) {
             if (err) {
+                const upd = Reminder.updateOne({ _id: body._id }, {
+                    $set: {
+                        nTries: body.nTries + 1
+                    }
+                });
                 console.log(err);
             }
             else {
+                const upd = Reminder.updateOne({ _id: body._id }, {
+                    $set: {
+                        isSent: true
+                    }
+                });
                 transport.close();
             }
         })
@@ -75,23 +85,7 @@ var Cron = function Cron() {
                 accessToken: myAccessToken //access token variable we defined earlier
             }
         });
-        //Testing
-        // var body = {
-        //     role: ['Intern'],
-        //     userName: 'Sonu Verma',
-        //     googleId: '5fc5b79f73d8c9736ae0e800',
-        //     userEmail: 'vermasonu6416@gmail.com',
-        //     companyName: 'Facebook',
-        //     jobLink: 'https://www.mygate.com',
-        //     message: 'Set reminder for Job',
-        //     time: 1609689600000,
-        //     __v: 0
-        // };
-        // sendmail(body, transport);
-
-
-        var arr = await Reminder.find({ time: d });
-        Reminder.deleteMany({ time: d });
+        var arr = await Reminder.find({ time: { $lte: d } }, { isSent: false }, { nTries: { $lte: 3 } });
         for (let i = 0; i < arr.length; i++) {
             sendmail(arr[i], transport);
         }

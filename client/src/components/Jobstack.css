@@ -14,7 +14,7 @@ span{
 svg{
     color:black;
 }
-.optionListContainer{
+.MuiTypography-root .MuiTablePagination-caption .MuiTypography-body2 .MuiTypography-colorInherit{
     color:black;
 }
 .MuiTableCell-root{
