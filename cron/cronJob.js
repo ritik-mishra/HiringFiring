@@ -72,7 +72,7 @@ var Cron = function Cron() {
         myOAuth2Client.setCredentials({
             refresh_token: mailKeys.refreshToken
         });
-        const myAccessToken = myOAuth2Client.getAccessToken();
+        const myAccessToken = await myOAuth2Client.getAccessToken();
         //creating mail transporter
         const transport = nodemailer.createTransport({
             service: "gmail",
