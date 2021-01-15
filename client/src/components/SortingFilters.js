@@ -288,7 +288,7 @@ class Sortingfilters extends Component {
                         />
                     </div>
 
-                    <Button style={{ marginTop: "1.5rem", marginLeft: "4rem", marginBottom: "1rem", backgroundColor: "#33b579" }} onClick={this.applyClickHandler} variant="contained"><b><span style={{ color: "white" }}>Apply</span></b></Button>
+                    <Button style={{ marginTop: "1.5rem", marginLeft: "6rem", marginBottom: "1rem", backgroundColor: "#33b579" }} onClick={this.applyClickHandler} variant="contained"><b><span style={{ color: "white" }}>Apply</span></b></Button>
                 </div>
             </div >
         )
