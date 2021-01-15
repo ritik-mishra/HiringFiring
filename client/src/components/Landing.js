@@ -139,12 +139,12 @@ class Landing extends Component {
                             p={1}
                             style={{ width: "23rem", height: "28rem", borderRadius: "5px", padding: "10px", backgroundColor: "#00ff99" }}
                         >
-                            <img style={{ marginLeft: "7.6rem", height: "8rem" }} src={logo} alt="Hiring-Firing" className="logo-image" />
+                            <img style={{ marginLeft: "8rem", height: "8rem" }} src={logo} alt="Hiring-Firing" className="logo-image" />
                             <br />
                             <br />
                             <br />
                             <br />
-                            <p style={{ marginTop: "2rem", color: "#33b579", marginLeft: "3.2rem", fontSize: "2.5rem", fontWeight: "900", fontFamily: "Times New Roman" }}>Hiring Firing</p>
+                            <p style={{ marginTop: "2.5rem", color: "#33b579", marginLeft: "3.2rem", fontSize: "2.5rem", fontWeight: "900", fontFamily: "Times New Roman" }}>Hiring Firing</p>
                             <div style={{ marginTop: "5rem", marginLeft: "3.7rem" }}>
                                 <a style={{ cursor: "pointer" }} href={`${process.env.PUBLIC_URL}/auth/google`}><p style={{ width: "13rem" }} className="loginBtn loginBtn--google">Login with Google</p></a>
                             </div>
@@ -153,9 +153,9 @@ class Landing extends Component {
                     </div>
                 }
                 <Tooltip title={hover}>
-                <IconButton type="button" style={{position: 'absolute', right: '1rem    ', bottom: '1rem'}} onClick={() => window.open('https://forms.gle/hKkcD9UG15FZ6C7KA')}>
-                    <FeedbackIcon style={{ color: '#33B579' }} fontSize="large" />
-                </IconButton>
+                    <IconButton type="button" style={{ position: 'absolute', right: '1rem    ', bottom: '1rem' }} onClick={() => window.open('https://forms.gle/hKkcD9UG15FZ6C7KA')}>
+                        <FeedbackIcon style={{ color: '#33B579' }} fontSize="large" />
+                    </IconButton>
                 </Tooltip>
             </div>
         );

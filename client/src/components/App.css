@@ -1,9 +1,11 @@
 .main-header{
-    position: fixed;
+    width: 100vw;
+    position: static;
     z-index: 1000;
 }
 .lower-content-all-page{
-    margin-top: 4.9rem;
+    position: static;
+    /* margin-top: 4.9rem; */
     width: 100vw;
 }
 

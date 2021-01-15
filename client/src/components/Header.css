@@ -11,7 +11,7 @@
 .head{
     background-color:#33b579;
     /* background-color: white; */
-    height:10vh;
+    height:70px;
     width:100vw;
     min-height: 7vh;
     z-index: 1000;
@@ -27,7 +27,7 @@
     display: inline;
     margin-left: 8rem;
     margin-bottom: 0;
-    opacity: 70%;
+    opacity: 0.7;
 }
 /* .logo-image{
     margin-left: 8rem;
@@ -97,7 +97,7 @@ li{
         flex-direction: column;
         align-items: center;
         justify-content: space-evenly;
-        opacity: 100%;
+        opacity: 1;
         transform: translateX(100%);
         transition: transform 0.5s ease-in; 
     }
@@ -113,7 +113,7 @@ li{
         top:5px;
     }
     .nav-active{
-        opacity: 100%;
+        opacity: 1;
         transform: translateX(0%);
     }
 }
