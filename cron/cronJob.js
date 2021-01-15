@@ -4,6 +4,7 @@ const Reminder = mongoose.model('reminder');
 const mailKeys = require('../config/mailKeys');
 const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
+
 const OAuth2 = google.auth.OAuth2;
 
 
@@ -29,7 +30,7 @@ var Cron = function Cron() {
         return mail;
     }
     //Function to send reminder mail to one instance
-    function sendmail(body, transport) {
+    async function sendmail(body, transport) {
         var ht = getMailHTML(body);
         const mailOptions = {
             from: 'jofi.hiringfiring@gmail.com', // sender
@@ -37,21 +38,13 @@ var Cron = function Cron() {
             subject: 'Reminder for Job from ' + body.companyName, // Subject
             html: ht// html body
         };
-        transport.sendMail(mailOptions, function (err, result) {
+        transport.sendMail(mailOptions, async function (err, result) {
             if (err) {
-                const upd = Reminder.updateOne({ _id: body._id }, {
-                    $set: {
-                        nTries: body.nTries + 1
-                    }
-                });
+                const upd = await Reminder.findByIdAndUpdate(body._id, { nTries: body.nTries + 1 });
                 console.log(err);
             }
             else {
-                const upd = Reminder.updateOne({ _id: body._id }, {
-                    $set: {
-                        isSent: true
-                    }
-                });
+                const upd = await Reminder.findByIdAndUpdate(body._id, { isSent: true });
                 transport.close();
             }
         })
@@ -74,9 +67,9 @@ var Cron = function Cron() {
         });
         var myAccessToken = null;
         try {
-            // myAccessToken = await myOAuth2Client.getAccessToken();
+            myAccessToken = await myOAuth2Client.getAccessToken();
 
-            //creating mail transporter
+            // creating mail transporter
             const transport = nodemailer.createTransport({
                 service: "gmail",
                 auth: {
@@ -85,10 +78,10 @@ var Cron = function Cron() {
                     clientId: mailKeys.googleClientID,
                     clientSecret: mailKeys.googleClientSecret,
                     refreshToken: mailKeys.refreshToken,
-                    // accessToken: myAccessToken //access token variable we defined earlier
+                    accessToken: myAccessToken //access token variable we defined earlier
                 }
             });
-            var arr = await Reminder.find({ time: { $lte: d } }, { isSent: false }, { nTries: { $lte: 3 } });
+            var arr = await Reminder.find({ time: { $lte: d }, isSent: false, nTries: { $lte: 3 } });
             for (let i = 0; i < arr.length; i++) {
                 sendmail(arr[i], transport);
             }
@@ -102,7 +95,6 @@ var Cron = function Cron() {
     //Setting the Cron job
 
     cron.schedule('0 0 * * * *', () => {
-        console.log("in cron");
         utilFun();
     },
         {

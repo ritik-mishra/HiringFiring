@@ -15,6 +15,8 @@ module.exports = (app) => {
             role: req.body.role,
             message: req.body.message,
             time: req.body.time,
+            isSent: 0,
+            nTries: 0
         }).save();
         res.send(true);
     });
