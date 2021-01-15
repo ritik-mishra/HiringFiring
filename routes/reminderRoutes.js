@@ -15,6 +15,7 @@ module.exports = (app) => {
             role: req.body.role,
             message: req.body.message,
             time: req.body.time,
+            status: req.body.status,
             isSent: 0,
             nTries: 0
         }).save();

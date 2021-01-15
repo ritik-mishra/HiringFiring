@@ -65,6 +65,7 @@ export default function NotificationModal(props) {
             companyName: props.job.companyName,
             jobLink: props.job.jobLink,
             role: props.job.role,
+            status: props.job.status
         }
         axios.post(`${process.env.PUBLIC_URL}/api/add_reminder`, note);
         setOpen(false);
@@ -93,7 +94,7 @@ export default function NotificationModal(props) {
                 <form onSubmit={handleSubmit}>
                     <input onChange={dateChange} type="datetime-local" id="reminder-time"
                         name="reminder-time"
-                        min={date}
+                        // min={date}
                         required>
                     </input>
                     <input onChange={messageChange} placeholder="Write your message" type="text"></input>

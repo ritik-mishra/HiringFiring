@@ -15,17 +15,18 @@ var Cron = function Cron() {
         var mail =
             '<div>\
         <p>Hi '+ body.userName + ',<p>\
-        <p>Greetings from Jofi</p>\
-        <p>This is to remind you about the following job:<p>\
-        <p>Company Name: '+ body.companyName + '</p>\
-        <p>Role: '+ body.role[0] + '</p>\
-        <p>Job Link: '+ body.jobLink + '</p>\
-        <p><b>Your message: </b>' + body.message + '</p>\
-        <p>For more, visit:<a target="_blank" href="http://pomodoro-nowornever.centralindia.cloudapp.azure.com/hiring-firing">Hiring Firing</a> </p>\
-        <p>Thank you</p>\
+        <p>Greetings from Jofi !</p>\
+        <p>This is to remind you about the action you need to take for the following job:<p>\
+        <p><b>Company Name: </b> '+ body.companyName + '</p>\
+        <p><b>Role: </b> '+ body.role[0] + '</p>\
+        <p><b>Current Status: </b>' + body.status + '</p>\
+        <p><b>Reminding Note: </b>' + body.message + '</p>\
+        <p><b>Job Link: </b>'+ body.jobLink + '</p>\
+        <p>For more info about the job, visit:<a target="_blank" href="http://pomodoro-nowornever.centralindia.cloudapp.azure.com/hiring-firing">Hiring Firing</a> </p>\
+        <p>All the best in your job search :)</p>\
         <p>Jofi</p>\
         <br/><br/>\
-        <p>(do not reply to this mail)</P>\
+        <p><i>Do not reply to this mail</i></P>\
         </div>';
         return mail;
     }
@@ -95,6 +96,7 @@ var Cron = function Cron() {
     //Setting the Cron job
 
     cron.schedule('0 0 * * * *', () => {
+        console.log("ys");
         utilFun();
     },
         {

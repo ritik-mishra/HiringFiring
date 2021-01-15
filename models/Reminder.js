@@ -12,5 +12,6 @@ const reminderSchema = new Schema({
     time: Number,
     isSent: { type: Boolean, default: false },
     nTries: { type: Number, default: 0 },
+    status: String
 });
 mongoose.model('reminder', reminderSchema);
