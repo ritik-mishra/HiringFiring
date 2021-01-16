@@ -13,23 +13,23 @@ import {
   Grid,
   Snackbar
 } from "@material-ui/core";
-import MuiAlert from '@material-ui/lab/Alert';
+import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
 import CommentCard from "./CommentCard";
-
+import './CommentBox.css';
 
 const { v4: uuidv4 } = require('uuid');
 const useStyles = makeStyles(theme => ({
   root: {
-    
+
     borderRadius: "20px",
-    padding:"10px",
+    padding: "10px",
     width: "100%",
-    backgroundColor: "hsl(45, 38%, 94%)"
+    backgroundColor: "rgb(245 245 245)"
     // backgroundColor: theme.palette.background.paper
   },
   outer_block: {
-    padding:"5px",
+    padding: "5px",
   },
   fonts: {
     fontWeight: "bold"
@@ -37,9 +37,9 @@ const useStyles = makeStyles(theme => ({
   inline: {
     display: "inline"
   },
-  textField: { 
+  textField: {
     width: "100%"
-  }  
+  }
 }));
 
 const CommentBox = (props) => {
@@ -64,31 +64,28 @@ const CommentBox = (props) => {
     }
     setFailureSnack(false);
   };
-  //Handling Alert
-  function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
   //Submit function
   const handleSubmit = async (event) => {
     event.preventDefault();
     let tempAddedNewComment = addedNewComment;
     setComment("");
     try{
-      setAddedNewComment(addedNewComment => [...addedNewComment,{_id: uuidv4(), jobId:props.jobId, createdAt:(Date.now),postedBy: auth.name, postedById: "", picURL: auth.picURL, comment: "Uploading..."}]);
+      setAddedNewComment(addedNewComment => [...addedNewComment,{_id: uuidv4(), jobId:props.jobId, createdAt:"",postedBy: auth.name, postedById: "", picURL: auth.picURL, comment: "Uploading..."}]);
       const res = await axios.post(`${process.env.PUBLIC_URL}/api/add_comment/`,{jobId: props.jobId, comment: comment});
       setSucessSnack(true);
+      props.commentCountHandler(1);
       tempAddedNewComment.push(res.data);
       setAddedNewComment(tempAddedNewComment);
     }
-    catch(error){
+    catch (error) {
       setAddedNewComment(tempAddedNewComment);
       setFailureSnack(true);
     }
   }
   //Fetch previous section
-  const fetchPrevComments = async(event) => {
+  const fetchPrevComments = async (event) => {
     event.preventDefault();
-    if(!processingPrevComments){
+    if (!processingPrevComments) {
       setProcessingPrevComments(true);
       await props.fetchComments();
       setProcessingPrevComments(false);
@@ -96,90 +93,84 @@ const CommentBox = (props) => {
   }
   //CommentCard Rendering
   var renderCommentCard = null;
-  if(props.comments !== null && props.comments.length !== 0){
+  if (props.comments !== null && props.comments.length !== 0) {
     renderCommentCard = props.comments.slice().reverse().map(comment => {
-      if(!comment.isDeleted){
+      if (!comment.isDeleted) {
         return (
-          <CommentCard key={comment._id} comment={comment}/>
+          <CommentCard key={comment._id} comment={comment} commentCountHandler={props.commentCountHandler}/>
         );
       }
-      else{
+      else {
         return null;
       }
     });
   }
   //Render Newly Added Comments
   var renderNewAddedComments = null;
-  if(addedNewComment.length !== 0){
+  if (addedNewComment.length !== 0) {
     renderNewAddedComments = addedNewComment.map(comment => {
-      if(!comment.isDeleted){
+      if (!comment.isDeleted) {
         return (
-          <CommentCard key = {comment._id} comment={comment}/>
+          <CommentCard key = {comment._id} comment={comment} commentCountHandler={props.commentCountHandler}/>
         )
       }
-      else{
+      else {
         return null;
       }
     })
   }
   //Option to load more comments
   var loadPrevComments = null;
-  if(props.offSet !== null){
+  if (props.offSet !== null) {
     loadPrevComments = (
-        <React.Fragment key={props.offSet}>
-          <ListItem key={props.offset} alignItems="flex-start">
-              <ListItemText
-              secondary={
-                  <a href = '#' onClick= {fetchPrevComments}>
-                  <b><div style={{fontSize:"15px", color:"#4682B4"}}>{`Load previous comments`}</div></b>
-                  </a>
-              }
-              />
-          </ListItem>
-        </React.Fragment>
+      <React.Fragment key={props.offSet}>
+        <ListItem key={props.offset} alignItems="flex-start">
+          <ListItemText
+            secondary={
+              <a href='#' onClick={fetchPrevComments}>
+                <i><b><span style={{ fontSize: "15px", color: "#a6a6a6" }}>{`Load previous comments`}</span></b></i>
+              </a>
+            }
+          />
+        </ListItem>
+      </React.Fragment>
     );
   }
+
   return (
     <div>
-      <List className={classes.root}>
-      <div style={{paddingLeft:"5px"}}>
-        {loadPrevComments}
-      </div>
-      <div style={{padding:"5px"}}>
-        {renderCommentCard}
-        {/* <div style={{padding:"10px"}}> */}
-        {renderNewAddedComments}
-      </div>
-      <form className={classes.formed} noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <ListItem className={classes.outer_block}>
-          <ListItemAvatar>
-            <Avatar alt="avatar" src={auth.picURL} />
-          </ListItemAvatar>
-          <ListItemText>
+      <List style={{ padding: "0px", borderRadius: "0", backgroundColor: "white" }} className={classes.root}>
+        <div>
+          {loadPrevComments}
+        </div>
+        <div>
+          {renderCommentCard}
+          {renderNewAddedComments}
+        </div>
+        <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+          <div style={{ display: "flex", marginBottom: "0.5rem" }}>
+            <Avatar style={{ marginLeft: "1rem", marginTop: "1rem" }} alt="avatar" src={auth.picURL} />
             <TextField
-            id= {props.jobId}
-            label="Comment"
-            multiline
-            rows={2}
-            variant="filled"
-            className= {classes.textField}
-            value={comment}
-            onChange={e => setComment(e.target.value)}
+              id={props.jobId}
+              label="Comment"
+              multiline
+              rows={2}
+              variant="filled"
+              className={classes.textField}
+              value={comment}
+              onChange={e => setComment(e.target.value)}
+              style={{ backgroundColor: "rgb(245 245 245)", height: "4rem", margin: "0.5rem", marginLeft: "1.2rem", width: "45rem", maxWidth: "80%" }}
             />
-          </ListItemText>
-        </ListItem>
-        <ListItem>
-          <Grid container justify="flex-end">
-            <Button 
+            <Button
               type="submit"
               variant="contained"
               color="#90EE90"
+              style={{ marginLeft: "1rem", height: "2.5rem", marginTop: "1.2rem" }}
             >
               Add
-            </Button>
-          </Grid>
-        </ListItem>
-      </form>
+               </Button>
+          </div>
+        </form>
         <Snackbar open={sucessSnack} autoHideDuration={6000} onClose={handleCloseSucessSnack} >
           <Alert onClose={handleCloseSucessSnack} severity="success">
             Your comment has been added
@@ -191,7 +182,6 @@ const CommentBox = (props) => {
           </Alert>
         </Snackbar>
       </List>
-      <Divider />
     </div>
   );
 };

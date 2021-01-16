@@ -1,5 +1,5 @@
 
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -9,7 +9,7 @@ import AddJobForm from './AddJobForm';
 import Jobboard from './Jobboard';
 import EditJobForm from './EditJobForm';
 import Jobstack from './Jobstack';
-
+import './App.css';
 
 class App extends Component {
     //Lifecycle hook
@@ -23,12 +23,16 @@ class App extends Component {
         return (
             <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
                 <div>
-                    <Header />
-                    <Route exact path="/jobboard" component={Jobboard} />
-                    <Route exact path="/" component={Landing} />
-                    <Route exact path="/addnewjob" component={AddJobForm} />
-                    <Route exact path="/editjob" render={(props) => <EditJobForm {...props} />} />
-                    <Route exact path="/myjobstack" component={Jobstack} />
+                    <div className="main-header">
+                        <Header />
+                    </div>
+                    <div className="lower-content-all-page">
+                        <Route exact path="/jobboard" component={Jobboard} />
+                        <Route exact path="/" component={Landing} />
+                        <Route exact path="/addnewjob" component={AddJobForm} />
+                        <Route exact path="/editjob" render={(props) => <EditJobForm {...props} />} />
+                        <Route exact path="/myjobstack" component={Jobstack} />
+                    </div>
                 </div>
             </BrowserRouter>
         );

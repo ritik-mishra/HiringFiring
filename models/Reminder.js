@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { stringify } = require('uuid');
 const { Schema } = mongoose;
 
 const reminderSchema = new Schema({
@@ -10,6 +9,9 @@ const reminderSchema = new Schema({
     jobLink: String,
     role: Array,
     message: String,
-    time: Number
+    time: Number,
+    isSent: { type: Boolean, default: false },
+    nTries: { type: Number, default: 0 },
+    status: String
 });
 mongoose.model('reminder', reminderSchema);

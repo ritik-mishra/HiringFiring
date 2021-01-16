@@ -6,7 +6,7 @@
     height: 30rem;
     width: 40rem;
     padding: 2px;
-    opacity: 100%;
+    opacity: 1;
 }
 
 @media screen and (max-width:1000px){
@@ -20,6 +20,6 @@
         height: 50%;
         width: 85%;
         padding: 2px;
-        opacity: 100%;
+        opacity: 1;
     }
 }

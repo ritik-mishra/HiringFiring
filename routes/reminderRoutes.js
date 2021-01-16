@@ -20,6 +20,9 @@ module.exports = (app) => {
             role: req.body.role,
             message: req.body.message,
             time: req.body.time.substring(0, 14) + "00",
+            status: req.body.status,
+            isSent: 0,
+            nTries: 0
         }).save();
         res.send(true);
     });

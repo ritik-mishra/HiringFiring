@@ -2,9 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Redirect } from 'react-router';
-import moment from 'moment';
+import { Tooltip } from '@material-ui/core';
+import JobcardDelete from './JobcardDeleteModal';
 import CommentBox from './CommentBox';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import Box from '@material-ui/core/Box'
+import { StylesProvider } from "@material-ui/core/styles";
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import './Jobcard.css'
+
+
 class Jobcard extends Component {
     constructor(props) {
         super(props);
@@ -26,7 +35,8 @@ class Jobcard extends Component {
             showComments: true,
             startCommentPage: this.props.job.commentCount > 1 ? this.props.job.previewComment._id : null,
             processingComments: false,
-            comments: []
+            comments:[],
+            commentCount: this.props.job.commentCount
         };
     }
     componentDidMount() {
@@ -38,15 +48,7 @@ class Jobcard extends Component {
             comments: loadPreviewComment
         });
     }
-    deleteHandler = async (event) => {
-        event.preventDefault();
-        await this.setState({
-            showDelete: !this.state.showDelete
-        });
-    }
-
-    deleteJobHandler = async (event) => {
-        event.preventDefault();
+    deleteJobHandler = async () => {
         await this.setState({
             showCard: false
         });
@@ -92,7 +94,15 @@ class Jobcard extends Component {
         }
     }
     getHeart = () => {
-        return <i onClick={this.heartClick} className="fa fa-heart" style={{ fontSize: "1.8rem", color: this.state.heart ? "rgb(253, 91, 91)" : "#bfbfbf", cursor: "pointer" }}></i>;
+        if (this.state.heart)
+            return <FavoriteIcon fontSize="large" onClick={this.heartClick} style={{ cursor: "pointer", color: "rgb(253, 91, 91)" }} />
+        return <FavoriteBorderIcon fontSize="large" onClick={this.heartClick} style={{ cursor: "pointer" }} />
+    }
+
+    getJobstackbutton = () => {
+        if (!this.state.noAddJobstackButton)
+            return <Tooltip title="Add to Jobstack"><AssignmentIcon onClick={this.addJobstackHandler} style={{ fontSize: "2rem", cursor: "pointer", color: "#33b579", marginRight: "1rem" }} /></Tooltip>;
+        return <Tooltip title="Added to Jobstack"><AssignmentTurnedInIcon style={{ fontSize: "2rem", color: "#33b579", marginRight: "1rem" }} /></Tooltip>;
     }
 
     //Jobstack Handlers
@@ -170,47 +180,55 @@ class Jobcard extends Component {
 
         }
     }
+
+    //used to take only first 3 words from name
+    getPostedbyName = (name) => {
+        var r1 = name.split(" ");
+        var res = '';
+        if (r1.length > 0) {
+            res = r1[0];
+        }
+        if (r1.length > 1) {
+            res = res + ' ' + r1[1];
+        }
+        if (r1.length > 2) {
+            res = res + ' ' + r1[2];
+        }
+        return res;
+    }
+    //Handle Displayed CommentCount
+    commentCountHandler = (diff) => {
+        let commentCount = this.state.commentCount;
+        this.setState({
+            commentCount: commentCount+diff
+        });
+    }
     render() {
         const job = this.props.job;//this was previously accessed through state and constructor was not getting called again when the component's key attribute was not specified
         const auth = this.props.auth;
+        var datePosted = job.postedOn;
+        datePosted = new Date(datePosted).toLocaleString();
+        datePosted = datePosted.substring(0, 17);
 
-        //delete and edit job link logic
+        //delete andCompanies (atmost 5) edit job link logic
         var del = null, edit = null;
-        var col1 = "rgb(25, 75, 90)";
         if (auth._id && (auth._id === job.postedById)) {
-            del = <i onClick={this.deleteHandler} className="fa fa-trash" style={{ paddingRight: "10px", float: "right", fontSize: "2.0rem", color: "#DC143C", cursor: "pointer" }}></i>;
-            edit = <i onClick={this.editHandler} className="fa fa-pencil-square-o" style={{ float: "right", fontSize: "2.0rem", color: "#BA55D3", cursor: "pointer" }}></i>;
-
-            // del = <a style={{ color: col1 }} onClick={this.deleteHandler} href="#">Delete Job</a>;
-            // edit = <a style={{ color: col1 }} onClick={this.editHandler} href="#">Edit Job</a>;
+            del = <JobcardDelete deleteJobHandler={this.deleteJobHandler} />;
+            edit = <Tooltip title="Edit"><i onClick={this.editHandler} className="fa fa-pencil-square-o" style={{ fontSize: "2.0rem", cursor: "pointer", color: "#33b579", marginRight: "1rem" }}></i></Tooltip>;
         }
-
-        //delete popup text logic
-        var deleteText = null;
-        if (this.state.showDelete) {
-
-            deleteText = (
-                <div>
-                    <p style={{ display: "inline" }}>Are you sure you want to delete this job</p>
-                    <button onClick={this.deleteHandler} style={{ display: "inline" }} class="button button1">No</button>
-                    <button onClick={this.deleteJobHandler} style={{ display: "inline" }} className="button button3">Yes</button>
-                </div>
-            );
-        }
-
         //Comment Section Logic
-        var comments = null;
-        if (auth._id) {
-            comments = <a onClick={this.showCommentsHandler} href="#">Comments</a>;
-        }
         var commentText = null;
         if (this.state.showComments) {
             const COMMENTS = this.state.comments;
             commentText = (
-                <CommentBox comments={COMMENTS} jobId={this.props.job.jobId} fetchComments={this.fetchComments} offSet={this.state.startCommentPage} />
+                <CommentBox comments={COMMENTS} 
+                jobId={this.props.job.jobId} 
+                fetchComments={this.fetchComments} 
+                offSet={this.state.startCommentPage}
+                commentCountHandler={this.commentCountHandler}
+                />
             );
         }
-
         const url = job.jobLink;
         const date = new Date(job.jobExpiry);
         const default_date = new Date('1970,01,01');
@@ -227,72 +245,58 @@ class Jobcard extends Component {
         if (this.state.showCard) {
             return (
                 <div>
-                    <div className="jobcard">
-                        <div className="card">
-                            <div className="card-header">
-                                <div style={{ display: "inline" }} className="card-header-content">
-                                    <b>
-                                        <div style={{ display: "inline", color: "#FF0000" }}>{job.companyName}</div></b>
-
-
-                                    <div className="posted-date sm">&nbsp;&nbsp;&nbsp;&nbsp;{` ${moment(job.createdAt).calendar()}`}</div>
-
-                                    <div className="posted-date lg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{` ${moment(job.createdAt).calendar()}`}</div>
-                                    {del}
-                                    <i onClick={this.addJobstackHandler} className="fa fa-list-alt" style={{ paddingRight: "12px", paddingLeft: "12px", float: "right", fontSize: "2rem", color: "#228B22", cursor: "pointer" }}></i>
-                                    {edit}
-
-                                </div>
-                            </div>
-                            <div className="card-content">
-                                <div style={{ paddingLeft: "5px", paddingRight: "5px", paddingBottom: "5px" }} className="title">
-                                    <p style={{ color: "rgb(51, 39, 112)", display: "inline" }}><b>Role:</b> {this.internFulltime()}</p>
-                                    <p style={{ color: "rgb(51, 39, 112)", display: "inline" }}><b>&nbsp;&nbsp;&nbsp;&nbsp;Title:</b> {job.jobTitle}</p>
-                                </div>
-                                <div style={{ padding: "5px" }} classname="batch">
-                                    <p className="inline"><b>Batch applicable:</b>&nbsp;</p>
-                                    <div className="inline">{job.batch.map(each_batch => (
-                                        <p style={{ padding: "5px" }} className="inline" key={each_batch}>
-                                            {each_batch}&nbsp;</p>))}
+                    <StylesProvider injectFirst>
+                        <Box
+                            boxShadow={1}
+                            bgcolor="background.paper"
+                            m={1}
+                            p={1}
+                            classes={{ label: "jcard" }}
+                        >
+                            <div className="jobcard">
+                                <div style={{ marginTop: "0.5rem", paddingLeft: "1rem", paddingRight: "1rem" }} >
+                                    <div style={{ lineHeight: "100%" }}>
+                                        <div style={{ lineHeight: "160%" }} className="jobcard-up">
+                                            <p style={{ fontFamily: "Times New Roman", fontSize: "2rem", color: "rgb(90, 90, 90)" }} className="jobcard-up-line"><b>{job.companyName}</b></p>
+                                        </div>
+                                        <div style={{ float: "right", display: "flex" }} className="jobcard-up">
+                                            <div className="jobcard-up-line">{edit}</div>
+                                            <div className="jobcard-up-line">{del}</div>
+                                            <div className="jobcard-up-line">{this.getJobstackbutton()}</div>
+                                        </div>
+                                        <p style={{ fontSize: "0.8rem", color: "grey" }}>{datePosted}</p>
+                                    </div>
+                                    <hr style={{ borderTop: "1px solid #33b579", marginTop: "0.3rem", marginBottom: "0.6rem" }} />
+                                    <div className="card-content" style={{ paddingLeft: "0.5rem" }}>
+                                        <p style={{ display: "inline", color: "black" }}><span style={{ color: "grey" }}><b>Role:</b></span> {this.internFulltime()}</p>
+                                        <p style={{ display: "inline", color: "black" }}><span style={{ color: "grey" }}><b>&nbsp;&nbsp;&nbsp;&nbsp;Title:</b></span> {job.jobTitle}</p>
+                                        <div style={{ marginTop: "0.5rem" }} className="batch">
+                                            <p style={{ display: "inline", color: "black" }}><span style={{ color: "grey" }}><b>Batch Applicable:</b>&nbsp;</span></p>
+                                            {job.batch.map(each_batch => (
+                                                <p style={{ display: "inline", color: "black" }}>{each_batch}&nbsp;</p>
+                                            ))}
+                                        </div>
+                                        <p style={{ marginTop: "0.5rem", color: "black" }}><span style={{ color: "grey" }}><b>Apply Before:</b>&nbsp;</span> {date.toLocaleDateString()}</p>
+                                        <p style={{ marginTop: "0.5rem", color: "black" }}><span style={{ color: "grey" }}><b>Referral Applicable:</b>&nbsp;</span> {job.isReferral}</p>
+                                        <p style={{ marginTop: "0.5rem", color: "black" }}><span style={{ color: "grey" }}><b>Expected Salary:</b>&nbsp;</span> {job.salary ? job.salary : "NA"}</p>
+                                        <p style={{ marginTop: "0.5rem", color: "black" }}><span style={{ color: "grey" }}><b>Posted By:</b>&nbsp;</span> {this.getPostedbyName(job.postedBy)}</p>
+                                    </div>
+                                    <hr style={{ borderTop: "1px solid #33b579", marginTop: "0.6rem", marginBottom: "0.3rem" }} />
+                                    <div className="cardlower">
+                                        <div style={{ marginLeft: "1rem", display: "flex" }}>
+                                            {this.getHeart()}
+                                            <p style={{ color: "black" }}>&nbsp;&nbsp;{this.state.heartCount}&nbsp;&nbsp;</p>
+                                            <b><a id="lowcard" className="apply_button" target="_blank" rel="noreferrer" href={url} > Apply Here!</a></b>
+                                            <p style={{ cursor: "default", justifyContent: "flex-end" }} id="lowcard" onClick = {this.showCommentsHandler}><b>Comments ({job.commentCount})</b></p>
+                                        </div>
+                                    </div>
+                                    <div style={{ marginBottom: "1rem" }}>
+                                        {commentText}
                                     </div>
                                 </div>
-                                <div style={{ padding: "5px" }} classname="check">
-                                    {default_date.getTime() !== jobExpiry_date.getTime() &&
-                                        <p style={{ color: "rgb(51, 39, 112)" }}><b>Apply Before:</b> {date.toLocaleDateString()}</p>}
-                                </div>
-                                <div style={{ padding: "5px" }} classname="referral">
-                                    <p style={{ color: "rgb(51, 39, 112)" }}><b>Referral Applicable:</b> {job.isReferral}</p>
-                                </div>
-                                <div style={{ padding: "5px" }} classname="salary">
-                                    <p style={{ color: "rgb(51, 39, 112)" }}><b>Expected Salary:</b> {job.salary ? job.salary : "NA"}</p>
-                                </div>
-                                <div style={{ padding: "5px" }} classname="posted">
-                                    <p style={{ color: "rgb(51, 39, 112)" }}><b>Posted by:</b> {job.postedBy}</p>
-                                </div>
                             </div>
-                            <div className="card-lower">
-                                <div style={{ display: "inline" }} className="card-lower-content">
-                                    {this.getHeart()}
-                                    {this.state.heartCount}&nbsp;&nbsp;
-                                    &nbsp;&nbsp;
-                                    <b><a className="apply_button" style={{ fontFamily: "'Trebuchet MS', sans-serif'", fontSize: "22px", color: "#2e1212" }} target="_blank" rel="noreferrer" href={url} > Apply Here!</a></b>
-                                    <strong><p style={{ display: "inline", paddingRight: "5px", paddingLeft: "5px", float: "right", fontSize: "18px", color: "Black" }}>Comments ( {job.commentCount} )</p></strong>
-                                    {/* showComment function missing here on Comment Click */}
-                                </div>
-                            </div>
-
-                            <div>
-                                {deleteText}
-                            </div>
-                            <hr></hr>
-                            <div style={{ padding: "20px" }}>
-                                {commentText}
-                            </div>
-
-
-                        </div>
-                    </div>
+                        </Box>
+                    </StylesProvider>
                 </div>
 
             )

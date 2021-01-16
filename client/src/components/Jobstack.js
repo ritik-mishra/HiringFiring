@@ -380,7 +380,7 @@ class Jobstack extends Component {
                     <TableCell align="center">
                       <Tooltip title={save_hover}>
                         <IconButton aria-label="save" onClick={this.submitHandler.bind(this, row)} >
-                          <SaveIcon style={{ color: '#92C7BE' }} fontSize="default" />
+                          <SaveIcon style={{ color: '#33b579' }} fontSize="default" />
                         </IconButton>
                       </Tooltip>
                       <Snackbar open={this.state.snackOpen} autoHideDuration={6000} onClose={this.handleClose} >
@@ -398,7 +398,7 @@ class Jobstack extends Component {
                     <TableCell >
                       <Tooltip title="Delete">
                         <IconButton aria-label="delete" onClick={this.handleClickOpen.bind(this, row)}>
-                          <DeleteIcon style={{ color: '#92C7BE' }} fontSize="default" />
+                          <DeleteIcon style={{ color: '#33b579' }} fontSize="default" />
                         </IconButton>
                       </Tooltip>
                       <Dialog
@@ -409,11 +409,10 @@ class Jobstack extends Component {
                       >
                         <DialogTitle style={{ color: "black" }} id="alert-dialog-title">{"Are you sure you want to delete?"}</DialogTitle>
                         <DialogActions>
-                          <Button style={{ backgroundColor: "#dfe6e3" }} onClick={this.handleDeleteClose} >
+                          <Button style={{ backgroundColor: "#33b579" }} onClick={this.handleDeleteClose} color="primary" autoFocus >
                             No
                         </Button>
-                          <Button style={{ backgroundColor: "#92C7BE" }} onClick={this.deleteHandler.bind(this, this.state.jobs[this.state.current_row])}
-                            color="primary" autoFocus>
+                          <Button style={{ backgroundColor: "#dfe6e3" }} onClick={this.deleteHandler.bind(this, this.state.jobs[this.state.current_row])} >
                             Yes
                         </Button>
                         </DialogActions>
@@ -518,7 +517,7 @@ class Jobstack extends Component {
                                 selectionLimit="5"
                               />
                             </FormControl>
-                            <Button className='clear-filter' style={{ backgroundColor: "#92C7BE" }} onClick={this.clearFilter} >
+                            <Button className='clear-filter' style={{ backgroundColor: "#33b579" }} onClick={this.clearFilter} >
                               Clear Filter
                           </Button>
                           </form>
@@ -527,7 +526,7 @@ class Jobstack extends Component {
                           <Button style={{ backgroundColor: "#dfe6e3" }} onClick={this.handleFilterClose} >
                             Cancel
                       </Button>
-                          <Button style={{ backgroundColor: "#92C7BE" }} onClick={this.applyClickHandler} >
+                          <Button style={{ backgroundColor: "#33b579" }} onClick={this.applyClickHandler} >
                             Apply
                       </Button>
                         </DialogActions>

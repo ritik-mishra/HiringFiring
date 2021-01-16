@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Jobcard from './Jobcard';
+import Box from '@material-ui/core/Box';
 import './Jobboard.css';
 import Sortingfilters from './SortingFilters';
-
+import { TouchBallLoading } from 'react-loadingg';
 
 class Jobboard extends Component {
 
@@ -16,22 +17,30 @@ class Jobboard extends Component {
         super(props);
 
         this.myRef = React.createRef();
+
+        let filterLocalStore;
+        if (localStorage.getItem('filterLocalStore')) {
+            const filterString = localStorage.getItem('filterLocalStore');
+            filterLocalStore = JSON.parse(filterString);
+        }
+
         this.state = {
             jobs: [],
             page: pg,
-            selectedCompanies: [],
-            role: [],
-            sortBy: "postedOn",
-            comparator: -1,
-            batch: [],
+            selectedCompanies: filterLocalStore ? filterLocalStore.selectedCompanies : [],
+            role: filterLocalStore ? filterLocalStore.role : [],
+            sortBy: filterLocalStore ? filterLocalStore.sortBy : "postedOn",
+            comparator: filterLocalStore ? filterLocalStore.comparator : -1,
+            batch: filterLocalStore ? filterLocalStore.batch : [],
             jobcount: 1,
             userJobstack: [],
             floatButton: 0,
             sortingClass: "sorting-filters",
-            listofcompanies: []
+            listofcompanies: [],
+            paginationItems: []
         }
+
         this.refJobs = React.createRef();
-        // this.userJobstack = [];
     }
     async componentDidMount() {
         const userJobstack = await axios.get(`${process.env.PUBLIC_URL}/api/jobstack_userjobs`);
@@ -55,16 +64,6 @@ class Jobboard extends Component {
             role: this.state.role,
             companies: this.state.selectedCompanies
         }
-        if (body.batch.length === 0) {
-            body.batch = ["2020", "2021", "2022", "2023", "2024"];
-        }
-        if (body.role.length === 0) {
-            body.role = ["Intern", "Full time"];
-        }
-        if (body.companies.length === 0) {
-            body.companies = this.state.listofcompanies;
-        }
-
         var job = await axios({
             method: 'get',
             url: `${process.env.PUBLIC_URL}/api/page_job?page=${this.state.page}`,
@@ -80,6 +79,7 @@ class Jobboard extends Component {
             jobs: page_jobs,
             jobcount: jobcount
         })
+        this.getPagination();
         // this.refJobs.current.scrollTop = 0;
     }
 
@@ -92,15 +92,16 @@ class Jobboard extends Component {
         })
     }
     filterHandler = async (body) => {
-        await this.setState({
+        this.setState({
             page: 1,
             sortBy: body.sortBy,
             comparator: body.comparator,
             batch: body.batch,
             role: body.role,
             selectedCompanies: body.selectedCompanies
+        }, () => {
+            this.fetchJobs();
         })
-        this.fetchJobs();
     }
     showSorting = () => {
         var cls = this.state.sortingClass
@@ -116,33 +117,87 @@ class Jobboard extends Component {
         });
 
     }
-    render() {
-
+    removeShowSorting = () => {
+        if (this.state.sortingClass !== "sorting-filters") {
+            this.setState({
+                sortingClass: "sorting-filters",
+                floatButton: !this.state.floatButton
+            })
+        }
+    }
+    getPagination = () => {
         //Pagination Logic
-        let items = [];
+        var items = [];
         const PAGE_SIZE = 10;
         const jc = this.state.jobcount;//change this accordingly
 
-        let pagec = jc / PAGE_SIZE + ((jc % PAGE_SIZE) ? 1 : 0);
-        for (let num = 1; num <= pagec; num++) {
-            var col = "white";
-            if (num === this.state.page)
-                col = "rgb(85, 185, 144)";
+        var totalPages = parseInt(jc / PAGE_SIZE) + parseInt(((jc % PAGE_SIZE) ? 1 : 0));
+        var currentPage = this.state.page;
+        var firstPage = Math.max(1, currentPage - 2), lastPage = Math.min(totalPages, currentPage + 2);
+        if (currentPage === 1) {
             items.push(
-                <button onClick={() => this.clickHandler(num)} key={num} style={{ backgroundColor: col }
+                <button disabled key={-1} style={{ backgroundColor: "white" }
+                } className="pagination" >{"<<"}</button>
+            )
+            items.push(
+                <button disabled key={0} style={{ backgroundColor: "white" }
+                } className="pagination" >{"<"}</button>
+            )
+        }
+        else {
+            items.push(
+                <button onClick={() => this.clickHandler(1)} key={-1} style={{ backgroundColor: "white", cursor: "pointer" }
+                } className="pagination" > {"<<"}</button>
+            )
+            items.push(
+                <button onClick={() => this.clickHandler(currentPage - 1)} key={0} style={{ backgroundColor: "white", cursor: "pointer" }
+                } className="pagination" > {"<"}</button>
+            )
+        }
+
+        for (let num = firstPage; num <= lastPage; num++) {
+            var col = "white";
+            if (num === currentPage)
+                col = "#33b579";
+            items.push(
+                <button onClick={() => this.clickHandler(num)} key={num} style={{ backgroundColor: col, cursor: "pointer" }
                 } className="pagination" > {num}</button>
             );
         }
-
+        if (currentPage === totalPages) {
+            items.push(
+                <button disabled key={totalPages + 2} style={{ backgroundColor: "white" }
+                } className="pagination" >{">>"}</button>
+            )
+            items.push(
+                <button disabled key={totalPages + 1} style={{ backgroundColor: "white" }
+                } className="pagination" >{">"}</button>
+            )
+        }
+        else {
+            items.push(
+                <button onClick={() => this.clickHandler(currentPage + 1)} key={totalPages + 1} style={{ backgroundColor: "white", cursor: "pointer" }
+                } className="pagination" > {">"}</button>
+            )
+            items.push(
+                <button onClick={() => this.clickHandler(totalPages)} key={totalPages + 2} style={{ backgroundColor: "white", cursor: "pointer" }
+                } className="pagination" > {">>"}</button>
+            )
+        }
+        this.setState({
+            paginationItems: items
+        });
+    }
+    render() {
         var JOBS = this.state.jobs;
         if (JOBS.length)
             return (
                 <div className="content">
                     <div className="filter-button">
-                        <button className="filterbtn" onClick={this.showSorting}>{this.state.floatButton ? <i className="fa fa-close"></i> : <i className="fa fa-bars"></i>}Filters</button>
+                        <button className="filterbtn" style={{ backgroundColor: "#4dffa6", width: "4rem", height: "4rem", borderRadius: "50%" }} onClick={this.showSorting}>{this.state.floatButton ? <i className="fa fa-close" style={{ fontSize: "2rem" }}></i> : <i className="fa fa-filter" style={{ fontSize: "2rem" }}></i>}</button>
                     </div>
                     <div className="jobboard">
-                        <div className="jobs" id="jobs" ref={this.refJobs}>
+                        <div onClick={this.removeShowSorting} className="jobs" id="jobs" ref={this.refJobs}>
                             <div>
                                 {
                                     JOBS.map(job => (
@@ -155,18 +210,26 @@ class Jobboard extends Component {
                             </div>
 
                             <div className="center">
-                                {items}
+                                {this.state.paginationItems}
                             </div>
 
                         </div>
-                        <div className={this.state.sortingClass}>
-                            <Sortingfilters companylist={this.state.listofcompanies} filterHandler={this.filterHandler} />
-                        </div>
+                        <Box
+                            boxShadow={1}
+                            bgcolor="background.paper"
+                            m={1}
+                            p={1}
+                            style={{ margin: "1rem 7rem 1rem 1rem", borderRadius: "5px", padding: "0", backgroundColor: "white" }}
+                        >
+                            <div className={this.state.sortingClass}>
+                                <Sortingfilters companylist={this.state.listofcompanies} filterHandler={this.filterHandler} />
+                            </div>
+                        </Box>
                     </div>
                 </div>
             )
         else
-            return (<div className="Loading"> <h1>Loading...</h1></div>);
+            return (<div className="Loading"> <TouchBallLoading style={{ width: "10rem" }} speed={0} color={"#33b579"} size="large" /></div>);
     }
 }
 export default Jobboard;

@@ -66,6 +66,7 @@ export default function NotificationModal(props) {
             companyName: props.job.companyName,
             jobLink: props.job.jobLink,
             role: props.job.role,
+            status: props.job.status
         }
         
         axios.post(`${process.env.PUBLIC_URL}/api/add_reminder`, note);
@@ -144,7 +145,7 @@ export default function NotificationModal(props) {
         <div>
             <Tooltip title={hover}>
                 <IconButton type="button" onClick={handleOpen}>
-                    <AlarmAddIcon style={{ color: '#92C7BE' }} fontSize="default" />
+                    <AlarmAddIcon style={{ color: '#33b579' }} fontSize="default" />
                 </IconButton>
             </Tooltip>
             <Modal

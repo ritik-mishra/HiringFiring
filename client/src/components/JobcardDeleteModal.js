@@ -1,15 +1,16 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import IconButton from '@material-ui/core/IconButton';
+import { Button } from "@material-ui/core";
 import Tooltip from '@material-ui/core/Tooltip';
-import CancelIcon from '@material-ui/icons/Cancel';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import './Notification.css';
+function rand() {
+    return Math.round(Math.random() * 20) - 10;
+}
 
 function getModalStyle() {
-    const top = 50;
-    const left = 50;
+    const top = 50 + rand();
+    const left = 50 + rand();
 
     return {
         top: `${top}%`,
@@ -27,9 +28,6 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
     },
-    margin: {
-        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-      },
     cross: {
         position: 'absolute',
         top: '0',
@@ -37,10 +35,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function JobstackModal(props) {
-    var job = props.job;
+export default function JobcardDelete(props) {
     const classes = useStyles();
-    const hover = `More info`;
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [modalStyle] = React.useState(getModalStyle);
     const [open, setOpen] = React.useState(false);
@@ -52,31 +48,27 @@ export default function JobstackModal(props) {
     const handleClose = () => {
         setOpen(false);
     };
-    var date = job.jobExpiry;
-    date = date.substring(0, 10);
+    const handleSubmit = () => {
+        props.deleteJobHandler();
+        handleClose();
+    }
     const body = (
         <div style={modalStyle} className={classes.paper}>
-            <div className="container" style={{ color: "black" }}>
-                <p><b>Company Name:</b> {job.companyName}</p>
-                <p><b>Role:</b> {job.role.join(", ")}</p>
-                <p><b>Job Title:</b> {job.jobTitle}</p>
-                <p><b>Batch:</b> {job.batch.join(", ")}</p>
-                <p><b>Expires On:</b> {date}</p>
-                <p><b>Referral Required:</b> {job.isReferral}</p>
+            <div>
+                <p style={{ color: "black" }}><b>Are you sure you want to Delete!</b></p>
+                <div style={{ display: "flex", marginTop: "3rem", marginLeft: "6rem" }}>
+                    <Button style={{ width: "3rem", backgroundColor: "#33b579", cursor: "pointer" }} onClick={handleClose}>No</Button>
+                    <Button style={{ width: "3rem", marginLeft: "1.5rem", backgroundColor: "#e6e6e6", cursor: "pointer" }} onClick={handleSubmit}>Yes</Button>
+                </div>
             </div>
-            <IconButton aria-label="cancel" onClick={handleClose} className={classes.cross}>
-                <CancelIcon style={{color: "black"}} fontSize="small" />
-            </IconButton>
         </div>
     );
 
     return (
         <div>
-            <Tooltip title={hover}>
-                <IconButton aria-label="info" onClick={handleOpen} >
-                    <MoreHorizIcon style={{color: '#33b579'}} fontSize="default" />
-                </IconButton>
-            </Tooltip>
+            <Tooltip title="Delete">
+                <i onClick={handleOpen} className="fa fa-trash" style={{ fontSize: "2.0rem", cursor: "pointer", color: "#33b579", marginRight: "1rem" }}></i>
+            </Tooltip>;
             <Modal
                 open={open}
                 onClose={handleClose}

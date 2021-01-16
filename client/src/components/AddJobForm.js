@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
-
+import {Snackbar} from '@material-ui/core';
+import { Alert} from '@material-ui/lab';
 import './AddJobForm.css'
 
 
@@ -16,8 +17,9 @@ class AddJobForm extends Component {
             isReferral: '',
             jobExpiry: '',
             role: [],
+            redirect: false,
+            failureSnack: false,
             salary: '',
-            redirect: false
         };
 
         //In JavaScript, class methods are not bound by default. 
@@ -72,13 +74,29 @@ class AddJobForm extends Component {
             salary: this.state.salary
 
         }
-        await axios.post(`${process.env.PUBLIC_URL}/api/add_job`, job);
-        this.setState({ redirect: true });
+        try{
+            await axios.post(`${process.env.PUBLIC_URL}/api/add_job`, job);
+            this.setState({ redirect: true });
+        }
+        catch(error){
+            this.setState({
+                failureSnack: true
+            });
+        }
     }
+    handleCloseFailureSnack = (reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        this.setState({
+            failureSnack: false
+        });
+    };
     render() {
         //button logic
         var x = this.state.companyName && this.state.jobLink && this.state.batch.length && this.state.role.length && this.state.isReferral;
-        let pp = x ? <input style={{ color: "red" }} type='submit' /> : <p style={{ color: "red" }}>fill the mandatory * fields first</p>;
+        let sumbitButton = x ? <input style={{ color: "#33b579", width: "6rem", height: "3rem", fontWeight: "900" }}
+        type='submit' /> : <p style={{ color: "red" }}>fill the mandatory * fields first</p>;
 
 
         const { redirect } = this.state;
@@ -91,8 +109,8 @@ class AddJobForm extends Component {
             <div className="addform">
                 <div className="container">
                     <div className="addfo">
-                        <div style={{ color: "black" }}>
-                            <h3>Add new Job</h3>
+                        <div style={{ color: "grey", marginTop: '2rem' }}>
+                            <span style={{ color: "grey", fontSize: "2rem", fontWeight: "500" }}>Add a Job</span>
                         </div>
                         <div style={{ overflow: "scroll" }} className="form">
                             <form onSubmit={this.submitHandler}>
@@ -200,8 +218,13 @@ class AddJobForm extends Component {
                                     onChange={this.myChangeHandler}
                                 />
                                 <div>
-                                    {pp}
+                                    {sumbitButton}
                                 </div>
+                                <Snackbar open={this.state.failureSnack} autoHideDuration={6000} onClose={this.handleCloseFailureSnack} >
+                                    <Alert onClose={this.handleCloseFailureSnack} severity="error" elevation={6} variant="filled">
+                                        Failed to add your job.
+                                    </Alert>
+                                </Snackbar>
                             </form>
                         </div>
                     </div>
