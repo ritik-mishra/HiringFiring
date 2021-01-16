@@ -59,6 +59,7 @@ export default function NotificationModal(props) {
         var nd = new Date(nDate);
         var mlTime = nd.getTime();
         mlTime += 55 * 6 * 60 * 1000;
+        
         var note = {
             time: mlTime,
             message: msg,
@@ -66,6 +67,7 @@ export default function NotificationModal(props) {
             jobLink: props.job.jobLink,
             role: props.job.role,
         }
+        
         axios.post(`${process.env.PUBLIC_URL}/api/add_reminder`, note);
         setOpen(false);
     };
@@ -76,11 +78,43 @@ export default function NotificationModal(props) {
         msg = e.target.value;
     }
     var t = new Date();
+    // console.log(t);
     var z = t.getTimezoneOffset() * 60 * 1000 - 60 * 60 * 1000;
     var tLocal = t - z;
+    
     tLocal = new Date(tLocal);
+    // console.log(tLocal);
     var date = tLocal.toISOString();
-    date = date.substring(0, 14);
+    // console.log(date);
+    // date = date.substring(0,14) + "8" + date.substring(15,17);
+    
+    // console.log(date);
+    if(date.substring(14,16)>="45")
+    {
+        var a = date[11];
+        var b = date[12];
+        if(a=="2" && b=="4")
+        {
+            date = date.substring(0,11) + "00"+":";
+        }
+        else
+        {
+            if(b<9)
+            {
+                b=+b + +1;
+                var x=b.toString();
+
+                date = date.substring(0,11) + a + b+":";
+            }
+            else
+            {
+                a=+a + +1;
+                date = date.substring(0,11) + a + "0"+":";
+            }
+        }
+    }
+    // date = date.substring(0, 14);
+    // console.log(date);
     date = date + "00";
     dt = date;
     const body = (

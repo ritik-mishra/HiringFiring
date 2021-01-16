@@ -5,7 +5,12 @@ const requireLogin = require('../middlewares/requireLogin');
 const requireAuthor = require('../middlewares/requireAuthor');
 const requireFields = require('../middlewares/requireFields');
 module.exports = (app) => {
+    
+
     app.post('/api/add_reminder', requireLogin, async (req, res) => {
+        // var nDate = req.body.time.substring(0, 14) + "00";
+        // console.log(nDate);
+        // console.log(req.body.time);
         const newReminder = await new Reminder({
             userName: req.user.name,
             googleId: req.user.id,
@@ -14,7 +19,7 @@ module.exports = (app) => {
             jobLink: req.body.jobLink,
             role: req.body.role,
             message: req.body.message,
-            time: req.body.time,
+            time: req.body.time.substring(0, 14) + "00",
         }).save();
         res.send(true);
     });
