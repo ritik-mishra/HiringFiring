@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import moment from 'moment';
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from 'react-redux';
 import {
@@ -61,7 +62,7 @@ const CommentCard = (props) => {
   const [snackText, setSnackText] = useState("");
   const auth = useSelector(state => state.auth);
 
-  
+
   const getPostedbyName = (name) => {
     var r1 = name.split(" ");
     // console.log(r1);
@@ -88,13 +89,13 @@ const CommentCard = (props) => {
   //Delete function
   const deleteHandler = async (event) => {
     event.preventDefault();
-    try{
+    try {
       setshowComment(false);
       await axios.patch(`${process.env.PUBLIC_URL}/api/delete_comment/${props.comment._id}`);
       props.commentCountHandler(-1);
       setDeleteDialog(false);
     }
-    catch{
+    catch {
       setSnackText("Failed to delete your comment");
       setFailureSnack(true);
       setshowComment(true);
@@ -108,20 +109,20 @@ const CommentCard = (props) => {
   }
   //Update function
   const updateHandler = async (event) => {
-      event.preventDefault();
-      try{
-        setEditMode(false);
-        let editedComment = comment;
-        setComment("Uploading Edits...");
-        await axios.patch(`${process.env.PUBLIC_URL}/api/update_comment/${props.comment._id}`, {comment: editedComment});
-        setComment(editedComment);
-        setPrevComment(editedComment);
-      }
-      catch{
-        setSnackText("Failed to update your comment");
-        setFailureSnack(true);
-        setComment(prevComment);
-      }
+    event.preventDefault();
+    try {
+      setEditMode(false);
+      let editedComment = comment;
+      setComment("Uploading Edits...");
+      await axios.patch(`${process.env.PUBLIC_URL}/api/update_comment/${props.comment._id}`, { comment: editedComment });
+      setComment(editedComment);
+      setPrevComment(editedComment);
+    }
+    catch {
+      setSnackText("Failed to update your comment");
+      setFailureSnack(true);
+      setComment(prevComment);
+    }
   }
   //Failure Snack
   const handleCloseFailureSnack = (event, reason) => {
@@ -210,9 +211,7 @@ const CommentCard = (props) => {
         </IconButton>
       );
     }
-    var date = props.comment.createdAt;
-    date = new Date(date).toLocaleString();
-    date = date.substring(0, 17);
+    var date = moment(props.comment.createdAt).format("DD-MM-YYYY HH:mm");
     return (
       <React.Fragment key={props.comment._id}>
         <div>
@@ -226,8 +225,8 @@ const CommentCard = (props) => {
                 <div>
                   <Typography
                     className={classes.fonts}
-                    component = "div"
-                    variant = "body2"
+                    component="div"
+                    variant="body2"
                     color="textPrimary"
                   >
                     {getPostedbyName(props.comment.postedBy)}

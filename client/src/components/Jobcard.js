@@ -12,6 +12,7 @@ import { StylesProvider } from "@material-ui/core/styles";
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import './Jobcard.css'
+import moment from 'moment';
 
 
 class Jobcard extends Component {
@@ -35,7 +36,7 @@ class Jobcard extends Component {
             showComments: true,
             startCommentPage: this.props.job.commentCount > 1 ? this.props.job.previewComment._id : null,
             processingComments: false,
-            comments:[],
+            comments: [],
             commentCount: this.props.job.commentCount
         };
     }
@@ -200,15 +201,13 @@ class Jobcard extends Component {
     commentCountHandler = (diff) => {
         let commentCount = this.state.commentCount;
         this.setState({
-            commentCount: commentCount+diff
+            commentCount: commentCount + diff
         });
     }
     render() {
         const job = this.props.job;//this was previously accessed through state and constructor was not getting called again when the component's key attribute was not specified
         const auth = this.props.auth;
-        var datePosted = job.postedOn;
-        datePosted = new Date(datePosted).toLocaleString();
-        datePosted = datePosted.substring(0, 17);
+        var datePosted = moment(job.postedOn).format("DD-MM-YYYY HH:mm");
 
         //delete andCompanies (atmost 5) edit job link logic
         var del = null, edit = null;
@@ -221,11 +220,11 @@ class Jobcard extends Component {
         if (this.state.showComments) {
             const COMMENTS = this.state.comments;
             commentText = (
-                <CommentBox comments={COMMENTS} 
-                jobId={this.props.job.jobId} 
-                fetchComments={this.fetchComments} 
-                offSet={this.state.startCommentPage}
-                commentCountHandler={this.commentCountHandler}
+                <CommentBox comments={COMMENTS}
+                    jobId={this.props.job.jobId}
+                    fetchComments={this.fetchComments}
+                    offSet={this.state.startCommentPage}
+                    commentCountHandler={this.commentCountHandler}
                 />
             );
         }
@@ -287,7 +286,7 @@ class Jobcard extends Component {
                                             {this.getHeart()}
                                             <p style={{ color: "black" }}>&nbsp;&nbsp;{this.state.heartCount}&nbsp;&nbsp;</p>
                                             <b><a id="lowcard" className="apply_button" target="_blank" rel="noreferrer" href={url} > Apply Here!</a></b>
-                                            <p style={{ cursor: "default", justifyContent: "flex-end" }} id="lowcard" onClick = {this.showCommentsHandler}><b>Comments ({job.commentCount})</b></p>
+                                            <p style={{ cursor: "default", justifyContent: "flex-end" }} id="lowcard" onClick={this.showCommentsHandler}><b>Comments ({job.commentCount})</b></p>
                                         </div>
                                     </div>
                                     <div style={{ marginBottom: "1rem" }}>
