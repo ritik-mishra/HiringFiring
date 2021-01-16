@@ -23,7 +23,6 @@
     margin-right: auto;
   }
   .optionListContainer{
-    position: relative;
     z-index: 1000;
     height: 14rem;
     color: black;

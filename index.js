@@ -35,7 +35,7 @@ require('./routes/jobstackRoutes')(app);
 require('./routes/reminderRoutes')(app);
 require('./routes/commentRoutes')(app);
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' || true) {
     //Serve Production assets, main.js and main.css
     app.use(express.static('client/build'));
 
