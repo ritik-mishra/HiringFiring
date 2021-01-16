@@ -69,7 +69,7 @@ class Landing extends Component {
                         {ml && rc ?
                             <div className="lower">
                                 <div className="r1">
-                                    <Box key={ml.id}
+                                    <Box 
                                         boxShadow={1}
                                         bgcolor="background.paper"
                                         m={1}
@@ -89,7 +89,7 @@ class Landing extends Component {
                                     </Box>
                                 </div>
                                 <div className="r2">
-                                    <Box key = {rc.id}
+                                    <Box 
                                         boxShadow={1}
                                         bgcolor="background.paper"
                                         m={1}
@@ -109,7 +109,7 @@ class Landing extends Component {
                                     </Box>
                                 </div>
                                 <div className="features">
-                                    <Box key = "newFeatures"
+                                    <Box 
                                         boxShadow={1}
                                         bgcolor="background.paper"
                                         m={1}
@@ -132,7 +132,7 @@ class Landing extends Component {
                             </div> : null}
                     </div> :
                     <div className="login-landing">
-                        <Box key="loginBox"
+                        <Box 
                             boxShadow={1}
                             bgcolor="background.paper"
                             m={1}
