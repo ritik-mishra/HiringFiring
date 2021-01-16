@@ -128,7 +128,6 @@ class Sortingfilters extends Component {
             this.setState({
                 isFilterProcessing: true
             }, () => {
-                console.log("applyClickHandler is fired");
                 var body = {
                     sortBy: this.state.sortBy,
                     comparator: this.state.comparator,
@@ -277,7 +276,7 @@ class Sortingfilters extends Component {
                             style={{
                                 multiselectContainer: { "overflow": "hidden" }, searchBox: { "overflow": "hidden" },
                                 optionListContainer: { "height": "10rem", "z-index": "1000", "position": "relative" },
-                                optionContainer: { "height": "14rem", "z-index": "1000", "position": "absolute" }
+                                optionContainer: { "height": "14rem", "z-index": "1000", "position": "relative" }
                             }}
                             isObject={false}
                             onSelect={this.companyChangeHandler}

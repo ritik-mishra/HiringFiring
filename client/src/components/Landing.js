@@ -60,10 +60,10 @@ class Landing extends Component {
                 <div style={{ textAlign: 'center' }}>
                     <div style={{ fontSize: "30px", marginTop: "50px", color: "#808080", fontWeight: "bold" }} >Welcome to the Hiring Firing!!</div>
                 </div>
-                <img className="img1" src={image1}></img>
-                <img className="img2" src={image2}></img>
-                <img className="img3" src={image3}></img>
-                <img className="img4" src={image4}></img>
+                <img className="img1" src={image1} alt="img"></img>
+                <img className="img2" src={image2} alt="img"></img>
+                <img className="img3" src={image3} alt="img"></img>
+                <img className="img4" src={image4} alt="img"></img>
                 {this.props.auth ?
                     <div>
                         {ml && rc ?

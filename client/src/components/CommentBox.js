@@ -5,12 +5,9 @@ import {
   List,
   ListItem,
   ListItemText,
-  Divider,
   TextField,
   Button,
-  ListItemAvatar,
   Avatar,
-  Grid,
   Snackbar
 } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
@@ -69,9 +66,9 @@ const CommentBox = (props) => {
     event.preventDefault();
     let tempAddedNewComment = addedNewComment;
     setComment("");
-    try{
-      setAddedNewComment(addedNewComment => [...addedNewComment,{_id: uuidv4(), jobId:props.jobId, createdAt:"",postedBy: auth.name, postedById: "", picURL: auth.picURL, comment: "Uploading..."}]);
-      const res = await axios.post(`${process.env.PUBLIC_URL}/api/add_comment/`,{jobId: props.jobId, comment: comment});
+    try {
+      setAddedNewComment(addedNewComment => [...addedNewComment, { _id: uuidv4(), jobId: props.jobId, createdAt: "", postedBy: auth.name, postedById: "", picURL: auth.picURL, comment: "Uploading..." }]);
+      const res = await axios.post(`${process.env.PUBLIC_URL}/api/add_comment/`, { jobId: props.jobId, comment: comment });
       setSucessSnack(true);
       props.commentCountHandler(1);
       tempAddedNewComment.push(res.data);
@@ -97,7 +94,7 @@ const CommentBox = (props) => {
     renderCommentCard = props.comments.slice().reverse().map(comment => {
       if (!comment.isDeleted) {
         return (
-          <CommentCard key={comment._id} comment={comment} commentCountHandler={props.commentCountHandler}/>
+          <CommentCard key={comment._id} comment={comment} commentCountHandler={props.commentCountHandler} />
         );
       }
       else {
@@ -111,7 +108,7 @@ const CommentBox = (props) => {
     renderNewAddedComments = addedNewComment.map(comment => {
       if (!comment.isDeleted) {
         return (
-          <CommentCard key = {comment._id} comment={comment} commentCountHandler={props.commentCountHandler}/>
+          <CommentCard key={comment._id} comment={comment} commentCountHandler={props.commentCountHandler} />
         )
       }
       else {

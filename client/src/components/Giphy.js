@@ -39,7 +39,6 @@ export default function NotificationModal(props) {
         setOpen(false);
     };
     useEffect(async () => {
-        const op = open;
         setOpen(props.isOpen);
         await sleep(3000);
         handleClose();
