@@ -285,11 +285,7 @@ class Jobcard extends Component {
                                             {this.getHeart()}
                                             <p style={{ color: "black" }}>&nbsp;&nbsp;{this.state.heartCount}&nbsp;&nbsp;</p>
                                             <b><a id="lowcard" className="apply_button" target="_blank" rel="noreferrer" href={url} > Apply Here!</a></b>
-<<<<<<< HEAD
                                             <p style={{ cursor: "default", justifyContent: "flex-end" }} id="lowcard" onClick = {this.showCommentsHandler}><b>Comments ({this.state.commentCount})</b></p>
-=======
-                                            <p style={{ cursor: "default", justifyContent: "flex-end" }} id="lowcard" onClick={this.showCommentsHandler}><b>Comments ({job.commentCount})</b></p>
->>>>>>> fc88de36241f422c61287b5771727b681de01a18
                                         </div>
                                     </div>
                                     <div style={{ marginBottom: "1rem" }}>
