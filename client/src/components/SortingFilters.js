@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Multiselect } from 'multiselect-react-dropdown';
+import { StylesProvider } from "@material-ui/core/styles";
 import './SortingFilters.css';
+
 // import './style.css'
 import Button from '@material-ui/core/Button'
 
@@ -148,148 +150,150 @@ class Sortingfilters extends Component {
     render() {
 
         return (
-            <div style={{ padding: "1rem" }}>
-                <div style={{ marginTop: "1rem" }} className="sorting">
-                    <div style={{ textAlign: 'center', color: "rgb(90, 90, 90)" }}><b>Sort By</b></div>
-                    <hr style={{ borderTop: "1px solid #33b579", marginTop: "0.3rem", marginBottom: "0.6rem" }} />
-                    <br />
-                    <label>
-                        <input className="with-gap" type="radio"
-                            name='sort' value="recentpost"
-                            checked={this.state.checkSort === "recentpost"}
-                            onChange={this.sortByHandler}
-                        />
-                        <span >Recent Posted</span>
-                    </label>
-                    <br />
-                    <label>
-                        <input className="with-gap" type="radio"
-                            name='sort' value="firstpost"
-                            checked={this.state.checkSort === "firstpost"}
-                            onChange={this.sortByHandler}
-                        />
-                        <span >First Posted</span>
-                    </label>
-                    <br />
-                    <label>
-                        <input className="with-gap" type="radio"
-                            name='sort' value="recentexpiry"
-                            checked={this.state.checkSort === "recentexpiry"}
-                            onChange={this.sortByHandler}
-                        />
-                        <span >Recent Expiry</span>
-                    </label>
-                    <br />
-                    <label>
-                        <input className="with-gap" type="radio"
-                            name='sort' value="lastexpiry"
-                            checked={this.state.checkSort === "lastexpiry"}
-                            onChange={this.sortByHandler}
-                        />
-                        <span >Late Expiry</span>
-                    </label>
-                    <br />
-                    <label>
-                        <input className="with-gap" type="radio"
-                            name='sort' value="mostliked"
-                            onChange={this.sortByHandler}
-                        />
-                        <span >Most Liked</span>
-                    </label>
-                </div>
-                <br />
-
-
-
-                <div style={{ marginTop: "2rem" }} className="filters">
-                    <div style={{ textAlign: "center", color: "rgb(90, 90, 90)" }} ><b>Filters</b></div>
-                    <hr style={{ borderTop: "1px solid #33b579", marginTop: "0.3rem", marginBottom: "0.6rem" }} />
-
-
-
-                    <div style={{ textAlign: "center", color: "black", marginTop: "0.5rem", marginBottom: "0.5rem" }} >Batch</div>
-                    <p>
+            <StylesProvider injectFirst>
+                <div style={{ padding: "1rem" }}>
+                    <div style={{ marginTop: "1rem" }} className="sorting">
+                        <div style={{ textAlign: 'center', color: "rgb(90, 90, 90)" }}><b>Sort By</b></div>
+                        <hr style={{ borderTop: "1px solid #33b579", marginTop: "0.3rem", marginBottom: "0.6rem" }} />
+                        <br />
                         <label>
-                            <input type="checkbox" name='batch' value="2020"
-                                checked={this.state.batch.includes("2020")}
-                                onChange={this.batchChangeHandler}
+                            <input className="with-gap" type="radio"
+                                name='sort' value="recentpost"
+                                checked={this.state.checkSort === "recentpost"}
+                                onChange={this.sortByHandler}
                             />
-                            <span>2020</span>
-                        </label>&nbsp;&nbsp;&nbsp;
-                            <label>
-                            <input type="checkbox" name='batch' value="2021"
-                                checked={this.state.batch.includes("2021")}
-                                onChange={this.batchChangeHandler}
-                            />
-                            <span>2021</span>
+                            <span >Recent Posted</span>
                         </label>
                         <br />
                         <label>
-                            <input type="checkbox" name='batch' value="2022"
-                                checked={this.state.batch.includes("2022")}
-                                onChange={this.batchChangeHandler}
+                            <input className="with-gap" type="radio"
+                                name='sort' value="firstpost"
+                                checked={this.state.checkSort === "firstpost"}
+                                onChange={this.sortByHandler}
                             />
-                            <span>2022</span>
-                        </label>&nbsp;&nbsp;&nbsp;
-                            <label>
-                            <input type="checkbox" name='batch' value="2023"
-                                checked={this.state.batch.includes("2023")}
-                                onChange={this.batchChangeHandler}
-                            />
-                            <span>2023</span>
+                            <span >First Posted</span>
                         </label>
                         <br />
                         <label>
-                            <input type="checkbox" name='batch' value="2024"
-                                checked={this.state.batch.includes("2024")}
-                                onChange={this.batchChangeHandler}
+                            <input className="with-gap" type="radio"
+                                name='sort' value="recentexpiry"
+                                checked={this.state.checkSort === "recentexpiry"}
+                                onChange={this.sortByHandler}
                             />
-                            <span>2024</span>
+                            <span >Recent Expiry</span>
                         </label>
-                    </p>
-
-
-
-                    <div style={{ textAlign: "center", color: "black", marginTop: "0.5rem", marginBottom: "0.5rem" }} >Role</div>
-                    <p>
+                        <br />
                         <label>
-                            <input type="checkbox" name='role' value="Intern"
-                                checked={this.state.role.includes("Intern")}
-                                onChange={this.roleChangeHandler}
+                            <input className="with-gap" type="radio"
+                                name='sort' value="lastexpiry"
+                                checked={this.state.checkSort === "lastexpiry"}
+                                onChange={this.sortByHandler}
                             />
-                            <span>Intern</span>
-                        </label>&nbsp;&nbsp;&nbsp;
+                            <span >Late Expiry</span>
+                        </label>
+                        <br />
+                        <label>
+                            <input className="with-gap" type="radio"
+                                name='sort' value="mostliked"
+                                onChange={this.sortByHandler}
+                            />
+                            <span >Most Liked</span>
+                        </label>
+                    </div>
+                    <br />
+
+
+
+                    <div style={{ marginTop: "2rem" }} className="filters">
+                        <div style={{ textAlign: "center", color: "rgb(90, 90, 90)" }} ><b>Filters</b></div>
+                        <hr style={{ borderTop: "1px solid #33b579", marginTop: "0.3rem", marginBottom: "0.6rem" }} />
+
+
+
+                        <div style={{ textAlign: "center", color: "black", marginTop: "0.5rem", marginBottom: "0.5rem" }} >Batch</div>
+                        <p>
                             <label>
-                            <input type="checkbox" name='role' value="Full time"
-                                checked={this.state.role.includes("Full time")}
-                                onChange={this.roleChangeHandler}
-                            />
-                            <span>Full time</span>
-                        </label>&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" name='batch' value="2020"
+                                    checked={this.state.batch.includes("2020")}
+                                    onChange={this.batchChangeHandler}
+                                />
+                                <span>2020</span>
+                            </label>&nbsp;&nbsp;&nbsp;
+                            <label>
+                                <input type="checkbox" name='batch' value="2021"
+                                    checked={this.state.batch.includes("2021")}
+                                    onChange={this.batchChangeHandler}
+                                />
+                                <span>2021</span>
+                            </label>
+                            <br />
+                            <label>
+                                <input type="checkbox" name='batch' value="2022"
+                                    checked={this.state.batch.includes("2022")}
+                                    onChange={this.batchChangeHandler}
+                                />
+                                <span>2022</span>
+                            </label>&nbsp;&nbsp;&nbsp;
+                            <label>
+                                <input type="checkbox" name='batch' value="2023"
+                                    checked={this.state.batch.includes("2023")}
+                                    onChange={this.batchChangeHandler}
+                                />
+                                <span>2023</span>
+                            </label>
+                            <br />
+                            <label>
+                                <input type="checkbox" name='batch' value="2024"
+                                    checked={this.state.batch.includes("2024")}
+                                    onChange={this.batchChangeHandler}
+                                />
+                                <span>2024</span>
+                            </label>
                         </p>
-                    <div style={{ textAlign: "center", color: "black", marginTop: "0.5rem", marginBottom: "0.5rem" }} >
-                        <p><b>Companies</b> (atmost 5)</p>
-                    </div>
-                    <div className="multiselect">
-                        <Multiselect
-                            options={this.state.company_list}
-                            style={{
-                                multiselectContainer: { "overflow": "hidden" }, searchBox: { "overflow": "hidden" },
-                                optionListContainer: { "height": "10rem", "zIndex": "1000", "position": "relative" },
-                                optionContainer: { "height": "14rem", "zIndex": "1000", "position": "relative" }
-                            }}
-                            isObject={false}
-                            onSelect={this.companyChangeHandler}
-                            onRemove={this.companyChangeHandler}
-                            placeholder="Select Companies"
-                            selectedValues={this.state.selectedCompanies}
-                            selectionLimit="5"
-                        />
-                    </div>
 
-                    <Button style={{ marginTop: "1.5rem", marginLeft: "6rem", marginBottom: "1rem", backgroundColor: "#33b579" }} onClick={this.applyClickHandler} variant="contained"><b><span style={{ color: "white" }}>Apply</span></b></Button>
-                </div>
-            </div >
+
+
+                        <div style={{ textAlign: "center", color: "black", marginTop: "0.5rem", marginBottom: "0.5rem" }} >Role</div>
+                        <p>
+                            <label>
+                                <input type="checkbox" name='role' value="Intern"
+                                    checked={this.state.role.includes("Intern")}
+                                    onChange={this.roleChangeHandler}
+                                />
+                                <span>Intern</span>
+                            </label>&nbsp;&nbsp;&nbsp;
+                            <label>
+                                <input type="checkbox" name='role' value="Full time"
+                                    checked={this.state.role.includes("Full time")}
+                                    onChange={this.roleChangeHandler}
+                                />
+                                <span>Full time</span>
+                            </label>&nbsp;&nbsp;&nbsp;
+                        </p>
+                        <div style={{ textAlign: "center", color: "black", marginTop: "0.5rem", marginBottom: "0.5rem" }} >
+                            <p><b>Companies</b> (atmost 5)</p>
+                        </div>
+                        <div className="multiselect">
+                            <Multiselect
+                                options={this.state.company_list}
+                                style={{
+                                    multiselectContainer: { "overflow": "hidden" }, searchBox: { "overflow": "hidden" },
+                                    optionListContainer: { "height": "10rem", "zIndex": "1000", "position": "relative" },
+                                    optionContainer: { "height": "14rem", "zIndex": "1000", "position": "relative" }
+                                }}
+                                isObject={false}
+                                onSelect={this.companyChangeHandler}
+                                onRemove={this.companyChangeHandler}
+                                placeholder="Select Companies"
+                                selectedValues={this.state.selectedCompanies}
+                                selectionLimit="5"
+                            />
+                        </div>
+
+                        <Button style={{ marginTop: "1.5rem", marginLeft: "6rem", marginBottom: "1rem", backgroundColor: "#33b579" }} onClick={this.applyClickHandler} variant="contained"><b><span style={{ color: "white" }}>Apply</span></b></Button>
+                    </div>
+                </div >
+            </StylesProvider>
         )
     }
 };
