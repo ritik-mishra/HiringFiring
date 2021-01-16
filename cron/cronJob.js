@@ -3,9 +3,18 @@ const mongoose = require('mongoose');
 const Reminder = mongoose.model('reminder');
 const mailKeys = require('../config/mailKeys');
 const nodemailer = require('nodemailer');
-const { google } = require("googleapis");
 
-const OAuth2 = google.auth.OAuth2;
+
+const transport = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        type: "OAuth2",
+        user: "jofi.hiringfiring@gmail.com", //your gmail account you used to set the project up in google cloud console"
+        clientId: mailKeys.googleClientID,
+        clientSecret: mailKeys.googleClientSecret,
+        refreshToken: mailKeys.refreshToken,
+    }
+});
 
 
 //used https://alexb72.medium.com/how-to-send-emails-using-a-nodemailer-gmail-and-oauth2-fe19d66451f9
@@ -31,7 +40,7 @@ var Cron = function Cron() {
         return mail;
     }
     //Function to send reminder mail to one instance
-    async function sendmail(body, transport) {
+    async function sendmail(body) {
         var ht = getMailHTML(body);
         const mailOptions = {
             from: 'jofi.hiringfiring@gmail.com', // sender
@@ -58,33 +67,33 @@ var Cron = function Cron() {
         d = d - (d % md);
 
         //getting access token
-        const myOAuth2Client = new OAuth2(
-            mailKeys.googleClientID,
-            mailKeys.googleClientSecret,
-            "https://developers.google.com/oauthplayground"
-        );
-        myOAuth2Client.setCredentials({
-            refresh_token: mailKeys.refreshToken
-        });
-        var myAccessToken = null;
+        // const myOAuth2Client = new OAuth2(
+        //     mailKeys.googleClientID,
+        //     mailKeys.googleClientSecret,
+        //     "https://developers.google.com/oauthplayground"
+        // );
+        // myOAuth2Client.setCredentials({
+        //     refresh_token: mailKeys.refreshToken
+        // });
+        // var myAccessToken = null;
         try {
-            myAccessToken = await myOAuth2Client.getAccessToken();
+            // myAccessToken = await myOAuth2Client.getAccessToken();
 
             // creating mail transporter
-            const transport = nodemailer.createTransport({
-                service: "gmail",
-                auth: {
-                    type: "OAuth2",
-                    user: "jofi.hiringfiring@gmail.com", //your gmail account you used to set the project up in google cloud console"
-                    clientId: mailKeys.googleClientID,
-                    clientSecret: mailKeys.googleClientSecret,
-                    refreshToken: mailKeys.refreshToken,
-                    accessToken: myAccessToken //access token variable we defined earlier
-                }
-            });
+            // const transport = nodemailer.createTransport({
+            //     service: "gmail",
+            //     auth: {
+            //         type: "OAuth2",
+            //         user: "jofi.hiringfiring@gmail.com", //your gmail account you used to set the project up in google cloud console"
+            //         clientId: mailKeys.googleClientID,
+            //         clientSecret: mailKeys.googleClientSecret,
+            //         refreshToken: mailKeys.refreshToken,
+            //         accessToken: myAccessToken //access token variable we defined earlier
+            //     }
+            // });
             var arr = await Reminder.find({ time: { $lte: d }, isSent: false, nTries: { $lte: 3 } });
             for (let i = 0; i < arr.length; i++) {
-                sendmail(arr[i], transport);
+                sendmail(arr[i]);
             }
         }
         catch (error) {
@@ -96,7 +105,6 @@ var Cron = function Cron() {
     //Setting the Cron job
 
     cron.schedule('0 0 * * * *', () => {
-        console.log("ys");
         utilFun();
     },
         {
