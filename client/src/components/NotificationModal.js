@@ -94,18 +94,18 @@ export default function NotificationModal(props) {
         var a = date[11];
         var b = date[12];
         if (a === "2" && b === "4") {
-            date = date.substring(0, 11) + "00" + ":";
+            date = date.substring(0, 11) + "00:";
         }
         else {
             if (b < 9) {
                 b = +b + +1;
-                var x = b.toString();
+
 
                 date = date.substring(0, 11) + a + b + ":";
             }
             else {
                 a = +a + +1;
-                date = date.substring(0, 11) + a + "0" + ":";
+                date = date.substring(0, 11) + a + "0:";
             }
         }
     }

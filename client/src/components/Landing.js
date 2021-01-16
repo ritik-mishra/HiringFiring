@@ -69,7 +69,7 @@ class Landing extends Component {
                         {ml && rc ?
                             <div className="lower">
                                 <div className="r1">
-                                    <Box
+                                    <Box key={ml.id}
                                         boxShadow={1}
                                         bgcolor="background.paper"
                                         m={1}
@@ -80,7 +80,7 @@ class Landing extends Component {
                                         <p style={{ color: "rgb(90, 90, 90)", marginTop: "0.1rem", marginLeft: "5rem" }}><b>Most Liked Job</b><span><FavoriteIcon style={{ color: "#ff6666" }} fontSize="small" /></span></p>
                                         <hr />
                                         <p style={{ color: "grey", fontSize: "1.2rem", marginLeft: "6rem" }}><b>{ml.companyName}</b></p>
-                                        <p style={{ color: "grey" }}><b>Batch: </b><span>{ml.batch.map(e => (<span style={{ color: "grey" }}>{e} </span>))}</span></p>
+                                        <p style={{ color: "grey" }}><b>Batch: </b><span>{ml.batch.map(e => (<span key={e} style={{ color: "grey" }}>{e} </span>))}</span></p>
                                         <p style={{ color: "grey" }}><b>Referral: </b>{ml.isReferral}</p>
                                         <p style={{ color: "grey" }}><b>Posted By: </b>{this.getPostedbyName(ml.postedBy)}</p>
                                         <p style={{ color: "grey" }}><b>Job Link: </b><a style={{ color: "grey", cursor: "pointer" }} target="_blank" rel="noreferrer" href={ml.jobLink}>Apply Here!</a></p>
@@ -89,7 +89,7 @@ class Landing extends Component {
                                     </Box>
                                 </div>
                                 <div className="r2">
-                                    <Box
+                                    <Box key = {rc.id}
                                         boxShadow={1}
                                         bgcolor="background.paper"
                                         m={1}
@@ -100,7 +100,7 @@ class Landing extends Component {
                                             <p style={{ color: "rgb(90, 90, 90)", marginTop: "0.1rem", marginLeft: "5rem" }}><b>Most Recent Job</b><span><EcoIcon style={{ color: "#80ff80" }} fontSize="small" /></span></p>
                                             <hr />
                                             <p style={{ color: "grey", fontSize: "1.2rem", marginLeft: "6rem" }}><b>{rc.companyName}</b></p>
-                                            <p style={{ color: "grey" }}><b>Batch: </b><span>{rc.batch.map(e => (<span style={{ color: "grey" }}>{e} </span>))}</span></p>
+                                            <p style={{ color: "grey" }}><b>Batch: </b><span>{rc.batch.map(e => (<span key={e} style={{ color: "grey" }}>{e} </span>))}</span></p>
                                             <p style={{ color: "grey" }}><b>Referral: </b>{rc.isReferral}</p>
                                             <p style={{ color: "grey" }}><b>Posted By: </b>{this.getPostedbyName(rc.postedBy)}</p>
                                             <p style={{ color: "grey" }}><b>Job Link: </b><a style={{ color: "grey", cursor: "pointer" }} target="_blank" rel="noreferrer" href={rc.jobLink}>Apply Here!</a></p>
@@ -109,7 +109,7 @@ class Landing extends Component {
                                     </Box>
                                 </div>
                                 <div className="features">
-                                    <Box
+                                    <Box key = "newFeatures"
                                         boxShadow={1}
                                         bgcolor="background.paper"
                                         m={1}
@@ -132,7 +132,7 @@ class Landing extends Component {
                             </div> : null}
                     </div> :
                     <div className="login-landing">
-                        <Box
+                        <Box key="loginBox"
                             boxShadow={1}
                             bgcolor="background.paper"
                             m={1}

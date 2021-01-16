@@ -161,7 +161,7 @@ const CommentBox = (props) => {
             <Button
               type="submit"
               variant="contained"
-              color="#90EE90"
+              color="inherit"
               style={{ marginLeft: "1rem", height: "2.5rem", marginTop: "1.2rem" }}
             >
               Add

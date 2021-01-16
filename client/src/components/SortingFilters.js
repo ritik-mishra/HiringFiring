@@ -275,8 +275,8 @@ class Sortingfilters extends Component {
                             options={this.state.company_list}
                             style={{
                                 multiselectContainer: { "overflow": "hidden" }, searchBox: { "overflow": "hidden" },
-                                optionListContainer: { "height": "10rem", "z-index": "1000", "position": "relative" },
-                                optionContainer: { "height": "14rem", "z-index": "1000", "position": "relative" }
+                                optionListContainer: { "height": "10rem", "zIndex": "1000", "position": "relative" },
+                                optionContainer: { "height": "14rem", "zIndex": "1000", "position": "relative" }
                             }}
                             isObject={false}
                             onSelect={this.companyChangeHandler}

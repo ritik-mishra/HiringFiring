@@ -60,7 +60,7 @@ class Header extends Component {
         )
 
     }
-    render() {
+    componentDidMount(){
         var pg = window.location.href;
         var index = pg.lastIndexOf('/');
         var page = pg.substring(index + 1);
@@ -68,7 +68,9 @@ class Header extends Component {
             this.setState({
                 currPage: page
             })
-        }
+        };
+    }
+    render() {
         return (
             <div className="head">
                 <div style={{ display: "inline" }} >

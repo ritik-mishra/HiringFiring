@@ -251,7 +251,6 @@ class Jobcard extends Component {
                             bgcolor="background.paper"
                             m={1}
                             p={1}
-                            classes={{ label: "jcard" }}
                         >
                             <div className="jobcard">
                                 <div style={{ marginTop: "0.5rem", paddingLeft: "1rem", paddingRight: "1rem" }} >
@@ -273,7 +272,7 @@ class Jobcard extends Component {
                                         <div style={{ marginTop: "0.5rem" }} className="batch">
                                             <p style={{ display: "inline", color: "black" }}><span style={{ color: "grey" }}><b>Batch Applicable:</b>&nbsp;</span></p>
                                             {job.batch.map(each_batch => (
-                                                <p style={{ display: "inline", color: "black" }}>{each_batch}&nbsp;</p>
+                                                <p style={{ display: "inline", color: "black" }} key={each_batch}>{each_batch}&nbsp;</p>
                                             ))}
                                         </div>
                                         <p style={{ marginTop: "0.5rem", color: "black" }}><span style={{ color: "grey" }}><b>Apply Before:</b>&nbsp;</span> {date.toLocaleDateString()}</p>
@@ -287,7 +286,7 @@ class Jobcard extends Component {
                                             {this.getHeart()}
                                             <p style={{ color: "black" }}>&nbsp;&nbsp;{this.state.heartCount}&nbsp;&nbsp;</p>
                                             <b><a id="lowcard" className="apply_button" target="_blank" rel="noreferrer" href={url} > Apply Here!</a></b>
-                                            <p style={{ cursor: "default", justifyContent: "flex-end" }} id="lowcard" onClick = {this.showCommentsHandler}><b>Comments ({job.commentCount})</b></p>
+                                            <p style={{ cursor: "default", justifyContent: "flex-end" }} id="lowcard" onClick = {this.showCommentsHandler}><b>Comments ({this.state.commentCount})</b></p>
                                         </div>
                                     </div>
                                     <div style={{ marginBottom: "1rem" }}>
