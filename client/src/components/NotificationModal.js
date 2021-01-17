@@ -127,7 +127,8 @@ export default function NotificationModal(props) {
                         required>
                     </input>
                     <input onChange={messageChange} placeholder="Write your message" type="text"></input>
-                    <button type="submit" value="Set Reminder">Set Reminder</button>
+                    <input style={{ color: "#33b579", width: "7rem", height: "2.5rem", fontWeight: "900" }} type='submit' value="Set Reminder" />
+                    {/* <button type="submit" value= "Set Reminder">Set Reminder</button> */}
                 </form>
             </div>
             <IconButton aria-label="cancel" onClick={handleClose} className={classes.cross}>

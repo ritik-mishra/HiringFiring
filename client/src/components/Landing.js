@@ -69,7 +69,7 @@ class Landing extends Component {
                         {ml && rc ?
                             <div className="lower">
                                 <div className="r1">
-                                    <Box 
+                                    <Box
                                         boxShadow={1}
                                         bgcolor="background.paper"
                                         m={1}
@@ -89,7 +89,7 @@ class Landing extends Component {
                                     </Box>
                                 </div>
                                 <div className="r2">
-                                    <Box 
+                                    <Box
                                         boxShadow={1}
                                         bgcolor="background.paper"
                                         m={1}
@@ -109,7 +109,7 @@ class Landing extends Component {
                                     </Box>
                                 </div>
                                 <div className="features">
-                                    <Box 
+                                    <Box
                                         boxShadow={1}
                                         bgcolor="background.paper"
                                         m={1}
@@ -132,12 +132,12 @@ class Landing extends Component {
                             </div> : null}
                     </div> :
                     <div className="login-landing">
-                        <Box 
+                        <Box
                             boxShadow={1}
                             bgcolor="background.paper"
                             m={1}
                             p={1}
-                            style={{ width: "23rem", height: "28rem", borderRadius: "5px", padding: "10px", backgroundColor: "#00ff99" }}
+                            style={{ width: "23rem", height: "28rem", borderRadius: "5px", padding: "10px", backgroundColor: "white" }}
                         >
                             <img style={{ marginLeft: "8rem", height: "8rem" }} src={logo} alt="Hiring-Firing" className="logo-image" />
                             <br />
