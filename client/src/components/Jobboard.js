@@ -80,7 +80,7 @@ class Jobboard extends Component {
             jobcount: jobcount
         })
         this.getPagination();
-        // this.refJobs.current.scrollTop = 0;
+        this.refJobs.current.scrollTop = 0;
     }
 
     async clickHandler(p) {
