@@ -4,6 +4,9 @@
 .MuiFilledInput-root{
     background-color: #e6e6e6;
 }
+.MuiAlert-standardSuccess{
+    background-color: #33b579 !important;
+}
 /* 
 .MuiTypography-displayBlock{
     margin: 0;
