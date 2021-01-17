@@ -260,12 +260,12 @@ class Jobstack extends Component {
     }
     var list_job = [];
     var job = this.state.all_jobs;
-    list_job = job.reduce( (result,j) => {
-                if (j.role.some(item => body.role.includes(item)) && body.status.includes(j.status) && body.selectedCompanies.includes(j.companyName)){
-                  result.push(j);
-                }
-                return result;
-              }, []);
+    list_job = job.reduce((result, j) => {
+      if (j.role.some(item => body.role.includes(item)) && body.status.includes(j.status) && body.selectedCompanies.includes(j.companyName)) {
+        result.push(j);
+      }
+      return result;
+    }, []);
 
     this.setState({
       role: body.role,
@@ -319,7 +319,7 @@ class Jobstack extends Component {
       all_jobs: jobs,
     })
     let companies = [];
-    companies = this.state.jobs.map(company => { return company.companyName; } )
+    companies = this.state.jobs.map(company => { return company.companyName; })
     this.setState({ company_list: companies });
   }
 

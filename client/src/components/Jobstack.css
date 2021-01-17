@@ -53,6 +53,9 @@ button{
     bottom: 0.5rem;
     left: 0.5rem;
 }
+.MuiAlert-filledError{
+    background-color: #f44336 !important;
+}
 @media screen and (max-width:1000px){
     .jobstack{
         position: absolute; left: 0%; top: 10%;right: 0%; bottom: 1%;

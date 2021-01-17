@@ -7,6 +7,9 @@
 .MuiAlert-standardSuccess{
     background-color: #33b579 !important;
 }
+.MuiAlert-standardError{
+    background-color: #f44336 !important;
+}
 /* 
 .MuiTypography-displayBlock{
     margin: 0;
