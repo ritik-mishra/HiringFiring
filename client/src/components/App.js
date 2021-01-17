@@ -22,7 +22,7 @@ class App extends Component {
     render() {
         return (
             <BrowserRouter basename={`${process.env.PUBLIC_URL}`}>
-                <div>
+                <div className="app">
                     <div className="main-header">
                         <Header />
                     </div>

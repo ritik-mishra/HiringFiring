@@ -1,11 +1,17 @@
+.app{
+    height: 100vh;
+}
 .main-header{
     width: 100vw;
-    position: static;
+    position: fixed;
     z-index: 1000;
 }
 .lower-content-all-page{
-    position: static;
+    /* position: static; */
+    position: fixed;
+    top:4.75rem;
     /* margin-top: 4.9rem; */
+    /* scroll-margin-top: 8rem; */
     width: 100vw;
 }
 

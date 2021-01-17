@@ -58,8 +58,7 @@ export default function NotificationModal(props) {
         var nDate = dt.substring(0, 14) + "00";
         var nd = new Date(nDate);
         var mlTime = nd.getTime();
-        mlTime += 55 * 6 * 60 * 1000;
-
+        //ml time is currnent time in milliseconds from (UTC)
         var note = {
             time: mlTime,
             message: msg,
@@ -68,7 +67,6 @@ export default function NotificationModal(props) {
             role: props.job.role,
             status: props.job.status
         }
-
         axios.post(`${process.env.PUBLIC_URL}/api/add_reminder`, note);
         setOpen(false);
     };
@@ -79,17 +77,14 @@ export default function NotificationModal(props) {
         msg = e.target.value;
     }
     var t = new Date();
-    // console.log(t);
-    var z = t.getTimezoneOffset() * 60 * 1000 - 60 * 60 * 1000;
-    var tLocal = t - z;
-
-    tLocal = new Date(tLocal);
-    // console.log(tLocal);
-    var date = tLocal.toISOString();
+    var r = t.getTime();
+    r = r + parseInt(6.5 * 60 * 60 * 1000);
+    var date = new Date(r).toISOString();
     // console.log(date);
     // date = date.substring(0,14) + "8" + date.substring(15,17);
 
     // console.log(date);
+    date = date.substring(0, 16);
     if (date.substring(14, 16) >= "45") {
         var a = date[11];
         var b = date[12];
@@ -109,10 +104,8 @@ export default function NotificationModal(props) {
             }
         }
     }
-    // date = date.substring(0, 14);
-    // console.log(date);
+    date = date.substring(0, 14);
     date = date + "00";
-    dt = date;
     const body = (
         <div style={modalStyle} className={classes.paper}>
             <div className="container" style={{ color: "black" }}>

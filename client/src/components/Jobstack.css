@@ -1,5 +1,5 @@
 .jobstack{
-    position: absolute; left: 10%; top: 10%;right: 10%; bottom: 1%;
+    position: fixed; left: 10%; top: 10%;right: 10%; bottom: 1%;
 }
 .MuiTableCell-root{
     text-align: center;
@@ -58,6 +58,6 @@ button{
 }
 @media screen and (max-width:1000px){
     .jobstack{
-        position: absolute; left: 0%; top: 10%;right: 0%; bottom: 1%;
+        position: fixed; left: 0%; top: 10%;right: 0%; bottom: 1%;
     }
 }

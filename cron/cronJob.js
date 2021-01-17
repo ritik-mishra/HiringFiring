@@ -62,10 +62,10 @@ var Cron = function Cron() {
     //Cron function that will be called
     async function utilFun() {
         //current relative time in milliseconds
-        var d = Date.now() + 55 * 6 * 60 * 1000;
+        var d = new Date();
+        d = d.getTime();
         var md = 20 * 60 * 1000;
         d = d - (d % md);
-
         //getting access token
         // const myOAuth2Client = new OAuth2(
         //     mailKeys.googleClientID,
@@ -104,7 +104,7 @@ var Cron = function Cron() {
 
     //Setting the Cron job
 
-    cron.schedule('0 0 * * * *', () => {
+    cron.schedule('*/10 * * * * *', () => {
         utilFun();
     },
         {

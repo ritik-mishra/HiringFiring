@@ -5,7 +5,7 @@ import Box from '@material-ui/core/Box';
 import './Jobboard.css';
 import Sortingfilters from './SortingFilters';
 import { TouchBallLoading } from 'react-loadingg';
-
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 class Jobboard extends Component {
 
     constructor(props) {
@@ -37,7 +37,8 @@ class Jobboard extends Component {
             floatButton: 0,
             sortingClass: "sorting-filters",
             listofcompanies: [],
-            paginationItems: []
+            paginationItems: [],
+            isFetching: true
         }
 
         this.refJobs = React.createRef();
@@ -56,6 +57,7 @@ class Jobboard extends Component {
         localStorage.setItem("page", this.state.page);
     }
     async fetchJobs() {
+        this.setState({ isFetching: true });
         var body = {
             page: this.state.page,
             sortBy: this.state.sortBy,
@@ -80,7 +82,9 @@ class Jobboard extends Component {
             jobcount: jobcount
         })
         this.getPagination();
-        this.refJobs.current.scrollTop = 0;
+        if (this.refJobs.current)
+            this.refJobs.current.scrollTop = 0;
+        this.setState({ isFetching: false });
     }
 
     async clickHandler(p) {
@@ -190,46 +194,58 @@ class Jobboard extends Component {
     }
     render() {
         var JOBS = this.state.jobs;
-        if (JOBS.length)
-            return (
-                <div className="content">
-                    <div className="filter-button">
-                        <button className="filterbtn" style={{ backgroundColor: "#4dffa6", width: "4rem", height: "4rem", borderRadius: "50%" }} onClick={this.showSorting}>{this.state.floatButton ? <i className="fa fa-close" style={{ fontSize: "2rem" }}></i> : <i className="fa fa-filter" style={{ fontSize: "2rem" }}></i>}</button>
-                    </div>
-                    <div className="jobboard">
-                        <div onClick={this.removeShowSorting} className="jobs" id="jobs" ref={this.refJobs}>
-                            <div>
-                                {
-                                    JOBS.map(job => (
-                                        //Adding key property here is segregating the the jobs being called and on changing the page calling the,
-                                        //child's component again
-                                        <Jobcard key={job.jobId} job={job} setLocal={this.setLocal} notButton={this.state.userJobstack.includes(job.jobId)} />
-                                    )
-                                    )
-                                }
-                            </div>
-
-                            <div className="center">
-                                {this.state.paginationItems}
-                            </div>
-
-                        </div>
-                        <Box
-                            boxShadow={1}
-                            bgcolor="background.paper"
-                            m={1}
-                            p={1}
-                            style={{ margin: "1rem 7rem 1rem 1rem", borderRadius: "5px", padding: "0", backgroundColor: "white" }}
-                        >
-                            <div className={this.state.sortingClass}>
-                                <Sortingfilters companylist={this.state.listofcompanies} filterHandler={this.filterHandler} />
-                            </div>
-                        </Box>
-                    </div>
+        return (
+            <div className="jobboard-parent">
+                <div className="filter-button">
+                    <button className="filterbtn" style={{ backgroundColor: "#4dffa6", width: "4rem", height: "4rem", borderRadius: "50%" }} onClick={this.showSorting}>{this.state.floatButton ? <i className="fa fa-close" style={{ fontSize: "2rem" }}></i> : <i className="fa fa-filter" style={{ fontSize: "2rem" }}></i>}</button>
                 </div>
-            )
-        else
-            return (<div className="Loading"> <TouchBallLoading style={{ width: "10rem" }} speed={0} color={"#33b579"} size="large" /></div>);
+                <div className="jobboard">
+                    {
+                        this.state.isFetching
+                            ?
+                            <div className="Loading"> <TouchBallLoading style={{ width: "10rem" }} speed={0} color={"#33b579"} size="large" /></div>
+                            :
+                            JOBS.length
+                                ?
+                                <div onClick={this.removeShowSorting} className="jobs" id="jobs" ref={this.refJobs}>
+                                    <div>
+                                        {
+                                            JOBS.map(job => (
+                                                //Adding key property here is segregating the the jobs being called and on changing the page calling the,
+                                                //child's component again
+                                                <Jobcard key={job.jobId} job={job} setLocal={this.setLocal} notButton={this.state.userJobstack.includes(job.jobId)} />
+                                            )
+                                            )
+                                        }
+                                        <div className="center">
+                                            {this.state.paginationItems}
+                                        </div>
+                                    </div>
+                                </div>
+                                :
+                                <div style={{ position: "relative", left: "25%", top: "30%" }}>
+                                    <h4 style={{ color: "grey" }}>No jobs to show!</h4>
+                                    <div style={{ position: "relative", left: "6rem" }}>
+                                        <SentimentVeryDissatisfiedIcon style={{ color: "grey" }} fontSize="large" />
+                                    </div>
+                                </div>
+                    }
+                </div>
+                <div className="filterboard">
+                    <Box
+                        boxShadow={1}
+                        bgcolor="background.paper"
+                        m={1}
+                        p={1}
+                        style={{ margin: "1rem 7rem 1rem 0rem", borderRadius: "5px", padding: "0", backgroundColor: "white" }}
+                    >
+                        <div className={this.state.sortingClass}>
+                            <Sortingfilters companylist={this.state.listofcompanies} filterHandler={this.filterHandler} />
+                        </div>
+                    </Box>
+                </div>
+            </div>
+        )
     }
 }
 export default Jobboard;

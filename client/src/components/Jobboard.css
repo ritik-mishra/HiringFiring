@@ -1,8 +1,15 @@
+.jobboard-parent{
+  position: fixed;
+  width: 100vw;
+}
+.jobboard{
+  float:left;
+  width: 74%;
+  height: 88.5vh;
+}
   .jobs{
-    height: 88.5vh;
-    width: 74%;
+    width: 100%;
     float: left;
-    overflow: auto;
   }
   .sorting-filters{
     z-index:400;
@@ -29,6 +36,9 @@
   width: 10rem;
 } */
 @media screen and (max-width:1000px){
+  .jobboard{
+    width: 100%;
+  }
   .jobs{
     z-index: 300;
     height: 88.5vh;
