@@ -116,7 +116,7 @@ export default function NotificationModal(props) {
                 <form onSubmit={handleSubmit}>
                     <input onChange={dateChange} type="datetime-local" id="reminder-time"
                         name="reminder-time"
-                        min={date}
+                        // min={date}
                         required>
                     </input>
                     <input onChange={messageChange} placeholder="Write your message" type="text"></input>
