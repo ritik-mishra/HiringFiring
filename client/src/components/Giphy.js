@@ -38,13 +38,8 @@ export default function NotificationModal(props) {
         props.changeGiphyInJobstack();
         setOpen(false);
     };
-    useEffect( () => {
+    useEffect(() => {
         setOpen(props.isOpen);
-        const wrapperForSleep = async() => {
-            await sleep(3000);
-            handleClose();
-        };
-        wrapperForSleep();
     });
     function gif() {
         if (props.status === 'Fod diya re!')
