@@ -169,7 +169,7 @@ const CommentBox = (props) => {
               style={{ marginLeft: "1rem", height: "2.5rem", marginTop: "1.2rem" }}
             >
               Add
-               </Button>
+            </Button>
           </div>
         </form>
         <Snackbar open={sucessSnack} autoHideDuration={6000} onClose={handleCloseSucessSnack} >

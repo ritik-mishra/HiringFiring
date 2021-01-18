@@ -64,8 +64,8 @@ var Cron = function Cron() {
         //current relative time in milliseconds
         var d = new Date();
         d = d.getTime();
-        var md = 20 * 60 * 1000;
-        d = d - (d % md);
+        // var md = 20 * 60 * 1000;
+        // d = d - (d % md);
         //getting access token
         // const myOAuth2Client = new OAuth2(
         //     mailKeys.googleClientID,

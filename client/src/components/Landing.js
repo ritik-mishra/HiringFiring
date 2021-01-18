@@ -54,7 +54,7 @@ class Landing extends Component {
         const rc = this.state.recentJob;
         const hover = `Send feedback`;
         return (
-            <div>
+            <div style={{ height: "88.5vh" }}>
                 <div style={{ textAlign: 'center' }}>
                     <div style={{ fontSize: "30px", marginTop: "50px", color: "#808080", fontWeight: "bold" }} >Welcome to the Hiring Firing!!</div>
                 </div>
