@@ -137,7 +137,7 @@ class Landing extends Component {
                             }
                         </div>
                         :
-                        this.props.auth == false ?
+                        this.props.auth === false ?
                             <div className="login-landing">
                                 <Box
                                     boxShadow={1}

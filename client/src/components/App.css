@@ -17,9 +17,6 @@
 
 
 @media screen and (max-width:1000px){
-    .main-header{
-        position: inherit;
-    }
     .lower-content-all-page{
         margin-top: 0rem;
         width: 100vw;

@@ -11,6 +11,7 @@
 .head{
     background-color:#33b579;
     /* background-color: white; */
+    position: fixed;
     height:70px;
     width:100vw;
     min-height: 7vh;
@@ -87,7 +88,7 @@ li{
         margin-right:0;
         color:white;
         background-color:  #33b579;
-        position: absolute;
+        position: fixed;
         right:0px;
         height:35vh;
         width: 40%;

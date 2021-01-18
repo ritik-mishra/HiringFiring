@@ -88,6 +88,9 @@ const CommentBox = (props) => {
       setProcessingPrevComments(false);
     }
   }
+  const preventHeader = (e) => {
+    e.preventDefault();
+  }
   //CommentCard Rendering
   var renderCommentCard = null;
   if (props.comments !== null && props.comments.length !== 0) {
@@ -155,6 +158,7 @@ const CommentBox = (props) => {
               variant="filled"
               className={classes.textField}
               value={comment}
+              onClick={preventHeader}
               onChange={e => setComment(e.target.value)}
               style={{ backgroundColor: "rgb(245 245 245)", height: "4rem", margin: "0.5rem", marginLeft: "1.2rem", width: "45rem", maxWidth: "80%" }}
             />

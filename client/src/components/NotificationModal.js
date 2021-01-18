@@ -55,7 +55,8 @@ export default function NotificationModal(props) {
         setOpen(false);
     };
     const handleSubmit = () => {
-        var nDate = dt.substring(0, 14) + "00";
+        // var nDate = dt.substring(0, 14) + "00";
+        var nDate = dt;
         var nd = new Date(nDate);
         var mlTime = nd.getTime();
         //ml time is currnent time in milliseconds from (UTC)

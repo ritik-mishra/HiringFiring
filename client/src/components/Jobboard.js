@@ -217,7 +217,7 @@ class Jobboard extends Component {
                                             )
                                             )
                                         }
-                                        <div className="center">
+                                        <div className="center pagination-wraper">
                                             {this.state.paginationItems}
                                         </div>
                                     </div>

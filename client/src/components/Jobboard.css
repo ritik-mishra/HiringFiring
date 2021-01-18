@@ -30,7 +30,9 @@
   width:2rem;
   height: 2rem;
 }
-
+.pagination-wraper{
+  margin-bottom: 4rem;
+}
 /* .Loading{
   height: 10rem;
   width: 10rem;
