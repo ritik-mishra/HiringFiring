@@ -31,9 +31,6 @@ export default function NotificationModal(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
-    function sleep(time) {
-        return new Promise((resolve) => setTimeout(resolve, time));
-    }
     const handleClose = () => {
         props.changeGiphyInJobstack();
         setOpen(false);
