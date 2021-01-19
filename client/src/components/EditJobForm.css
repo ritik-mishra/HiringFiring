@@ -13,3 +13,6 @@ span{
     overflow: scroll;
     height:88.5vh;
   }
+  .container{
+    margin-bottom: 8rem;
+  }

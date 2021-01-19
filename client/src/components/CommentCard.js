@@ -91,7 +91,7 @@ const CommentCard = (props) => {
     event.preventDefault();
     try {
       setshowComment(false);
-      await axios.patch(`${process.env.PUBLIC_URL}/api/delete_comment/${props.comment._id}`);
+      await axios.delete(`${process.env.PUBLIC_URL}/api/delete_comment/${props.comment._id}`);
       props.commentCountHandler(-1);
       setDeleteDialog(false);
     }

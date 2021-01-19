@@ -15,6 +15,9 @@ background-color: white;
   overflow-x: hidden;
   height: 88.5vh;
 }
+.addfo{
+  margin-bottom: 8rem;
+}
 [type="checkbox"]:not(.filled-in)+span:not(.lever):after{
   border-right: 2px solid #33b579;
   border-bottom: 2px solid #33b579;

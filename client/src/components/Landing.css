@@ -17,8 +17,13 @@ body {
         color:white;
     }
     .lower{
-        margin-left: 28%;
-        margin-top: 2%;
+      position: relative;
+      width: 50rem;
+      margin-left: 50%;
+      left: -21rem;
+      margin-bottom: 8rem;
+        /* margin-left: 28%; */
+        /* margin-top: 2%; */
     }
     .r1{
         display: inline-block;
@@ -28,7 +33,9 @@ body {
         margin-left: 3%;
     }
     .features{
-        margin-left: 17%;
+      position: relative;
+        margin-left: 50%;
+        left: -14rem;
     }
     .login-landing{
       margin-left: 39.5vw;
@@ -93,10 +100,15 @@ body {
             margin-left: 0;
         }
         .features{
+          display: block;
+          left: 0;
             margin-left: 0;
         }
         .lower{
-            margin-left: 12%;
+          width:23rem;
+            margin-left: 50%;
+            left: -11rem;
+
         }
         .login-landing{
           margin-left:3vw;

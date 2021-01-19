@@ -237,7 +237,7 @@ class Jobboard extends Component {
                         bgcolor="background.paper"
                         m={1}
                         p={1}
-                        style={{ margin: "1rem 7rem 1rem 0rem", borderRadius: "5px", padding: "0", backgroundColor: "white" }}
+                        style={{ margin: "1rem 7rem 8rem 0rem", borderRadius: "5px", padding: "0", backgroundColor: "white" }}
                     >
                         <div className={this.state.sortingClass}>
                             <Sortingfilters companylist={this.state.listofcompanies} filterHandler={this.filterHandler} />

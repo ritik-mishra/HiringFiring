@@ -14,10 +14,10 @@ module.exports = (app) => {
     app.get('/api/jobs_landingpage', requireLogin, async (req, res) => {
         var d = new Date();
         const curdate = d.toISOString();
-        const mostLikedJob = await Job.find({ jobExpiry: { $gt: curdate } }, { isDeleted: false },)
+        const mostLikedJob = await Job.find({ jobExpiry: { $gt: curdate }, isDeleted: false },)
             .sort({ likersCount: -1, postedOn: -1 })
             .limit(1);
-        const recentJob = await Job.find({ jobExpiry: { $gt: curdate } }, { isDeleted: false },)
+        const recentJob = await Job.find({ jobExpiry: { $gt: curdate }, isDeleted: false },)
             .sort({ postedOn: -1 })
             .limit(1);
         const resp = {
@@ -52,15 +52,15 @@ module.exports = (app) => {
         const curdate = d.toISOString();
 
         var job = await Job.find({
-            "$and": [body_batch?{ "batch": { "$in": body_batch } }:{}, { isDeleted: false }, body_companyName?{ "companyName": { "$in": body_companyName } }:{},
-            body_role?{ "role": { "$in": body_role } }:{}]
+            "$and": [body_batch ? { "batch": { "$in": body_batch } } : {}, { isDeleted: false }, body_companyName ? { "companyName": { "$in": body_companyName } } : {},
+            body_role ? { "role": { "$in": body_role } } : {}]
         });
         const jobcount = job.length;
         var jobc = '' + jobcount
 
         var page_jobs = await Job.find({
-            "$and": [body_batch?{ "batch": { "$in": body_batch } }:{}, { isDeleted: false }, body_companyName?{ "companyName": { "$in": body_companyName }}:{} ,
-            body_role?{ "role": { "$in": body_role } }:{}]
+            "$and": [body_batch ? { "batch": { "$in": body_batch } } : {}, { isDeleted: false }, body_companyName ? { "companyName": { "$in": body_companyName } } : {},
+            body_role ? { "role": { "$in": body_role } } : {}]
         })
             .sort({ [req.query.sortBy]: req.query.comparator })
             .skip(skip)
@@ -76,7 +76,7 @@ module.exports = (app) => {
     app.post('/api/add_liker', requireLogin, async (req, res) => {
         const user = req.user.googleId
         const jobId = req.body.jobId;
-        try{
+        try {
             var job = await Job.findOne({ jobId: jobId });
             var isPresent = job.likers.includes(user);
             if (!isPresent) {
@@ -88,7 +88,7 @@ module.exports = (app) => {
         }
         catch (err) {
             res.send(err);
-        }   
+        }
     })
     //remove liker
     app.post('/api/remove_liker', requireLogin, async (req, res) => {
@@ -105,7 +105,7 @@ module.exports = (app) => {
         res.send("true");
     })
     //  Delete Job
-    app.patch('/api/delete_job/:jobId', requireLogin, requireAuthor, async (req, res) => {
+    app.delete('/api/delete_job/:jobId', requireLogin, requireAuthor, async (req, res) => {
         const jobId = req.params['jobId'];
         const job = await Job.findOne({ jobId: jobId }, (err) => {
             if (err)
@@ -118,8 +118,8 @@ module.exports = (app) => {
 
     //  Add Job 
     app.post('/api/add_job', requireLogin, requireFields, async (req, res) => {
-        
-        try{
+
+        try {
             const newId = uuidv4();
             const newJob = await new Job({
                 jobId: newId,

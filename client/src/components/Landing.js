@@ -65,7 +65,7 @@ class Landing extends Component {
                 {
                     this.props.auth
                         ?
-                        <div>
+                        <>
                             {
                                 ml && rc
                                     ?
@@ -135,7 +135,7 @@ class Landing extends Component {
                                     :
                                     null
                             }
-                        </div>
+                        </>
                         :
                         this.props.auth === false ?
                             <div className="login-landing">
@@ -162,7 +162,7 @@ class Landing extends Component {
                             null
                 }
                 <Tooltip title={hover}>
-                    <IconButton type="button" style={{ position: 'absolute', right: '1rem    ', bottom: '1rem' }} onClick={() => window.open('https://forms.gle/hKkcD9UG15FZ6C7KA')}>
+                    <IconButton type="button" style={{ position: 'absolute', right: '1rem', bottom: '3rem' }} onClick={() => window.open('https://forms.gle/hKkcD9UG15FZ6C7KA')}>
                         <FeedbackIcon style={{ color: '#33B579' }} fontSize="large" />
                     </IconButton>
                 </Tooltip>

@@ -11,11 +11,12 @@
     width: 100%;
     float: left;
   }
+  .filterboard{
+    height: 88.5vh;
+  }
   .sorting-filters{
     z-index:400;
     border-radius: 1%;
-    /* background-color: #E5F1EF; */
-    height: 88.5vh;
     width: 100%;
   }
   ::-webkit-scrollbar {
@@ -31,7 +32,7 @@
   height: 2rem;
 }
 .pagination-wraper{
-  margin-bottom: 4rem;
+  margin-bottom: 8rem;
 }
 /* .Loading{
   height: 10rem;

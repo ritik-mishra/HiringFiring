@@ -31,7 +31,7 @@ var Cron = function Cron() {
         <p><b>Current Status: </b>' + body.status + '</p>\
         <p><b>Reminding Note: </b>' + body.message + '</p>\
         <p><b>Job Link: </b>'+ body.jobLink + '</p>\
-        <p>For more info about the job, visit:<a target="_blank" href="https://nowornever.live/hiring-firing/">Hiring Firing</a> </p>\
+        <p>For more info about the job, visit:<a target="_blank" href="https://nowornever.live/hiring-firing/myjobstack">Hiring Firing</a> </p>\
         <p>All the best in your job search :)</p>\
         <p>Jofi</p>\
         <br/><br/>\

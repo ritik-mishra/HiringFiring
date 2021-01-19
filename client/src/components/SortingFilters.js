@@ -151,7 +151,7 @@ class Sortingfilters extends Component {
 
         return (
             <StylesProvider injectFirst>
-                <div style={{ padding: "1rem" }}>
+                <div style={{ padding: "1rem", }}>
                     <div style={{ marginTop: "1rem" }} className="sorting">
                         <div style={{ textAlign: 'center', color: "rgb(90, 90, 90)" }}><b>Sort By</b></div>
                         <hr style={{ borderTop: "1px solid #33b579", marginTop: "0.3rem", marginBottom: "0.6rem" }} />
@@ -290,7 +290,7 @@ class Sortingfilters extends Component {
                             />
                         </div>
 
-                        <Button style={{ marginTop: "1.5rem", marginLeft: "6rem", marginBottom: "6rem", backgroundColor: "#33b579" }} onClick={this.applyClickHandler} variant="contained"><b><span style={{ color: "white" }}>Apply</span></b></Button>
+                        <Button style={{ position: "relative", marginLeft: "50%", left: "-2.5rem", marginTop: "1.5rem", width: "5.5rem", backgroundColor: "#33b579" }} onClick={this.applyClickHandler} variant="contained"><b><span style={{ color: "white" }}>Apply</span></b></Button>
                     </div>
                 </div >
             </StylesProvider>
