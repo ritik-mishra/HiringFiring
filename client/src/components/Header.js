@@ -75,7 +75,7 @@ class Header extends Component {
             <div className="head">
                 <div style={{ display: "inline" }} >
                     <Link
-                        to={`${process.env.PUBLIC_URL}/`}
+                        to={'/'}
                     >
                         <img src={logo} alt="Hiring-Firing" className="logo-image" />
                     </Link>
