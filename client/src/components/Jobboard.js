@@ -223,9 +223,9 @@ class Jobboard extends Component {
                                     </div>
                                 </div>
                                 :
-                                <div style={{ position: "relative", left: "25%", top: "30%" }}>
-                                    <h4 style={{ color: "grey" }}>No jobs to show!</h4>
-                                    <div style={{ position: "relative", left: "6rem" }}>
+                                <div style={{ position: "relative", marginLeft: "50%", left: "-8rem", top: "30%" }}>
+                                    <h4 style={{ color: "grey" }}>No matching jobs to show!</h4>
+                                    <div style={{ position: "relative", left: "7rem" }}>
                                         <SentimentVeryDissatisfiedIcon style={{ color: "grey" }} fontSize="large" />
                                     </div>
                                 </div>

@@ -60,7 +60,7 @@ class Header extends Component {
         )
 
     }
-    componentDidMount(){
+    componentDidMount() {
         var pg = window.location.href;
         var index = pg.lastIndexOf('/');
         var page = pg.substring(index + 1);
@@ -75,7 +75,7 @@ class Header extends Component {
             <div className="head">
                 <div style={{ display: "inline" }} >
                     <Link
-                        to='/'
+                        to={`${process.env.PUBLIC_URL}/`}
                     >
                         <img src={logo} alt="Hiring-Firing" className="logo-image" />
                     </Link>

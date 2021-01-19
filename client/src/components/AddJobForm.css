@@ -1,6 +1,3 @@
-.addform{
-  height:88.5vh;
-}
 span{
   color:black;
 }
@@ -16,7 +13,7 @@ background-color: white;
 .addform {
   overflow: auto;
   overflow-x: hidden;
-  height: auto;
+  height: 88.5vh;
 }
 [type="checkbox"]:not(.filled-in)+span:not(.lever):after{
   border-right: 2px solid #33b579;

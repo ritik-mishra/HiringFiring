@@ -55,8 +55,7 @@ export default function NotificationModal(props) {
         setOpen(false);
     };
     const handleSubmit = () => {
-        // var nDate = dt.substring(0, 14) + "00";
-        var nDate = dt.substring(0, 16);
+        var nDate = dt.substring(0, 14) + "00";
         var nd = new Date(nDate);
         var mlTime = nd.getTime();
         //ml time is currnent time in milliseconds from (UTC)
@@ -81,10 +80,6 @@ export default function NotificationModal(props) {
     var r = t.getTime();
     r = r + parseInt(6.5 * 60 * 60 * 1000);
     var date = new Date(r).toISOString();
-    // console.log(date);
-    // date = date.substring(0,14) + "8" + date.substring(15,17);
-
-    // console.log(date);
     date = date.substring(0, 16);
     if (date.substring(14, 16) >= "45") {
         var a = date[11];
@@ -117,7 +112,7 @@ export default function NotificationModal(props) {
                 <form onSubmit={handleSubmit}>
                     <input onChange={dateChange} type="datetime-local" id="reminder-time"
                         name="reminder-time"
-                        // min={date}
+                        min={date}
                         required>
                     </input>
                     <input onChange={messageChange} placeholder="Write your message" type="text"></input>

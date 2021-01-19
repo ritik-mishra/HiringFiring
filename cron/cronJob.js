@@ -104,7 +104,7 @@ var Cron = function Cron() {
 
     //Setting the Cron job
 
-    cron.schedule('0 * * * * *', () => {
+    cron.schedule('0 0 * * * *', () => {
         utilFun();
     },
         {
