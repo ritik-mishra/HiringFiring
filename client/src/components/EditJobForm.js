@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import {Snackbar} from '@material-ui/core';
-import { Alert} from '@material-ui/lab';
+import { Snackbar } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import './AddJobForm.css';
 import ls from 'local-storage';
 import { Redirect } from "react-router-dom";
@@ -95,32 +95,33 @@ class EditJobForm extends Component {
             role: this.state.role,
             batch: this.state.batch,
             isReferral: this.state.isReferral,
-            jobExpiry: this.state.jobExpiry
+            jobExpiry: this.state.jobExpiry,
+            salary: this.state.salary
         }
 
         var updateLink = `${process.env.PUBLIC_URL}/api/update/` + this.state.jobId;
-        try{
+        try {
             await axios.patch(updateLink, newJob);
             this.setState({
                 redirect: true
-            },()=>{
+            }, () => {
                 ls.remove('editJob');//Instead of clearing the whole local storage we need to clear only the info related to editable job
             });
-        }  
-        catch(error){
+        }
+        catch (error) {
             this.setState({
                 failureSnack: true
             });
-        }    
+        }
     }
     handleCloseFailureSnack = (reason) => {
         if (reason === 'clickaway') {
-          return;
+            return;
         }
         this.setState({
             failureSnack: false
         });
-    };  
+    };
     render() {
         if (this.state.redirect) {
             return <Redirect push to="/jobboard" />

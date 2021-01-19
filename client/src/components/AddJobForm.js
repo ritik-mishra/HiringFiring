@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
-import {Snackbar} from '@material-ui/core';
-import { Alert} from '@material-ui/lab';
+import { Snackbar } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import './AddJobForm.css'
 
 
@@ -74,11 +74,11 @@ class AddJobForm extends Component {
             salary: this.state.salary
 
         }
-        try{
+        try {
             await axios.post(`${process.env.PUBLIC_URL}/api/add_job`, job);
             this.setState({ redirect: true });
         }
-        catch(error){
+        catch (error) {
             this.setState({
                 failureSnack: true
             });
@@ -86,7 +86,7 @@ class AddJobForm extends Component {
     }
     handleCloseFailureSnack = (reason) => {
         if (reason === 'clickaway') {
-          return;
+            return;
         }
         this.setState({
             failureSnack: false
@@ -96,7 +96,7 @@ class AddJobForm extends Component {
         //button logic
         var x = this.state.companyName && this.state.jobLink && this.state.batch.length && this.state.role.length && this.state.isReferral;
         let sumbitButton = x ? <input style={{ color: "#33b579", width: "6rem", height: "3rem", fontWeight: "900" }}
-        type='submit' /> : <p style={{ color: "red" }}>fill the mandatory * fields first</p>;
+            type='submit' /> : <p style={{ color: "red" }}>fill the mandatory * fields first</p>;
 
 
         const { redirect } = this.state;

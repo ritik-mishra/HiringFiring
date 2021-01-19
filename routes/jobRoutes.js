@@ -131,7 +131,8 @@ module.exports = (app) => {
                 jobExpiry: req.body.jobExpiry,
                 postedBy: req.user.name,
                 postedById: req.user.id,
-                role: req.body.role
+                role: req.body.role,
+                salary: req.body.salary
             }).save();
             res.send(true);
         }
@@ -155,7 +156,8 @@ module.exports = (app) => {
                         batch: req.body.batch,
                         isReferral: req.body.isReferral,
                         jobExpiry: req.body.jobExpiry,
-                        lastModified: curdate
+                        lastModified: curdate,
+                        salary: req.body.salary
                     },
                 });
             res.send("Job updated");
