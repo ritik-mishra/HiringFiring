@@ -14,7 +14,7 @@
     position: fixed;
     height:70px;
     width:100vw;
-    min-height: 7vh;
+    /* min-height: 7vh; */
     z-index: 1000;
     border-bottom: 1px solid rgb(228, 224, 224);
 }
@@ -90,7 +90,7 @@ li{
         background-color:  #33b579;
         position: fixed;
         right:0px;
-        height:35vh;
+        height:43vh;
         width: 40%;
         top:7vh;
         padding: 0;

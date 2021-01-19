@@ -11,10 +11,8 @@
     width: 100%;
     float: left;
   }
-  .filterboard{
-    height: 88.5vh;
-  }
   .sorting-filters{
+    height: 88.5vh;
     z-index:400;
     border-radius: 1%;
     width: 100%;

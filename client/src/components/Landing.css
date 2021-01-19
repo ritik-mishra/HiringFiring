@@ -38,8 +38,12 @@ body {
         left: -14rem;
     }
     .login-landing{
-      margin-left: 39.5vw;
+      width: 23rem;
+      position: relative;
+      margin-left: 50%;
+      left: -11.8rem;
       margin-top: 3rem;
+      margin-bottom: 8rem;
     }
     .img1{
       margin-left: 7rem;
@@ -109,9 +113,6 @@ body {
             margin-left: 50%;
             left: -11rem;
 
-        }
-        .login-landing{
-          margin-left:3vw;
         }
     }
 
