@@ -147,6 +147,35 @@ class Sortingfilters extends Component {
             });
         }
     }
+    clearFilterHandler = async () => {
+        if (!this.state.isFilterProcessing) {
+            this.setState({
+                isFilterProcessing: true
+            }, () => {
+                var body = {
+                    sortBy: "postedOn",
+                    comparator: -1,
+                    checkSort: "recentpost",
+                    batch: [],
+                    role: [],
+                    selectedCompanies: [],
+                    company_list: []
+                }
+                localStorage.removeItem('filterLocalStore')
+                this.props.filterHandler(body);
+                this.setState({
+                    sortBy: "postedOn",
+                    comparator: -1,
+                    checkSort: "recentpost",
+                    batch: [],
+                    role: [],
+                    selectedCompanies: [],
+                    company_list: [],
+                    isFilterProcessing: false
+                });
+            });
+        }
+    }
     render() {
 
         return (
@@ -290,7 +319,8 @@ class Sortingfilters extends Component {
                             />
                         </div>
 
-                        <Button style={{ position: "relative", marginLeft: "50%", left: "-2.5rem", marginTop: "1.5rem", marginBottom: "8rem", width: "5.5rem", backgroundColor: "#33b579" }} onClick={this.applyClickHandler} variant="contained"><b><span style={{ color: "white" }}>Apply</span></b></Button>
+                        <Button style={{ position: "relative", marginLeft: "50%", left: "-2.5rem", marginTop: "1.5rem", marginBottom: "0.5rem", width: "5.5rem", backgroundColor: "#33b579" }} onClick={this.applyClickHandler} variant="contained"><b><span style={{ color: "white" }}>Apply</span></b></Button>
+                        <Button style={{ position: "relative", marginLeft: "50%", left: "-2.5rem", marginTop: "1rem", marginBottom: "8rem", width: "5.5rem", backgroundColor: "#b3cccc" }} onClick={this.clearFilterHandler} variant="contained"><b><span style={{ color: "black" }}>Clear</span></b></Button>
                     </div>
                 </div >
             </StylesProvider>
