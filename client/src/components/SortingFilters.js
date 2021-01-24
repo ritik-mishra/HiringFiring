@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Multiselect } from 'multiselect-react-dropdown';
+import { Snackbar } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { StylesProvider } from "@material-ui/core/styles";
 import './SortingFilters.css';
 
@@ -23,7 +25,8 @@ class Sortingfilters extends Component {
             role: filterLocalStore ? filterLocalStore.role : [],
             selectedCompanies: filterLocalStore ? filterLocalStore.selectedCompanies : [],
             company_list: [],
-            isFilterProcessing: false
+            isFilterProcessing: false,
+            Snackfailure: false
         }
         this.style = {
             chips: {
@@ -151,7 +154,8 @@ class Sortingfilters extends Component {
         if (!this.state.isFilterProcessing) {
             this.setState({
                 isFilterProcessing: true
-            }, () => {
+            }, () => { 
+                try {
                 var body = {
                     sortBy: "postedOn",
                     comparator: -1,
@@ -170,12 +174,29 @@ class Sortingfilters extends Component {
                     batch: [],
                     role: [],
                     selectedCompanies: [],
-                    company_list: [],
-                    isFilterProcessing: false
+                    company_list: []
                 });
+            }
+            catch (error) {
+                console.log("Failed to clear filter");
+                this.setState({
+                    Snackfailure: true
+                });
+            }
+            this.setState({
+                isFilterProcessing: false
+            });
             });
         }
     }
+    handleCloseSnackFailure = (reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({
+            Snackfailure: false
+        });
+    };
     render() {
 
         return (
@@ -321,6 +342,12 @@ class Sortingfilters extends Component {
 
                         <Button style={{ position: "relative", marginLeft: "50%", left: "-2.5rem", marginTop: "1.5rem", marginBottom: "0.5rem", width: "5.5rem", backgroundColor: "#33b579" }} onClick={this.applyClickHandler} variant="contained"><b><span style={{ color: "white" }}>Apply</span></b></Button>
                         <Button style={{ position: "relative", marginLeft: "50%", left: "-2.5rem", marginTop: "1rem", marginBottom: "8rem", width: "5.5rem", backgroundColor: "#b3cccc" }} onClick={this.clearFilterHandler} variant="contained"><b><span style={{ color: "black" }}>Clear</span></b></Button>
+
+                        <Snackbar open={this.state.Snackfailure} autoHideDuration={6000} onClose={this.handleCloseSnackFailure} >
+                            <Alert onClose={this.handleCloseSnackFailure} severity="error" elevation={6} variant="filled">
+                                Failed to clear Filter.
+                            </Alert>
+                        </Snackbar>
                     </div>
                 </div >
             </StylesProvider>
