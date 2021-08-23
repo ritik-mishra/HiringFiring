@@ -7,6 +7,7 @@ require('./models/User');
 require('./models/Comments');
 require('./models/Jobs');
 require('./models/Jobstack');
+require('./models/Subscribers');
 require('./models/Reminder');
 require('./services/passport');
 require('dotenv').config();
@@ -34,6 +35,8 @@ require('./routes/jobRoutes')(app);
 require('./routes/jobstackRoutes')(app);
 require('./routes/reminderRoutes')(app);
 require('./routes/commentRoutes')(app);
+require('./routes/subscriberRoutes')(app);
+require('./routes/mailTesting')(app);
 
 if (process.env.NODE_ENV === 'production') {
     //Serve Production assets, main.js and main.css

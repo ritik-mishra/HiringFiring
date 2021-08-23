@@ -171,7 +171,7 @@ class Sortingfilters extends Component {
                     sortBy: "postedOn",
                     comparator: -1,
                     checkSort: "recentpost",
-                    batch: [],
+                    batch: [],  
                     role: [],
                     selectedCompanies: [],
                     company_list: []

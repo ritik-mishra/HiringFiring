@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import logo from '../media/logo2.0.png';
 import MenuIcon from '@material-ui/icons/Menu';
 
+import SubscriptionModal from './SubscriptionModal'
 import './Header.css'
 
 
@@ -54,7 +55,9 @@ class Header extends Component {
                     <li style={{ borderBottom: b1, display: "block", height: "2.5rem" }}><a href={`${process.env.PUBLIC_URL}/jobboard`}><span style={{ color: "white" }}>Jobboard</span></a></li>
                     <li style={{ borderBottom: b2, display: "block", height: "2.5rem" }}><a href={`${process.env.PUBLIC_URL}/addnewjob`}><span style={{ color: "white" }}>Add Job</span></a></li>
                     <li style={{ borderBottom: b3, display: "block", height: "2.5rem" }}><a href={`${process.env.PUBLIC_URL}/myjobstack`}><span style={{ color: "white" }}>My Jobstack</span></a></li>
+                    <li style={{ display: "block", height: "2.5rem" }}>                  <a href={`${process.env.PUBLIC_URL}/subscribers`}><span style={{ color: "white" }}>My Subscriptions</span></a></li>
                     <li ><a href={`${process.env.PUBLIC_URL}/api/logout`}>Logout</a></li>
+                    <li><SubscriptionModal /></li>
                 </div>
             </>
         )

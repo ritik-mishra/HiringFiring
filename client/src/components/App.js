@@ -9,6 +9,7 @@ import AddJobForm from './AddJobForm';
 import Jobboard from './Jobboard';
 import EditJobForm from './EditJobForm';
 import Jobstack from './Jobstack';
+import Subscription from './Subscriptions';
 import './App.css';
 
 class App extends Component {
@@ -32,6 +33,7 @@ class App extends Component {
                         <Route exact path="/addnewjob" component={AddJobForm} />
                         <Route exact path="/editjob" render={(props) => <EditJobForm {...props} />} />
                         <Route exact path="/myjobstack" component={Jobstack} />
+                        <Route exact path="/subscribers" component={Subscription} />
                     </div>
                 </div>
             </BrowserRouter>
